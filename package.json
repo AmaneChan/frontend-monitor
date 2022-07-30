@@ -1,0 +1,17 @@
+{
+	"name": "test",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"fe:dev": "pnpm run --dir ./packages/frontend dev",
+		"fe:build": "pnpm run --dir ./packages/frontend build"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"eslint": "^8.20.0",
+		"prettier": "^2.7.1"
+	}
+}
