@@ -5,7 +5,8 @@
 	"main": "index.js",
 	"scripts": {
 		"fe:dev": "pnpm run --dir ./packages/frontend dev",
-		"fe:build": "pnpm run --dir ./packages/frontend build"
+		"fe:build": "pnpm run --dir ./packages/frontend build",
+		"be:dev": "pnpm run --dir ./packages/backend dev"
 	},
 	"keywords": [],
 	"author": "",
@@ -15,3 +16,4 @@
 		"prettier": "^2.7.1"
 	}
 }
+
