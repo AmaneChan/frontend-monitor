@@ -10,22 +10,15 @@
 				<div class="ma">
 					<el-row>
 						<el-col :span="8">
-							<el-row>
-								<el-col>
-									<div class="ma">
-										<el-card class="box-card" style="height: 10rem;">数据1</el-card>
-									</div>
-								</el-col>
-							</el-row>
-                            
-                            <el-row>
-								<el-col>
-									<div class="ma">
-										<el-card class="box-card" style="height: 10rem;">数据1</el-card>
-									</div>
-								</el-col>
-							</el-row>
+							<div class="ma">
+								<el-card class="box-card" style="height: 10rem">数据1</el-card>
+							</div>
+
+							<div class="ma">
+								<el-card class="box-card" style="height: 10rem">数据2</el-card>
+							</div>
 						</el-col>
+
 						<el-col :span="8">
 							<div class="ma">
 								<el-card>
@@ -34,46 +27,45 @@
 							</div>
 						</el-col>
 						<el-col :span="8">
-								<el-row>
-								<el-col>
-									<div class="ma">
-										<el-card class="box-card" style="height: 10rem;">数据1</el-card>
-									</div>
-								</el-col>
-							</el-row>
-                            
-                            <el-row>
-								<el-col>
-									<div class="ma">
-										<el-card class="box-card" style="height: 10rem;">数据1</el-card>
-									</div>
-								</el-col>
-							</el-row>
+							<div class="ma">
+								<el-card class="box-card" style="height: 10rem">数据3</el-card>
+							</div>
+
+							<div class="ma">
+								<el-card class="box-card" style="height: 10rem">数据4</el-card>
+							</div>
 						</el-col>
 					</el-row>
-				</div>
-                
-			</el-col>
 
+					<div class="ma">
+						<el-card >
+						<Chartstwo></Chartstwo>
+					</el-card>
+					</div>
+				</div>
+			</el-col>
 		</el-row>
-        
 	</div>
 </template>
 
-<script lang="ts">
-import { defineComponent, reactive, ref, toRefs } from 'vue'
+<script lang="ts" setpu>
+import { defineComponent, reactive, ref, toRefs, onMounted ,Ref } from 'vue'
 import HeadMenu from './components/HeadMenu.vue'
 import SideMenu from './components/SideMenu.vue'
 import Chartsone from './components/Charts_one.vue'
-
+import Chartstwo from './components/Charts_two.vue'
 export default {
 	name: 'App',
 	components: {
 		HeadMenu,
 		SideMenu,
 		Chartsone,
+		Chartstwo
 	},
-	setup() {},
+
+	setup() {
+		
+	},
 }
 </script>
 
@@ -84,10 +76,10 @@ export default {
 .ma {
 	margin: 1rem;
 }
-.mt{
-    margin-top: 1rem;
+.mt {
+	margin-top: 1rem;
 }
-.ba{
-    background-color: brown;
+.ba {
+	background-color: brown;
 }
 </style>

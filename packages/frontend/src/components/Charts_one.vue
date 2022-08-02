@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div id="main"></div>
+		<div id="Charts-one"></div>
 	</div>
 </template>
 
@@ -9,11 +9,11 @@ export default {
 	name: 'Charts-one',
 	mounted() {
 		// 基于准备好的dom，初始化echarts实例
-		var myChart = this.$echarts.init(document.getElementById('main'))
+		var myChart = this.$echarts.init(document.getElementById('Charts-one'))
 		// 绘制图表
 		myChart.setOption({
 			title: {
-				text: 'xxx',
+				text: 'one',
 			},
 			tooltip: {},
 			xAxis: {
@@ -35,8 +35,8 @@ export default {
 </script>
 
 <style>
-#main {
-	height: 20rem;
+#Charts-one {
+	height: 300px;
 	width: 100%;
 }
 </style>
