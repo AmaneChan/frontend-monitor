@@ -30,7 +30,7 @@ export default {
 
 <style>
 .echats {
-	height: 400px;
+	height: 300px;
 	width: 100%;
 }
 </style>
