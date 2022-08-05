@@ -1,6 +1,6 @@
 import { createRouter,createWebHistory } from 'vue-router'
 
-import overview from "../view/overview.vue";
+import overview from "../view/Overview.vue";
 
 const router = createRouter(
     {
