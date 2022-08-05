@@ -1,0 +1,16 @@
+{
+	"name": "frontend_sdk",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"build": "uglifyjs index.js -o dist/index.js"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"uglify-js": "^3.16.3"
+	}
+}
+

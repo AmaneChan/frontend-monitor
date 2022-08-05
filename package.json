@@ -6,6 +6,7 @@
 	"scripts": {
 		"fe:dev": "pnpm run --dir ./packages/frontend dev",
 		"fe:build": "pnpm run --dir ./packages/frontend build",
+		"fesdk:build": "pnpm run --dir ./packages/frontend_sdk build",
 		"be:dev": "pnpm run --dir ./packages/backend dev"
 	},
 	"keywords": [],
@@ -16,4 +17,3 @@
 		"prettier": "^2.7.1"
 	}
 }
-
