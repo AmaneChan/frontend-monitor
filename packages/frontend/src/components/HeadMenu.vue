@@ -5,7 +5,6 @@
 			class="el-menu-demo"
 			mode="horizontal"
 			:ellipsis="false"
-			@select="handleSelect"
 		>
 			<div class="title">前端监控系统</div>
 			<div class="flex-grow" />
@@ -24,17 +23,10 @@
 	</div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { ref } from 'vue'
-export default {
-	name: 'Menu',
-	setup() {
-		const activeIndex = ref('1')
-		return {
-			activeIndex,
-		}
-	},
-}
+
+const activeIndex = ref('1')
 </script>
 
 <style>
