@@ -1,11 +1,8 @@
+<script lang="ts" setup></script>
+
 <template>
 	<div>
-		<el-menu
-			default-active="1-1"
-			class="el-menu-vertical-demo"
-			@open="handleOpen"
-			@close="handleClose"
-		>
+		<el-menu default-active="1-1" class="el-menu-vertical-demo">
 			<el-sub-menu index="1">
 				<template #title>
 					<el-icon><location /></el-icon>
@@ -27,7 +24,7 @@
 				</el-menu-item-group>
 			</el-sub-menu>
 
-				<el-sub-menu index="2">
+			<el-sub-menu index="2">
 				<template #title>
 					<el-icon><CollectionTag /></el-icon>
 					<span>维度</span>
@@ -47,11 +44,5 @@
 		</el-menu>
 	</div>
 </template>
-
-<script>
-export default {
-	name: 'SideMenu',
-}
-</script>
 
 <style></style>

@@ -1,61 +1,3 @@
-<template>
-	<div>
-		<div class="ma">
-			<el-row>
-				<el-col :span="8">
-					<div class="ma">
-						<el-card class="box-card" style="height: 10rem">数据1</el-card>
-					</div>
-
-					<div class="ma">
-						<el-card class="box-card" style="height: 10rem">数据2</el-card>
-					</div>
-				</el-col>
-
-				<el-col :span="8">
-					<div class="ma">
-						<el-card>
-							<Chartstwo :value="dom" :option="opt1"></Chartstwo>
-						</el-card>
-					</div>
-				</el-col>
-				<el-col :span="8">
-					<div class="ma">
-						<el-card class="box-card" style="height: 10rem">数据3</el-card>
-					</div>
-
-					<div class="ma">
-						<el-card class="box-card" style="height: 10rem">数据4</el-card>
-					</div>
-				</el-col>
-			</el-row>
-
-			<div class="ma">
-				<el-card>
-					<Chartstwo :value="parentValue" :option="opt"></Chartstwo>
-				</el-card>
-			</div>
-
-			<el-row>
-				<el-col :span="12">
-					<div class="ma">
-						<el-card>
-							<Chartstwo :value="dom1" :option="opt"></Chartstwo>
-						</el-card>
-					</div>
-				</el-col>
-				<el-col :span="12">
-					<div class="ma">
-						<el-card>
-							<Chartstwo :value="dom2" :option="opt1"></Chartstwo>
-						</el-card>
-					</div>
-				</el-col>
-			</el-row>
-		</div>
-	</div>
-</template>
-
 <script lang="ts" setup>
 import { ref } from 'vue'
 import Chartstwo from '../components/Chart.vue'
@@ -181,6 +123,64 @@ let opt1 = ref({
 	],
 })
 </script>
+
+<template>
+	<div>
+		<div class="ma">
+			<el-row>
+				<el-col :span="8">
+					<div class="ma">
+						<el-card class="box-card" style="height: 10rem">数据1</el-card>
+					</div>
+
+					<div class="ma">
+						<el-card class="box-card" style="height: 10rem">数据2</el-card>
+					</div>
+				</el-col>
+
+				<el-col :span="8">
+					<div class="ma">
+						<el-card>
+							<Chartstwo :value="dom" :option="opt1"></Chartstwo>
+						</el-card>
+					</div>
+				</el-col>
+				<el-col :span="8">
+					<div class="ma">
+						<el-card class="box-card" style="height: 10rem">数据3</el-card>
+					</div>
+
+					<div class="ma">
+						<el-card class="box-card" style="height: 10rem">数据4</el-card>
+					</div>
+				</el-col>
+			</el-row>
+
+			<div class="ma">
+				<el-card>
+					<Chartstwo :value="parentValue" :option="opt"></Chartstwo>
+				</el-card>
+			</div>
+
+			<el-row>
+				<el-col :span="12">
+					<div class="ma">
+						<el-card>
+							<Chartstwo :value="dom1" :option="opt"></Chartstwo>
+						</el-card>
+					</div>
+				</el-col>
+				<el-col :span="12">
+					<div class="ma">
+						<el-card>
+							<Chartstwo :value="dom2" :option="opt1"></Chartstwo>
+						</el-card>
+					</div>
+				</el-col>
+			</el-row>
+		</div>
+	</div>
+</template>
 
 <style>
 .hvh {

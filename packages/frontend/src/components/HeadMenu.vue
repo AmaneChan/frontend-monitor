@@ -1,3 +1,9 @@
+<script lang="ts" setup>
+import { ref } from 'vue'
+
+const activeIndex = ref('1')
+</script>
+
 <template>
 	<div>
 		<el-menu
@@ -22,12 +28,6 @@
 		</el-menu>
 	</div>
 </template>
-
-<script lang="ts" setup>
-import { ref } from 'vue'
-
-const activeIndex = ref('1')
-</script>
 
 <style>
 .title {

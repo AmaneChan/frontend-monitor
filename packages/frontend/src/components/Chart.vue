@@ -1,9 +1,3 @@
-<template>
-	<div>
-		<div :id="id" class="echats"></div>
-	</div>
-</template>
-
 <script lang="ts" setup>
 import { onMounted, getCurrentInstance, ref } from 'vue'
 import * as echarts from 'echarts'
@@ -22,6 +16,12 @@ onMounted(() => {
 	}
 })
 </script>
+
+<template>
+	<div>
+		<div :id="id" class="echats"></div>
+	</div>
+</template>
 
 <style>
 .echats {

@@ -1,3 +1,8 @@
+<script lang="ts" setup>
+import HeadMenu from './components/HeadMenu.vue'
+import SideMenu from './components/SideMenu.vue'
+</script>
+
 <template>
 	<div>
 		<head-menu></head-menu>
@@ -12,11 +17,6 @@
 		</el-row>
 	</div>
 </template>
-
-<script lang="ts" setup>
-import HeadMenu from './components/HeadMenu.vue'
-import SideMenu from './components/SideMenu.vue'
-</script>
 
 <style>
 body {
