@@ -7,9 +7,7 @@
 			:ellipsis="false"
 			@select="handleSelect"
 		>
-			<el-menu-item index="0">
-				前端监控系统
-				</el-menu-item>
+			<div class="title">前端监控系统</div>
 			<div class="flex-grow" />
 			<el-menu-item index="1">主页</el-menu-item>
 			<el-sub-menu index="2">
@@ -32,14 +30,23 @@ export default {
 	name: 'Menu',
 	setup() {
 		const activeIndex = ref('1')
-        return {
-            activeIndex,
-        }
+		return {
+			activeIndex,
+		}
 	},
 }
 </script>
 
 <style>
+.title {
+	font-size: 1.15rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0 1.25rem;
+	user-select: none;
+}
+
 .flex-grow {
 	flex-grow: 1;
 }

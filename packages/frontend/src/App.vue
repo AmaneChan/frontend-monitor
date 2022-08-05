@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<head-menu></head-menu>
-	<el-row>
+		<el-row>
 			<el-col :span="3">
 				<side-menu></side-menu>
 			</el-col>
@@ -24,11 +24,13 @@ export default {
 		HeadMenu,
 		SideMenu,
 	},
-	setup() {
-	},
+	setup() {},
 }
 </script>
 
 <style>
-
+body {
+	margin: 0;
+	padding: 0;
+}
 </style>
