@@ -1,25 +1,33 @@
 <script lang="ts" setup>
-import  HeadMenu from './Home/HeadMenu.vue'
-import  SideMenu from './Home/SideMenu.vue'
+import HeadMenu from './Home/HeadMenu.vue'
+import SideMenu from './Home/SideMenu.vue'
 </script>
 
 <template>
-	<div>
-		<HeadMenu></HeadMenu>
-		<el-row>
-			<el-col :span="3">
-				<SideMenu></SideMenu>
-			</el-col>
-			<el-col :span="21">
-				<RouterView></RouterView>
-			</el-col>
-		</el-row>
-	</div>
+	<HeadMenu></HeadMenu>
+	<el-row>
+		<el-col :span="3">
+			<SideMenu class="side"></SideMenu>
+		</el-col>
+		<el-col :span="21" class="dataViewer">
+			<RouterView></RouterView>
+		</el-col>
+	</el-row>
 </template>
 
+<style scoped>
+.dataViewer {
+	height: var(--viewer-height);
+	overflow: auto;
+}
+
+.side {
+	height: var(--viewer-height);
+}
+</style>
+
 <style>
-body {
-	margin: 0;
-	padding: 0;
+:root {
+	--viewer-height: calc(100vh - var(--el-menu-item-height) - 3px);
 }
 </style>

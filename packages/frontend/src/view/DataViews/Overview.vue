@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
-import Chartstwo from '../components/Chart.vue'
+import Chartstwo from '../../components/Chart.vue'
 
 const parentValue = ref('domid')
 const dom = ref('dom')
