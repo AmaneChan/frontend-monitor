@@ -2,7 +2,7 @@
 
 <template>
 	<div>
-		<el-menu default-active="1-1" class="el-menu-vertical-demo">
+		<el-menu default-active="1-1" class="menu">
 			<el-sub-menu index="1">
 				<template #title>
 					<el-icon><location /></el-icon>
@@ -45,4 +45,8 @@
 	</div>
 </template>
 
-<style></style>
+<style scoped>
+.menu {
+	overflow: hidden;
+}
+</style>
