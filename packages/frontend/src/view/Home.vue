@@ -1,22 +1,19 @@
 <script lang="ts" setup>
-import HeadMenu from './components/HeadMenu.vue'
-import SideMenu from './components/SideMenu.vue'
+import  HeadMenu from '../components/HeadMenu.vue'
+import  SideMenu from '../components/SideMenu.vue'
 </script>
 
 <template>
 	<div>
-		<!-- <head-menu></head-menu>
+		<HeadMenu></HeadMenu>
 		<el-row>
 			<el-col :span="3">
 				<SideMenu></SideMenu>
 			</el-col>
-
 			<el-col :span="21">
 				<RouterView></RouterView>
 			</el-col>
-		</el-row> -->
-		<!-- <RouterView name="Home"></RouterView> -->
-		<RouterView></RouterView>
+		</el-row>
 	</div>
 </template>
 
