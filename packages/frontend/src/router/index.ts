@@ -8,15 +8,14 @@ const router = createRouter({
 	routes: [
 		{
 			path: '/',
-			component:HomeVue,
-			children:[
+			component: HomeVue,
+			redirect: 'overview',
+			children: [
 				{
-					path:'/overview',
-					components:{
-						overview:overview
-					}
-				}
-			]
+					path: 'overview',
+					component: overview,
+				},
+			],
 		},
 	],
 })

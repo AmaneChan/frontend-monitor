@@ -11,7 +11,7 @@ import  SideMenu from '../components/SideMenu.vue'
 				<SideMenu></SideMenu>
 			</el-col>
 			<el-col :span="21">
-				<RouterView name="overview"></RouterView>
+				<RouterView></RouterView>
 			</el-col>
 		</el-row>
 	</div>
