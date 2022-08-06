@@ -1,28 +1,22 @@
-<script lang="ts" setup>
-import HeadMenu from './components/HeadMenu.vue'
-import SideMenu from './components/SideMenu.vue'
-</script>
+<script lang="ts" setup></script>
 
 <template>
 	<div>
-		<!-- <head-menu></head-menu>
-		<el-row>
-			<el-col :span="3">
-				<SideMenu></SideMenu>
-			</el-col>
-
-			<el-col :span="21">
-				<RouterView></RouterView>
-			</el-col>
-		</el-row> -->
-		<!-- <RouterView name="Home"></RouterView> -->
 		<RouterView></RouterView>
 	</div>
 </template>
 
+<script setup lang="ts">
+import LoginRegister from './components/LoginRegister.vue'
+</script>
+
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
 body {
 	margin: 0;
 	padding: 0;
+
+	font-family: 'Noto Sans SC', sans-serif;
 }
 </style>

@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeVue from '../view/Home.vue'
+
+import Entry from '../view/Entry.vue'
+import Home from '../view/Home.vue'
 
 import overview from '../view/Overview.vue'
 
@@ -8,7 +10,7 @@ const router = createRouter({
 	routes: [
 		{
 			path: '/',
-			component: HomeVue,
+			component: Home,
 			redirect: 'overview',
 			children: [
 				{
@@ -16,6 +18,10 @@ const router = createRouter({
 					component: overview,
 				},
 			],
+		},
+		{
+			path: '/entry',
+			component: Entry,
 		},
 	],
 })
