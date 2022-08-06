@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import  HeadMenu from '../components/HeadMenu.vue'
-import  SideMenu from '../components/SideMenu.vue'
+import  HeadMenu from './Home/HeadMenu.vue'
+import  SideMenu from './Home/SideMenu.vue'
 </script>
 
 <template>
