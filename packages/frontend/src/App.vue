@@ -5,7 +5,7 @@ import SideMenu from './components/SideMenu.vue'
 
 <template>
 	<div>
-		<head-menu></head-menu>
+		<!-- <head-menu></head-menu>
 		<el-row>
 			<el-col :span="3">
 				<SideMenu></SideMenu>
@@ -14,7 +14,9 @@ import SideMenu from './components/SideMenu.vue'
 			<el-col :span="21">
 				<RouterView></RouterView>
 			</el-col>
-		</el-row>
+		</el-row> -->
+		<!-- <RouterView name="Home"></RouterView> -->
+		<RouterView></RouterView>
 	</div>
 </template>
 
