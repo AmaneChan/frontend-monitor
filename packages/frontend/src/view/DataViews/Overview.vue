@@ -195,4 +195,8 @@ let opt1 = ref({
 .ba {
 	background-color: brown;
 }
+.hw {
+	width: 100%;
+	height: 300px;
+}
 </style>
