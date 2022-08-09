@@ -126,7 +126,7 @@ let opt1 = ref({
 
 <template>
 	<div>
-		<div class="ma">
+		<div>
 			<el-row>
 				<el-col :span="8">
 					<div class="ma">
@@ -183,18 +183,10 @@ let opt1 = ref({
 </template>
 
 <style>
-.hvh {
-	height: 100vh;
-}
 .ma {
 	margin: 1rem;
 }
-.mt {
-	margin-top: 1rem;
-}
-.ba {
-	background-color: brown;
-}
+
 .hw {
 	width: 100%;
 	height: 300px;

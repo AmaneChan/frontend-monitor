@@ -7,7 +7,6 @@ const props = defineProps(['value', 'option', 'wid', 'hei'])
 const id = ref(props.value)
 onMounted(() => {
 	const dom = document.getElementById(id.value)
-
 	if (props.hei) {
 		dom!.style.height = props.hei
 	} else {
