@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
-import Chartstwo from '../../components/Chart.vue'
+import Chart from '../../components/Chart.vue'
 
 const parentValue = ref('domid')
 const dom = ref('dom')
@@ -129,66 +129,47 @@ let opt1 = ref({
 		<div>
 			<el-row>
 				<el-col :span="8">
-					<div class="ma">
-						<el-card class="box-card" style="height: 10rem">数据1</el-card>
-					</div>
+					<el-card class="box-card" style="height: 10rem">数据1</el-card>
 
-					<div class="ma">
-						<el-card class="box-card" style="height: 10rem">数据2</el-card>
-					</div>
+					<el-card class="box-card" style="height: 10rem">数据2</el-card>
 				</el-col>
 
 				<el-col :span="8">
-					<div class="ma">
+					<div class="cardContainer">
 						<el-card>
-							<Chartstwo :value="dom" :option="opt1"></Chartstwo>
+							<Chart :value="dom" :option="opt1"></Chart>
 						</el-card>
 					</div>
 				</el-col>
 				<el-col :span="8">
-					<div class="ma">
-						<el-card class="box-card" style="height: 10rem">数据3</el-card>
-					</div>
+					<el-card class="box-card" style="height: 10rem">数据3</el-card>
 
-					<div class="ma">
-						<el-card class="box-card" style="height: 10rem">数据4</el-card>
-					</div>
+					<el-card class="box-card" style="height: 10rem">数据4</el-card>
 				</el-col>
 			</el-row>
 
-			<div class="ma">
-				<el-card>
-					<Chartstwo :value="parentValue" :option="opt"></Chartstwo>
-				</el-card>
-			</div>
+			<el-card>
+				<Chart :value="parentValue" :option="opt"></Chart>
+			</el-card>
 
 			<el-row>
 				<el-col :span="12">
-					<div class="ma">
-						<el-card>
-							<Chartstwo :value="dom1" :option="opt"></Chartstwo>
-						</el-card>
-					</div>
+					<el-card>
+						<Chart :value="dom1" :option="opt"></Chart>
+					</el-card>
 				</el-col>
 				<el-col :span="12">
-					<div class="ma">
-						<el-card>
-							<Chartstwo :value="dom2" :option="opt1"></Chartstwo>
-						</el-card>
-					</div>
+					<el-card>
+						<Chart :value="dom2" :option="opt1"></Chart>
+					</el-card>
 				</el-col>
 			</el-row>
 		</div>
 	</div>
 </template>
 
-<style>
-.ma {
+<style scoped>
+.box-card {
 	margin: 1rem;
-}
-
-.hw {
-	width: 100%;
-	height: 300px;
 }
 </style>

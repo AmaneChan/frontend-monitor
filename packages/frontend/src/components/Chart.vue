@@ -2,26 +2,16 @@
 import { onMounted, ref } from 'vue'
 import * as echarts from 'echarts'
 import ElementResize from 'element-resize-detector'
-const props = defineProps(['value', 'option', 'wid', 'hei'])
+
+const props = defineProps(['value', 'option', 'width', 'height'])
 
 // var dt = new Date();
 // console.log(dt.getTime());
 // const id = ref(dt.getTime()+'')
 const id = ref(props.value)
 
-
 onMounted(() => {
 	const dom = document.getElementById(id.value)
-	if (props.hei) {
-		dom!.style.height = props.hei
-	} else {
-		dom!.style.height = '300px'
-	}
-	if (props.wid) {
-		dom!.style.width = props.wid
-	} else {
-		dom!.style.width = '100%'
-	}
 
 	if (dom) {
 		let myChart = echarts.init(dom)
@@ -45,7 +35,10 @@ onMounted(() => {
 
 <template>
 	<div>
-		<div :id="id"></div>
+		<div
+			:style="{ height: props.height || '300px', width: props.width || '100%' }"
+			:id="id"
+		></div>
 	</div>
 </template>
 
