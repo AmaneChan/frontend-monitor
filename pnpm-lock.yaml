@@ -30,9 +30,11 @@ importers:
   packages/frontend:
     specifiers:
       '@element-plus/icons-vue': ^2.0.6
+      '@types/element-resize-detector': ^1.1.3
       '@vitejs/plugin-vue': ^2.3.3
       echarts: ^5.3.3
       element-plus: ^2.2.12
+      element-resize-detector: ^1.2.4
       pinia: ^2.0.17
       typescript: ^4.5.4
       vite: ^2.9.9
@@ -43,10 +45,12 @@ importers:
       '@element-plus/icons-vue': 2.0.6_vue@3.2.37
       echarts: 5.3.3
       element-plus: 2.2.12_vue@3.2.37
+      element-resize-detector: 1.2.4
       pinia: 2.0.17_typescript@4.7.4+vue@3.2.37
       vue: 3.2.37
       vue-router: 4.1.3_vue@3.2.37
     devDependencies:
+      '@types/element-resize-detector': 1.1.3
       '@vitejs/plugin-vue': 2.3.3_vite@2.9.14+vue@3.2.37
       typescript: 4.7.4
       vite: 2.9.14
@@ -181,6 +185,10 @@ packages:
     resolution: {integrity: sha512-cdeYyv4KWoEgpBISTxWvqYsVy444DOqehiF3fM3ne10AmJ62RSyNkUnxMJXHQWRQQX2eR94m5y1IZyDwBjV9FQ==}
     dependencies:
       '@types/node': 18.6.4
+    dev: true
+
+  /@types/element-resize-detector/1.1.3:
+    resolution: {integrity: sha512-rqmeHxzNMPar/3IbdQRm+mydv8KlEXUtcp5M47rbZUEjslTjg+bT5+OXCknTCIy1AfvNR0Kio44iMY2zUH65CQ==}
     dev: true
 
   /@types/express-serve-static-core/4.17.30:
@@ -472,6 +480,10 @@ packages:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
     dev: true
 
+  /batch-processor/1.0.0:
+    resolution: {integrity: sha512-xoLQD8gmmR32MeuBHgH0Tzd5PuSZx71ZsbhVxOCRbgktZEPe4SQy7s9Z50uPp0F/f7iw2XmkHN2xkgbMfckMDA==}
+    dev: false
+
   /binary-extensions/2.2.0:
     resolution: {integrity: sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==}
     engines: {node: '>=8'}
@@ -702,6 +714,12 @@ packages:
       vue: 3.2.37
     transitivePeerDependencies:
       - '@vue/composition-api'
+    dev: false
+
+  /element-resize-detector/1.2.4:
+    resolution: {integrity: sha512-Fl5Ftk6WwXE0wqCgNoseKWndjzZlDCwuPTcoVZfCP9R3EHQF8qUtr3YUPNETegRBOKqQKPW3n4kiIWngGi8tKg==}
+    dependencies:
+      batch-processor: 1.0.0
     dev: false
 
   /encodeurl/1.0.2:
