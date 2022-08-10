@@ -1,4 +1,4 @@
-import joi from '@hapi/joi'
+import joi from 'joi'
 
 /**
  * string() 值必须是字符串
@@ -13,19 +13,19 @@ import joi from '@hapi/joi'
 const username = joi.string().max(255).required()
 
 //密码验证规则
-const password = joi.string().max(255).required()
+const pwd = joi.string().max(255).required()
 
 const reg_register_schema = {
 	body: {
 		username,
-		password,
+		pwd,
 	},
 }
 
 const reg_login_schema = {
 	body: {
 		username,
-		password,
+		pwd,
 	},
 }
 
