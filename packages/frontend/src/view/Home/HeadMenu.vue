@@ -12,15 +12,25 @@ const activeIndex = ref('1-1')
 			mode="horizontal"
 			:ellipsis="false"
 		>
-			<div class="title">前端监控系统</div>
-			<div class="flex-grow" />
+			<div class="title">
+				前端监控系统
+			</div>
+			<div class="flex-grow"></div>
 
 			<el-sub-menu index="1">
-				<template #title>Project</template>
-				<el-menu-item index="1-1">Project-1</el-menu-item>
-				<el-menu-item index="1-2">Project-2</el-menu-item>
+				<template #title>
+					Project
+				</template>
+				<el-menu-item index="1-1">
+					Project-1
+				</el-menu-item>
+				<el-menu-item index="1-2">
+					Project-2
+				</el-menu-item>
 			</el-sub-menu>
-			<el-menu-item index="2">我的</el-menu-item>
+			<el-menu-item index="2">
+				我的
+			</el-menu-item>
 		</el-menu>
 	</div>
 </template>

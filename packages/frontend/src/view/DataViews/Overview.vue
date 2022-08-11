@@ -7,7 +7,7 @@ const dom = ref('dom')
 const dom1 = ref('dom1')
 const dom2 = ref('dom2')
 
-let opt = ref({
+const opt = ref({
 	title: {
 		text: 'xx分析',
 	},
@@ -103,7 +103,7 @@ let opt = ref({
 		},
 	],
 })
-let opt1 = ref({
+const opt1 = ref({
 	title: {
 		text: 'one',
 	},
@@ -129,9 +129,13 @@ let opt1 = ref({
 		<div>
 			<el-row>
 				<el-col :span="8">
-					<el-card class="box-card" style="height: 10rem">数据1</el-card>
+					<el-card class="box-card" style="height: 10rem">
+						数据1
+					</el-card>
 
-					<el-card class="box-card" style="height: 10rem">数据2</el-card>
+					<el-card class="box-card" style="height: 10rem">
+						数据2
+					</el-card>
 				</el-col>
 
 				<el-col :span="8">
@@ -142,9 +146,13 @@ let opt1 = ref({
 					</div>
 				</el-col>
 				<el-col :span="8">
-					<el-card class="box-card" style="height: 10rem">数据3</el-card>
+					<el-card class="box-card" style="height: 10rem">
+						数据3
+					</el-card>
 
-					<el-card class="box-card" style="height: 10rem">数据4</el-card>
+					<el-card class="box-card" style="height: 10rem">
+						数据4
+					</el-card>
 				</el-col>
 			</el-row>
 

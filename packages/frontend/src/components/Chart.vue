@@ -14,21 +14,17 @@ onMounted(() => {
 	const dom = document.getElementById(id.value)
 
 	if (dom) {
-		let myChart = echarts.init(dom)
+		const myChart = echarts.init(dom)
 		myChart.setOption(props.option)
-		//图表随父组件改变而改变
-		var elementResize = ElementResize({
-			strategy: 'scroll', //  推荐监听滚动，提升性能
+		// 图表随父组件改变而改变
+		const elementResize = ElementResize({
+			strategy: 'scroll', // 推荐监听滚动，提升性能
 			callOnAdd: true, // 添加侦听器时是否应调用,默认true
 		})
-		elementResize.listenTo(dom, function (element) {
+		elementResize.listenTo(dom, (element) => {
 			// 当元素尺寸发生改变是会触发此事件，刷新图表
 			echarts.init(dom).resize()
 		})
-		//图表随浏览器窗口改变而改变
-		// window.addEventListener("resize", function () {
-		// 	myChart.resize();
-		// });
 	}
 })
 </script>
@@ -36,8 +32,8 @@ onMounted(() => {
 <template>
 	<div>
 		<div
-			:style="{ height: props.height || '300px', width: props.width || '100%' }"
 			:id="id"
+			:style="{ height: props.height || '300px', width: props.width || '100%' }"
 		></div>
 	</div>
 </template>

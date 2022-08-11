@@ -1,16 +1,16 @@
 <script lang="ts" setup>
 import Chart from '../../components/Chart.vue'
-let Page = {
-	TTFBTime : 158.91,
-	DomeTime : 1.52,
-	LoadTime : 1.2
+const Page = {
+	TTFBTime: 158.91,
+	DomeTime: 1.52,
+	LoadTime: 1.2,
 }
-let Interface = {
-	Sum : 156,
-	Time : 124.22,
-	SuccessRate : 100
+const Interface = {
+	Sum: 156,
+	Time: 124.22,
+	SuccessRate: 100,
 }
-let PageOption = {
+const PageOption = {
 	title: {
 		text: '页面加载耗时分段数量占比',
 		left: 'center',
@@ -44,7 +44,7 @@ let PageOption = {
 		},
 	],
 }
-let InterfaceOption = {
+const InterfaceOption = {
 	title: {
 		text: '接口请求耗时分段数量占比',
 		left: 'center',
@@ -100,8 +100,8 @@ const tableData = [
 		address: 'No. 189, Grove St, Los Angeles',
 	},
 ]
-let PageChart = 'PageChart'
-let InterfaceChart = 'InterfaceChart'
+const PageChart = 'PageChart'
+const InterfaceChart = 'InterfaceChart'
 </script>
 
 <template>

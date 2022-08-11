@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import Chart from '../../components/Chart.vue'
-let OverOption = {
+const OverOption = {
 	title: {
 		text: '异常监控',
 		subtext: 'Exception Monitoring',
@@ -34,7 +34,7 @@ let OverOption = {
 		},
 	],
 }
-let JSoption = {
+const JSoption = {
 	title: {
 		text: 'JS错误',
 		subtext: 'Fake Data',
@@ -55,7 +55,7 @@ let JSoption = {
 	],
 }
 
-let InterfaceOption = {
+const InterfaceOption = {
 	title: {
 		text: '接口错误',
 		subtext: 'Fake Data',
@@ -76,7 +76,7 @@ let InterfaceOption = {
 	],
 }
 
-let StaticOption = {
+const StaticOption = {
 	title: {
 		text: '静态资源错误',
 		subtext: 'Fake Data',
@@ -97,7 +97,7 @@ let StaticOption = {
 	],
 }
 
-let CustomOption = {
+const CustomOption = {
 	title: {
 		text: '自定义错误',
 		subtext: 'Fake Data',
@@ -118,12 +118,12 @@ let CustomOption = {
 	],
 }
 
-let DomId = {
-	ExceptionOver : 'ExceptionOver',
-	JSException : 'JSException',
-	InterfaceException : 'InterfaceException',
-	StaticException : 'StaticException',
-	CustomException : 'CustomException'
+const DomId = {
+	ExceptionOver: 'ExceptionOver',
+	JSException: 'JSException',
+	InterfaceException: 'InterfaceException',
+	StaticException: 'StaticException',
+	CustomException: 'CustomException',
 }
 </script>
 
