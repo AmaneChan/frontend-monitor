@@ -1,6 +1,3 @@
 {
-  "recommendations": [
-		"vue.volar",
-		"rvest.vs-code-prettier-eslint"
-	]
+	"recommendations": ["vue.volar", "rvest.vs-code-prettier-eslint"]
 }

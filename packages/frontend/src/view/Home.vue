@@ -9,7 +9,10 @@ import SideMenu from './Home/SideMenu.vue'
 		<el-col :span="3">
 			<SideMenu class="side"></SideMenu>
 		</el-col>
-		<el-col :span="21" class="dataViewer">
+		<el-col
+			:span="21"
+			class="dataViewer"
+		>
 			<RouterView></RouterView>
 		</el-col>
 	</el-row>
