@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import LoginRegister from './components/LoginRegister.vue'
+// import LoginRegister from './components/LoginRegister.vue'
 </script>
 
 <style>
