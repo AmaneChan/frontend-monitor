@@ -1,4 +1,4 @@
-lockfileVersion: 5.3
+lockfileVersion: 5.4
 
 importers:
 
@@ -46,7 +46,7 @@ importers:
       echarts: 5.3.3
       element-plus: 2.2.12_vue@3.2.37
       element-resize-detector: 1.2.4
-      pinia: 2.0.17_typescript@4.7.4+vue@3.2.37
+      pinia: 2.0.17_j6bzmzd4ujpabbp5objtwxyjp4
       vue: 3.2.37
       vue-router: 4.1.3_vue@3.2.37
     devDependencies:
@@ -708,7 +708,7 @@ packages:
       escape-html: 1.0.3
       lodash: 4.17.21
       lodash-es: 4.17.21
-      lodash-unified: 1.0.2_da03a4540fbd16bbaafbb96724306afd
+      lodash-unified: 1.0.2_3ib2ivapxullxkx3xftsimdk7u
       memoize-one: 6.0.0
       normalize-wheel-es: 1.2.0
       vue: 3.2.37
@@ -1355,7 +1355,7 @@ packages:
     resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
     dev: false
 
-  /lodash-unified/1.0.2_da03a4540fbd16bbaafbb96724306afd:
+  /lodash-unified/1.0.2_3ib2ivapxullxkx3xftsimdk7u:
     resolution: {integrity: sha512-OGbEy+1P+UT26CYi4opY4gebD8cWRDxAT6MAObIVQMiqYdxZr1g3QHWCToVsm31x2NkLS4K3+MC2qInaRMa39g==}
     peerDependencies:
       '@types/lodash-es': '*'
@@ -1553,7 +1553,7 @@ packages:
     engines: {node: '>=8.6'}
     dev: true
 
-  /pinia/2.0.17_typescript@4.7.4+vue@3.2.37:
+  /pinia/2.0.17_j6bzmzd4ujpabbp5objtwxyjp4:
     resolution: {integrity: sha512-AtwLwEWQgIjofjgeFT+nxbnK5lT2QwQjaHNEDqpsi2AiCwf/NY78uWTeHUyEhiiJy8+sBmw0ujgQMoQbWiZDfA==}
     peerDependencies:
       '@vue/composition-api': ^1.4.0
