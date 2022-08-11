@@ -6,6 +6,7 @@
 		"jsonc/indent": ["error", "tab"],
 		"no-tabs": "off",
 		"no-console": "off",
+		"curly": ["error", "all"],
 		"vue/html-indent": [
 			"error",
 			"tab",
