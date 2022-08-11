@@ -135,7 +135,7 @@ let opt1 = ref({
 				</el-col>
 
 				<el-col :span="8">
-					<div class="cardContainer" style="margin-top:16px">
+					<div class="cardContainer" style="margin-top: 16px">
 						<el-card>
 							<Chart :value="dom" :option="opt1"></Chart>
 						</el-card>
@@ -148,18 +148,18 @@ let opt1 = ref({
 				</el-col>
 			</el-row>
 
-			<el-card  style="margin:16px">
+			<el-card class="box-card">
 				<Chart :value="parentValue" :option="opt"></Chart>
 			</el-card>
 
 			<el-row>
 				<el-col :span="12">
-					<el-card style="margin:16px">
+					<el-card class="box-card">
 						<Chart :value="dom1" :option="opt"></Chart>
 					</el-card>
 				</el-col>
 				<el-col :span="12">
-					<el-card  style="margin:16px">
+					<el-card class="box-card">
 						<Chart :value="dom2" :option="opt1"></Chart>
 					</el-card>
 				</el-col>

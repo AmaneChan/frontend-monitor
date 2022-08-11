@@ -100,17 +100,12 @@ const uvOption ={
 	</el-card>
 	</div>
 	<div class="userChart">
-		<el-card style="margin:30px">
+		<el-card>
 			<Chart value="uvid" :option="uvOption"></Chart>
 		</el-card>
 	</div>
 </template>
 <style scoped>
-* {
-	margin: 0;
-	padding: 0;
-}
-
 .cardList {
 	display: flex;
 	justify-content: space-around;
@@ -129,7 +124,7 @@ const uvOption ={
 	font-size: 50px;
 	margin: 10px 0;
 }
-.userForm{
-	margin: 30px;
+.userForm, .userChart{
+	margin: 1rem;
 }
 </style>
