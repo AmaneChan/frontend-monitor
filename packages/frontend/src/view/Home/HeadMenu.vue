@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 
-const activeIndex = ref('1')
+const activeIndex = ref('1-1')
 </script>
 
 <template>
@@ -12,19 +12,25 @@ const activeIndex = ref('1')
 			mode="horizontal"
 			:ellipsis="false"
 		>
-			<div class="title">前端监控系统</div>
-			<div class="flex-grow" />
-			<el-menu-item index="1">主页</el-menu-item>
-			<el-sub-menu index="2">
-				<template #title>我的</template>
-				<el-menu-item index="2-1">账号管理</el-menu-item>
-				<el-sub-menu index="2-4">
-					<template #title>项目切换</template>
-					<el-menu-item index="2-4-1">item one</el-menu-item>
-					<el-menu-item index="2-4-2">item two</el-menu-item>
-					<el-menu-item index="2-4-3">item three</el-menu-item>
-				</el-sub-menu>
+			<div class="title">
+				前端监控系统
+			</div>
+			<div class="flex-grow"></div>
+
+			<el-sub-menu index="1">
+				<template #title>
+					Project
+				</template>
+				<el-menu-item index="1-1">
+					Project-1
+				</el-menu-item>
+				<el-menu-item index="1-2">
+					Project-2
+				</el-menu-item>
 			</el-sub-menu>
+			<el-menu-item index="2">
+				我的
+			</el-menu-item>
 		</el-menu>
 	</div>
 </template>

@@ -1,10 +1,18 @@
+<script lang="ts" setup>
+import { ref } from 'vue'
+
+const signUpMode = ref(false)
+</script>
+
 <template>
 	<div class="container" :class="{ 'sign-up-mode': signUpMode }">
 		<!-- 登录 -->
 		<div class="forms-container">
 			<div class="signin-signup">
 				<form action="#" class="sign-in-form">
-					<h2 class="title">登录</h2>
+					<h2 class="title">
+						登录
+					</h2>
 					<div class="input-field">
 						<i class="fas fa-user"></i>
 						<input type="text" placeholder="用户名" />
@@ -16,7 +24,9 @@
 					<input type="submit" value="登 录" class="btn solid" />
 				</form>
 				<form action="#" class="sign-up-form">
-					<h2 class="title">注册</h2>
+					<h2 class="title">
+						注册
+					</h2>
 					<div class="input-field">
 						<i class="fas fa-user"></i>
 						<input type="text" placeholder="用户名" />
@@ -43,9 +53,9 @@
 						好兄弟,你来了,我们的网站就差你的加入了,点击下方注册按钮加入我们吧!!
 					</p>
 					<button
-						@click="signUpMode = !signUpMode"
-						class="btn transparent"
 						id="sign-up-btn"
+						class="btn transparent"
+						@click="signUpMode = !signUpMode"
 					>
 						注 册
 					</button>
@@ -58,9 +68,9 @@
 					<h3>已经是我们自己人了吗?</h3>
 					<p>那好兄弟,你直接点击登录按钮,登录到我们这优秀的系统里!!</p>
 					<button
-						@click="signUpMode = !signUpMode"
-						class="btn transparent"
 						id="sign-in-btn"
+						class="btn transparent"
+						@click="signUpMode = !signUpMode"
 					>
 						登 录
 					</button>
@@ -70,12 +80,6 @@
 		</div>
 	</div>
 </template>
-
-<script lang="ts" setup>
-import { ref } from 'vue'
-
-const signUpMode = ref(false)
-</script>
 
 <style scoped>
 .container {
