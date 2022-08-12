@@ -1,13 +1,29 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { computed } from 'vue'
+import type { MenuItemRegistered } from 'element-plus'
 
-const activeIndex = ref('1-1')
+import { useProjectsStore } from '../../stores/projects'
+
+const allProjects = '所有项目'
+
+const projectsStore = useProjectsStore()
+
+const chooseList = computed(() => {
+	const list = projectsStore.projects.map(project => project.name)
+	list.unshift(allProjects)
+	return list
+})
+
+const onMenuSelected = (menuItem: MenuItemRegistered) => {
+	console.log(menuItem.index)
+	projectsStore.choose = parseInt(menuItem.index)
+}
 </script>
 
 <template>
 	<div>
 		<el-menu
-			:default-active="activeIndex"
+			default-active="-1"
 			class="el-menu-demo"
 			mode="horizontal"
 			:ellipsis="false"
@@ -19,18 +35,18 @@ const activeIndex = ref('1-1')
 
 			<el-sub-menu index="1">
 				<template #title>
-					Project
+					当前项目:
+					{{ projectsStore.choose === -1 ? allProjects : projectsStore.currentName }}
 				</template>
-				<el-menu-item index="1-1">
-					Project-1
-				</el-menu-item>
-				<el-menu-item index="1-2">
-					Project-2
-				</el-menu-item>
+				<ElMenuItem
+					v-for="(item, index) of chooseList"
+					:key="item"
+					:index="(index === 0 ? -1 : index - 1).toString()"
+					@click="(onMenuSelected)"
+				>
+					{{ item }}
+				</ElMenuItem>
 			</el-sub-menu>
-			<el-menu-item index="2">
-				我的
-			</el-menu-item>
 		</el-menu>
 	</div>
 </template>

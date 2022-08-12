@@ -13,9 +13,7 @@
 			{
 				"attribute": 1,
 				"baseIndent": 1,
-				"closeBracket": 0,
-				"alignAttributesVertically": true,
-				"ignores": []
+				"closeBracket": 0
 			}
 		],
 		"vue/html-self-closing": [
@@ -25,6 +23,17 @@
 					"normal": "never",
 					"void": "always",
 					"component": "any"
+				}
+			}
+		],
+		"vue/max-attributes-per-line": [
+			"error",
+			{
+				"singleline": {
+					"max": 1
+				},
+				"multiline": {
+					"max": 1
 				}
 			}
 		]

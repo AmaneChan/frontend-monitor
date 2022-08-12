@@ -138,16 +138,38 @@ const InterfaceChart = 'InterfaceChart'
 			<el-row>
 				<el-col :span="8">
 					<el-card class="mal">
-						<Chart :value="PageChart" :option="PageOption"></Chart>
+						<Chart
+							:value="PageChart"
+							:option="PageOption"
+						></Chart>
 					</el-card>
 				</el-col>
 				<el-col :span="16">
 					<el-card class="mal">
-						<el-table :data="tableData" height="300" style="width: 100%">
-							<el-table-column prop="date" label="Date" width="180" />
-							<el-table-column prop="name" label="Name" width="180" />
-							<el-table-column prop="address" label="Address" />
-							<el-table-column prop="name" label="Name" width="180" />
+						<el-table
+							:data="tableData"
+							height="300"
+							style="width: 100%"
+						>
+							<el-table-column
+								prop="date"
+								label="Date"
+								width="180"
+							/>
+							<el-table-column
+								prop="name"
+								label="Name"
+								width="180"
+							/>
+							<el-table-column
+								prop="address"
+								label="Address"
+							/>
+							<el-table-column
+								prop="name"
+								label="Name"
+								width="180"
+							/>
 						</el-table>
 					</el-card>
 				</el-col>
@@ -186,16 +208,38 @@ const InterfaceChart = 'InterfaceChart'
 			<el-row>
 				<el-col :span="8">
 					<el-card class="mal">
-						<Chart :value="InterfaceChart" :option="InterfaceOption"></Chart>
+						<Chart
+							:value="InterfaceChart"
+							:option="InterfaceOption"
+						></Chart>
 					</el-card>
 				</el-col>
 				<el-col :span="16">
 					<el-card class="mal">
-						<el-table :data="tableData" height="300" style="width: 100%">
-							<el-table-column prop="date" label="Date" width="180" />
-							<el-table-column prop="name" label="Name" width="180" />
-							<el-table-column prop="address" label="Address" />
-							<el-table-column prop="name" label="Name" width="180" />
+						<el-table
+							:data="tableData"
+							height="300"
+							style="width: 100%"
+						>
+							<el-table-column
+								prop="date"
+								label="Date"
+								width="180"
+							/>
+							<el-table-column
+								prop="name"
+								label="Name"
+								width="180"
+							/>
+							<el-table-column
+								prop="address"
+								label="Address"
+							/>
+							<el-table-column
+								prop="name"
+								label="Name"
+								width="180"
+							/>
 						</el-table>
 					</el-card>
 				</el-col>

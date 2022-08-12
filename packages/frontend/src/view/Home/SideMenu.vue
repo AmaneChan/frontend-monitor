@@ -2,7 +2,11 @@
 
 <template>
 	<div>
-		<el-menu :router="true" default-active="overview" class="menu">
+		<el-menu
+			:router="true"
+			default-active="overview"
+			class="menu"
+		>
 			<el-menu-item index="overview">
 				<el-icon><Location /></el-icon>
 				<span>总览</span>

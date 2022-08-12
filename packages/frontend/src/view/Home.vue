@@ -13,7 +13,11 @@ import SideMenu from './Home/SideMenu.vue'
 			:span="21"
 			class="dataViewer"
 		>
-			<RouterView></RouterView>
+			<RouterView v-slot=" { Component } ">
+				<KeepAlive>
+					<component :is="Component"></component>
+				</KeepAlive>
+			</RouterView>
 		</el-col>
 	</el-row>
 </template>

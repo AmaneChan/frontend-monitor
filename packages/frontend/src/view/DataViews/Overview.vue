@@ -129,46 +129,73 @@ const opt1 = ref({
 		<div>
 			<el-row>
 				<el-col :span="8">
-					<el-card class="box-card" style="height: 10rem">
+					<el-card
+						class="box-card"
+						style="height: 10rem"
+					>
 						数据1
 					</el-card>
 
-					<el-card class="box-card" style="height: 10rem">
+					<el-card
+						class="box-card"
+						style="height: 10rem"
+					>
 						数据2
 					</el-card>
 				</el-col>
 
 				<el-col :span="8">
-					<div class="cardContainer" style="margin-top: 16px">
+					<div
+						class="cardContainer"
+						style="margin-top: 16px"
+					>
 						<el-card>
-							<Chart :value="dom" :option="opt1"></Chart>
+							<Chart
+								:value="dom"
+								:option="opt1"
+							></Chart>
 						</el-card>
 					</div>
 				</el-col>
 				<el-col :span="8">
-					<el-card class="box-card" style="height: 10rem">
+					<el-card
+						class="box-card"
+						style="height: 10rem"
+					>
 						数据3
 					</el-card>
 
-					<el-card class="box-card" style="height: 10rem">
+					<el-card
+						class="box-card"
+						style="height: 10rem"
+					>
 						数据4
 					</el-card>
 				</el-col>
 			</el-row>
 
 			<el-card class="box-card">
-				<Chart :value="parentValue" :option="opt"></Chart>
+				<Chart
+					:value="parentValue"
+					:option="opt"
+				></Chart>
 			</el-card>
 
 			<el-row>
 				<el-col :span="12">
 					<el-card class="box-card">
-						<Chart :value="dom1" :option="opt"></Chart>
+						<Chart
+							:value="dom1"
+							:option="opt"
+						></Chart>
 					</el-card>
 				</el-col>
 				<el-col :span="12">
 					<el-card class="box-card">
-						<Chart :value="dom2" :option="opt1"></Chart>
+						<Chart
+							:value="dom2"
+							:option="opt1"
+						></Chart>
 					</el-card>
 				</el-col>
 			</el-row>

@@ -5,41 +5,73 @@ const signUpMode = ref(false)
 </script>
 
 <template>
-	<div class="container" :class="{ 'sign-up-mode': signUpMode }">
+	<div
+		class="container"
+		:class="{ 'sign-up-mode': signUpMode }"
+	>
 		<!-- 登录 -->
 		<div class="forms-container">
 			<div class="signin-signup">
-				<form action="#" class="sign-in-form">
+				<form
+					action="#"
+					class="sign-in-form"
+				>
 					<h2 class="title">
 						登录
 					</h2>
 					<div class="input-field">
 						<i class="fas fa-user"></i>
-						<input type="text" placeholder="用户名" />
+						<input
+							type="text"
+							placeholder="用户名"
+						/>
 					</div>
 					<div class="input-field">
 						<i class="fas fa-lock"></i>
-						<input type="password" placeholder="密码" />
+						<input
+							type="password"
+							placeholder="密码"
+						/>
 					</div>
-					<input type="submit" value="登 录" class="btn solid" />
+					<input
+						type="submit"
+						value="登 录"
+						class="btn solid"
+					/>
 				</form>
-				<form action="#" class="sign-up-form">
+				<form
+					action="#"
+					class="sign-up-form"
+				>
 					<h2 class="title">
 						注册
 					</h2>
 					<div class="input-field">
 						<i class="fas fa-user"></i>
-						<input type="text" placeholder="用户名" />
+						<input
+							type="text"
+							placeholder="用户名"
+						/>
 					</div>
 					<div class="input-field">
 						<i class="fas fa-envelope"></i>
-						<input type="email" placeholder="邮箱" />
+						<input
+							type="email"
+							placeholder="邮箱"
+						/>
 					</div>
 					<div class="input-field">
 						<i class="fas fa-lock"></i>
-						<input type="password" placeholder="密码" />
+						<input
+							type="password"
+							placeholder="密码"
+						/>
 					</div>
-					<input type="submit" class="btn" value="注 册" />
+					<input
+						type="submit"
+						class="btn"
+						value="注 册"
+					/>
 				</form>
 			</div>
 		</div>
@@ -60,7 +92,11 @@ const signUpMode = ref(false)
 						注 册
 					</button>
 				</div>
-				<img src="../assets/img/log.svg" class="image" alt="" />
+				<img
+					src="../assets/img/log.svg"
+					class="image"
+					alt=""
+				/>
 			</div>
 			<!-- 返回登录 -->
 			<div class="panel right-panel">
@@ -75,7 +111,11 @@ const signUpMode = ref(false)
 						登 录
 					</button>
 				</div>
-				<img src="../assets/img/register.svg" class="image" alt="" />
+				<img
+					src="../assets/img/register.svg"
+					class="image"
+					alt=""
+				/>
 			</div>
 		</div>
 	</div>

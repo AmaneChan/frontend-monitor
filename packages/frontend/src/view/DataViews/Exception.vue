@@ -155,16 +155,38 @@ const DomId = {
 		<el-row>
 			<el-col :span="12">
 				<el-card class="chartCard">
-					<Chart :value="DomId.ExceptionOver" :option="dataExceptionType"></Chart>
+					<Chart
+						:value="DomId.ExceptionOver"
+						:option="dataExceptionType"
+					></Chart>
 				</el-card>
 			</el-col>
 			<el-col :span="12">
 				<el-card class="chartCard">
-					<el-table :data="tableData" height="300" style="width: 100%">
-						<el-table-column prop="date" label="Date" width="180" />
-						<el-table-column prop="name" label="Name" width="180" />
-						<el-table-column prop="address" label="Address" />
-						<el-table-column prop="name" label="Name" width="180" />
+					<el-table
+						:data="tableData"
+						height="300"
+						style="width: 100%"
+					>
+						<el-table-column
+							prop="date"
+							label="Date"
+							width="180"
+						/>
+						<el-table-column
+							prop="name"
+							label="Name"
+							width="180"
+						/>
+						<el-table-column
+							prop="address"
+							label="Address"
+						/>
+						<el-table-column
+							prop="name"
+							label="Name"
+							width="180"
+						/>
 					</el-table>
 				</el-card>
 			</el-col>
@@ -173,22 +195,34 @@ const DomId = {
 		<el-row>
 			<el-col :span="6">
 				<el-card class="chartCard">
-					<Chart :value="DomId.JSException" :option="JSoption"></Chart>
+					<Chart
+						:value="DomId.JSException"
+						:option="JSoption"
+					></Chart>
 				</el-card>
 			</el-col>
 			<el-col :span="6">
 				<el-card class="chartCard">
-					<Chart :value="DomId.InterfaceException" :option="InterfaceOption"></Chart>
+					<Chart
+						:value="DomId.InterfaceException"
+						:option="InterfaceOption"
+					></Chart>
 				</el-card>
 			</el-col>
 			<el-col :span="6">
 				<el-card class="chartCard">
-					<Chart :value="DomId.StaticException" :option="StaticOption"></Chart>
+					<Chart
+						:value="DomId.StaticException"
+						:option="StaticOption"
+					></Chart>
 				</el-card>
 			</el-col>
 			<el-col :span="6">
 				<el-card class="chartCard">
-					<Chart :value="DomId.CustomException" :option="CustomOption"></Chart>
+					<Chart
+						:value="DomId.CustomException"
+						:option="CustomOption"
+					></Chart>
 				</el-card>
 			</el-col>
 		</el-row>
