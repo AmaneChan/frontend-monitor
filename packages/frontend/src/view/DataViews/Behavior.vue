@@ -47,10 +47,10 @@ const uvOption = {
 
 <template>
 	<div class="cardList">
-		<el-card class="box-card" style="margin:20px;width: 30%;">
+		<el-card class="box-card">
 			<template #header>
 				<div class="card-header">
-					<span>浏览量(pv)</span>
+					<span>浏览量(PV)</span>
 				</div>
 			</template>
 			<div class="card">
@@ -60,10 +60,10 @@ const uvOption = {
 				</div>
 			</div>
 		</el-card>
-		<el-card class="box-card" style="margin:20px;width: 30%;">
+		<el-card class="box-card">
 			<template #header>
 				<div class="card-header">
-					<span>访问量(uv)</span>
+					<span>访问量(UV)</span>
 				</div>
 			</template>
 			<div class="card">
@@ -73,7 +73,7 @@ const uvOption = {
 				</div>
 			</div>
 		</el-card>
-		<el-card class="box-card" style="margin:20px;width: 30%;">
+		<el-card class="box-card">
 			<template #header>
 				<div class="card-header">
 					<span>用户停留时间</span>
@@ -111,6 +111,11 @@ const uvOption = {
 </template>
 
 <style scoped>
+.box-card {
+	width: 30%;
+	margin: 1rem;
+}
+
 .cardList {
 	display: flex;
 	justify-content: space-around;

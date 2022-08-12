@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import Chart from '../../components/Chart.vue'
-const OverOption = {
+const dataExceptionType = {
 	title: {
-		text: '异常监控',
-		subtext: 'Exception Monitoring',
+		text: '异常类型',
+		subtext: 'Exception Type',
 		left: 'center',
 	},
 	tooltip: {
@@ -118,6 +118,29 @@ const CustomOption = {
 	],
 }
 
+const tableData = [
+	{
+		date: '2016-05-03',
+		name: 'Tom',
+		address: 'No. 189, Grove St, Los Angeles',
+	},
+	{
+		date: '2016-05-02',
+		name: 'Tom',
+		address: 'No. 189, Grove St, Los Angeles',
+	},
+	{
+		date: '2016-05-04',
+		name: 'Tom',
+		address: 'No. 189, Grove St, Los Angeles',
+	},
+	{
+		date: '2016-05-01',
+		name: 'Tom',
+		address: 'No. 189, Grove St, Los Angeles',
+	},
+]
+
 const DomId = {
 	ExceptionOver: 'ExceptionOver',
 	JSException: 'JSException',
@@ -128,45 +151,56 @@ const DomId = {
 </script>
 
 <template>
-	<div>
-		<div class="ma">
-			<el-card>
-				<Chart :value="DomId.ExceptionOver" :option="OverOption"></Chart>
-			</el-card>
-		</div>
+	<div class="container">
+		<el-row>
+			<el-col :span="12">
+				<el-card class="chartCard">
+					<Chart :value="DomId.ExceptionOver" :option="dataExceptionType"></Chart>
+				</el-card>
+			</el-col>
+			<el-col :span="12">
+				<el-card class="chartCard">
+					<el-table :data="tableData" height="300" style="width: 100%">
+						<el-table-column prop="date" label="Date" width="180" />
+						<el-table-column prop="name" label="Name" width="180" />
+						<el-table-column prop="address" label="Address" />
+						<el-table-column prop="name" label="Name" width="180" />
+					</el-table>
+				</el-card>
+			</el-col>
+		</el-row>
 
-		<div class="ma">
-			<el-row>
-				<el-col :span="6">
-					<el-card class="mal">
-						<Chart :value="DomId.JSException" :option="JSoption"></Chart>
-					</el-card>
-				</el-col>
-				<el-col :span="6">
-					<el-card class="mal">
-						<Chart :value="DomId.InterfaceException" :option="InterfaceOption"></Chart>
-					</el-card>
-				</el-col>
-				<el-col :span="6">
-					<el-card class="mal">
-						<Chart :value="DomId.StaticException" :option="StaticOption"></Chart>
-					</el-card>
-				</el-col>
-				<el-col :span="6">
-					<el-card class="mal">
-						<Chart :value="DomId.CustomException" :option="CustomOption"></Chart>
-					</el-card>
-				</el-col>
-			</el-row>
-		</div>
+		<el-row>
+			<el-col :span="6">
+				<el-card class="chartCard">
+					<Chart :value="DomId.JSException" :option="JSoption"></Chart>
+				</el-card>
+			</el-col>
+			<el-col :span="6">
+				<el-card class="chartCard">
+					<Chart :value="DomId.InterfaceException" :option="InterfaceOption"></Chart>
+				</el-card>
+			</el-col>
+			<el-col :span="6">
+				<el-card class="chartCard">
+					<Chart :value="DomId.StaticException" :option="StaticOption"></Chart>
+				</el-card>
+			</el-col>
+			<el-col :span="6">
+				<el-card class="chartCard">
+					<Chart :value="DomId.CustomException" :option="CustomOption"></Chart>
+				</el-card>
+			</el-col>
+		</el-row>
 	</div>
 </template>
 
 <style scoped>
-.ma {
-	margin: 1rem;
+.chartCard {
+	margin: .5rem;
 }
-.mal {
-	margin-right: 0.5rem;
+
+.container{
+	padding: .5rem;
 }
 </style>

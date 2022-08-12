@@ -35,7 +35,7 @@ const activeIndex = ref('1-1')
 	</div>
 </template>
 
-<style>
+<style scoped>
 .title {
 	font-size: 1.15rem;
 	display: flex;

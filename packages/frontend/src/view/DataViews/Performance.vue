@@ -107,7 +107,9 @@ const InterfaceChart = 'InterfaceChart'
 <template>
 	<div>
 		<div class="ma">
-			<b>页面性能</b>
+			<div class="title">
+				页面性能
+			</div>
 			<el-row>
 				<el-col :span="8">
 					<el-card class="mal">
@@ -153,7 +155,9 @@ const InterfaceChart = 'InterfaceChart'
 		</div>
 
 		<div class="ma">
-			<b>接口性能</b>
+			<div class="title">
+				接口性能
+			</div>
 			<el-row>
 				<el-col :span="8">
 					<el-card class="mal">
@@ -201,6 +205,12 @@ const InterfaceChart = 'InterfaceChart'
 </template>
 
 <style scoped>
+.title {
+	font-weight: 700;
+	font-size: 1.2rem;
+	margin: 1rem 0;
+}
+
 .ma {
 	margin: 1rem;
 }
