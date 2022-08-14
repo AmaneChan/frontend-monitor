@@ -13,7 +13,7 @@ import joi from 'joi'
 const username = joi.string().max(255).required()
 
 //密码验证规则
-const pwd = joi.string().max(255).required()
+const pwd: any = joi.string().max(255).required()
 
 const reg_register_schema = {
 	body: {
@@ -29,4 +29,22 @@ const reg_login_schema = {
 	},
 }
 
-export { reg_register_schema, reg_login_schema }
+const req_alterinfo_schema = {
+	body: {
+		username,
+	},
+}
+
+const req_alterpwd_schema = {
+	body: {
+		oldPwd: pwd,
+		newPwd: joi.not(joi.ref('oldPwd')).concat(pwd),
+	},
+}
+
+export {
+	reg_register_schema,
+	reg_login_schema,
+	req_alterinfo_schema,
+	req_alterpwd_schema,
+}

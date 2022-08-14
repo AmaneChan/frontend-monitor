@@ -1,5 +1,8 @@
 import express from 'express'
 import exceptionDataHandler from '../router_handler/exception_data.js'
+//解析token
+import config from '../config.js'
+import expressJWt from 'express-jwt'
 
 const router = express.Router()
 
@@ -7,6 +10,10 @@ const router = express.Router()
 router.post('/', exceptionDataHandler.addexceptionData)
 
 //查询性能数据
-router.get('/', exceptionDataHandler.queryexceptionData)
+router.get(
+	'/',
+	expressJWt({ secret: config.jwtSecreKey, algorithms: ['HS256'] }),
+	exceptionDataHandler.queryexceptionData,
+)
 
 export default router

@@ -1,5 +1,8 @@
 import express from 'express'
 import pageVisitHandler from '../router_handler/page_visit.js'
+//解析token
+import config from '../config.js'
+import expressJWt from 'express-jwt'
 
 const router = express.Router()
 
@@ -7,12 +10,20 @@ const router = express.Router()
 router.post('/visit', pageVisitHandler.addVisit)
 
 //查询访问记录
-router.get('/visit', pageVisitHandler.queryVisit)
+router.get(
+	'/visit',
+	expressJWt({ secret: config.jwtSecreKey, algorithms: ['HS256'] }),
+	pageVisitHandler.queryVisit,
+)
 
 //用户停留时间
 router.post('/stay', pageVisitHandler.addstay)
 
 //查询用户停留记录
-router.get('/stay', pageVisitHandler.querystay)
+router.get(
+	'/stay',
+	expressJWt({ secret: config.jwtSecreKey, algorithms: ['HS256'] }),
+	pageVisitHandler.querystay,
+)
 
 export default router

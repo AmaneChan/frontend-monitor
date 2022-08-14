@@ -43,13 +43,6 @@ app.use(function (req: any, res: any, next: any): any {
 	next()
 })
 
-//token认证
-app.use(
-	expressJWT({ secret: config.jwtSecreKey }).unless({
-		path: [/^\/user\/login/, /^\/user\/register/],
-	}),
-)
-
 //解析x-www-form-urlencoded数据中间件
 app.use(express.urlencoded({ extended: false }))
 
