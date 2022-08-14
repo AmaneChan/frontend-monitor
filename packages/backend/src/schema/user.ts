@@ -9,7 +9,7 @@ import joi from 'joi'
  * pattern(正则表达式) 值必须符合正则表达式的规则
  */
 
-//用户名验证规则
+// 用户名验证规则
 const username = joi.string().max(255).required()
 
 //密码验证规则

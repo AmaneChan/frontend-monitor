@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
-import Chartstwo from '../../components/Chart.vue'
+import Chart from '../../components/Chart.vue'
 
 const parentValue = ref('domid')
 const dom = ref('dom')
 const dom1 = ref('dom1')
 const dom2 = ref('dom2')
 
-let opt = ref({
+const opt = ref({
 	title: {
 		text: 'xx分析',
 	},
@@ -103,7 +103,7 @@ let opt = ref({
 		},
 	],
 })
-let opt1 = ref({
+const opt1 = ref({
 	title: {
 		text: 'one',
 	},
@@ -126,73 +126,58 @@ let opt1 = ref({
 
 <template>
 	<div>
-		<div class="ma">
+		<div>
 			<el-row>
 				<el-col :span="8">
-					<div class="ma">
-						<el-card class="box-card" style="height: 10rem">数据1</el-card>
-					</div>
+					<el-card class="box-card" style="height: 10rem">
+						数据1
+					</el-card>
 
-					<div class="ma">
-						<el-card class="box-card" style="height: 10rem">数据2</el-card>
-					</div>
+					<el-card class="box-card" style="height: 10rem">
+						数据2
+					</el-card>
 				</el-col>
 
 				<el-col :span="8">
-					<div class="ma">
+					<div class="cardContainer" style="margin-top: 16px">
 						<el-card>
-							<Chartstwo :value="dom" :option="opt1"></Chartstwo>
+							<Chart :value="dom" :option="opt1"></Chart>
 						</el-card>
 					</div>
 				</el-col>
 				<el-col :span="8">
-					<div class="ma">
-						<el-card class="box-card" style="height: 10rem">数据3</el-card>
-					</div>
+					<el-card class="box-card" style="height: 10rem">
+						数据3
+					</el-card>
 
-					<div class="ma">
-						<el-card class="box-card" style="height: 10rem">数据4</el-card>
-					</div>
+					<el-card class="box-card" style="height: 10rem">
+						数据4
+					</el-card>
 				</el-col>
 			</el-row>
 
-			<div class="ma">
-				<el-card>
-					<Chartstwo :value="parentValue" :option="opt"></Chartstwo>
-				</el-card>
-			</div>
+			<el-card class="box-card">
+				<Chart :value="parentValue" :option="opt"></Chart>
+			</el-card>
 
 			<el-row>
 				<el-col :span="12">
-					<div class="ma">
-						<el-card>
-							<Chartstwo :value="dom1" :option="opt"></Chartstwo>
-						</el-card>
-					</div>
+					<el-card class="box-card">
+						<Chart :value="dom1" :option="opt"></Chart>
+					</el-card>
 				</el-col>
 				<el-col :span="12">
-					<div class="ma">
-						<el-card>
-							<Chartstwo :value="dom2" :option="opt1"></Chartstwo>
-						</el-card>
-					</div>
+					<el-card class="box-card">
+						<Chart :value="dom2" :option="opt1"></Chart>
+					</el-card>
 				</el-col>
 			</el-row>
 		</div>
 	</div>
 </template>
 
-<style>
-.hvh {
-	height: 100vh;
-}
-.ma {
+<style scoped>
+.box-card {
 	margin: 1rem;
-}
-.mt {
-	margin-top: 1rem;
-}
-.ba {
-	background-color: brown;
 }
 </style>
