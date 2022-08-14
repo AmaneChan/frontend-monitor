@@ -21,6 +21,10 @@ import exceptionRouter from './src/router/exception_data.js'
 //验证失败信息响应模块
 import joi from 'joi'
 
+//解析token
+import config from './src/config.js'
+import expressJWT from 'express-jwt'
+
 const app = express()
 const PORT: number = 3000
 
@@ -39,6 +43,13 @@ app.use(function (req: any, res: any, next: any): any {
 	next()
 })
 
+//token认证
+app.use(
+	expressJWT({ secret: config.jwtSecreKey }).unless({
+		path: [/^\/user\/login/, /^\/user\/register/],
+	}),
+)
+
 //解析x-www-form-urlencoded数据中间件
 app.use(express.urlencoded({ extended: false }))
 
@@ -56,6 +67,8 @@ app.use('/exception', exceptionRouter)
 app.use((err: any, req: any, res: any, next: any): any => {
 	//数据验证错误
 	if (err instanceof joi.ValidationError) return res.cc(err, 400)
+	//捕获身份认证失败
+	if (err.name === 'UnauthorizedError') return res.cc('身份认证失败！', 400)
 	//未知错误
 	res.cc(err, 500)
 })
