@@ -1,4 +1,5 @@
 import db from '../db/index.js'
+import hash from '../randomHash.js'
 
 type Person = {
 	addProject(req: any, res: any): void
@@ -22,7 +23,7 @@ const project: Person = {
 				{
 					user: req.user.id,
 					name: req.body.name,
-					key: 'asdfg',
+					key: hash(),
 				},
 				(err, results) => {
 					if (err) {
