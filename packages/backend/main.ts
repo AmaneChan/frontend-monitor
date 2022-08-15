@@ -10,7 +10,7 @@ import userRouter from './src/router/user.js'
 import projectRouter from './src/router/project.js'
 
 // 用户行为路由模块
-import pageRouter from './src/router/page_visit.js'
+import pageRouter from './src/router/visit.js'
 
 // 性能数据路由模块
 import perfRouter from './src/router/perf_data.js'
@@ -20,10 +20,6 @@ import exceptionRouter from './src/router/exception_data.js'
 
 //验证失败信息响应模块
 import joi from 'joi'
-
-//解析token
-import config from './src/config.js'
-import expressJWT from 'express-jwt'
 
 const app = express()
 const PORT = 3000
