@@ -1,7 +1,27 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
 
 const signUpMode = ref(false)
+
+const inputContent = reactive({
+	login: {
+		username: '',
+		pwd: '',
+	},
+	register: {
+		username: '',
+		pwd: '',
+		email: '',
+	},
+})
+
+function login() {
+
+}
+
+function register() {
+
+}
 </script>
 
 <template>
@@ -20,15 +40,27 @@ const signUpMode = ref(false)
 						登录
 					</h2>
 					<div class="input-field">
-						<i class="fas fa-user"></i>
+						<el-icon
+							:size="24"
+							class="input-icon"
+						>
+							<User />
+						</el-icon>
 						<input
+							v-model="inputContent.login.username"
 							type="text"
 							placeholder="用户名"
 						/>
 					</div>
 					<div class="input-field">
-						<i class="fas fa-lock"></i>
+						<el-icon
+							:size="24"
+							class="input-icon"
+						>
+							<Lock />
+						</el-icon>
 						<input
+							v-model="inputContent.login.pwd"
 							type="password"
 							placeholder="密码"
 						/>
@@ -37,6 +69,7 @@ const signUpMode = ref(false)
 						type="submit"
 						value="登 录"
 						class="btn solid"
+						@click="login"
 					/>
 				</form>
 				<form
@@ -47,22 +80,40 @@ const signUpMode = ref(false)
 						注册
 					</h2>
 					<div class="input-field">
-						<i class="fas fa-user"></i>
+						<el-icon
+							:size="24"
+							class="input-icon"
+						>
+							<User />
+						</el-icon>
 						<input
+							v-model="inputContent.register.username"
 							type="text"
 							placeholder="用户名"
 						/>
 					</div>
 					<div class="input-field">
-						<i class="fas fa-envelope"></i>
+						<el-icon
+							:size="24"
+							class="input-icon"
+						>
+							<Message />
+						</el-icon>
 						<input
+							v-model="inputContent.register.email"
 							type="email"
 							placeholder="邮箱"
 						/>
 					</div>
 					<div class="input-field">
-						<i class="fas fa-lock"></i>
+						<el-icon
+							:size="24"
+							class="input-icon"
+						>
+							<Lock />
+						</el-icon>
 						<input
+							v-model="inputContent.register.pwd"
 							type="password"
 							placeholder="密码"
 						/>
@@ -71,6 +122,7 @@ const signUpMode = ref(false)
 						type="submit"
 						class="btn"
 						value="注 册"
+						@click="register"
 					/>
 				</form>
 			</div>
@@ -122,6 +174,11 @@ const signUpMode = ref(false)
 </template>
 
 <style scoped>
+.input-icon {
+	width: 100%;
+	height: 100%;
+}
+
 .container {
 	position: relative;
 	width: 100%;
