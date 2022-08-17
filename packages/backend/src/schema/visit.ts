@@ -12,8 +12,8 @@ import joi from 'joi'
 //项目标识符验证规则
 const key = joi.string().max(255).required()
 
-//请求日期验证规则
-const day = joi.date().required()
+//请求ip验证规则
+const ip = joi.string().max(255).required()
 
 //请求页面来源URL
 const from = joi.string().required()
@@ -24,7 +24,7 @@ const id = joi.number().min(1).required()
 const reg_addVisit_schema = {
 	body: {
 		key,
-		day,
+		ip,
 		from,
 	},
 }
@@ -38,8 +38,9 @@ const req_addstay_schema = {
 }
 
 const req_queryVisit_schema = {
-	params: {
+	query: {
 		id,
+		day: joi.number(),
 	},
 }
 
