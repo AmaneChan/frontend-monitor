@@ -7,6 +7,12 @@
 		"no-tabs": "off",
 		"no-console": "off",
 		"curly": ["error", "all"],
+		"brace-style": ["error", "1tbs", { "allowSingleLine": true }],
+		"@typescript-eslint/brace-style": [
+			"error",
+			"1tbs",
+			{ "allowSingleLine": true }
+		],
 		"vue/html-indent": [
 			"error",
 			"tab",

@@ -1,5 +1,9 @@
 <script lang="ts" setup>
+import { ElMessage } from 'element-plus'
 import { reactive, ref } from 'vue'
+
+import { axios } from '../request.js'
+import type { ReponseResult } from '../request.js'
 
 const signUpMode = ref(false)
 
@@ -19,8 +23,16 @@ function login() {
 
 }
 
-function register() {
-
+async function register() {
+	const { username, pwd } = inputContent.register
+	const result: ReponseResult = await axios.post('/user/register', { username, pwd })
+	if (result.code === 200) {
+		ElMessage.success(result.message)
+		inputContent.login.username = username
+		signUpMode.value = false
+	} else {
+		ElMessage.error(result.message)
+	}
 }
 </script>
 
@@ -66,7 +78,7 @@ function register() {
 						/>
 					</div>
 					<input
-						type="submit"
+						type="button"
 						value="登 录"
 						class="btn solid"
 						@click="login"
@@ -119,7 +131,7 @@ function register() {
 						/>
 					</div>
 					<input
-						type="submit"
+						type="button"
 						class="btn"
 						value="注 册"
 						@click="register"
