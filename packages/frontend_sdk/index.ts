@@ -3,9 +3,16 @@
  * Released under MIT license
  */
 
-const ele = document.getElementById('monitor')
-const key = ele.getAttribute('key')
-const url = ele.getAttribute('report') || 'http://120.79.27.173:2336/'
+const ele = document.getElementById('__monitor')
+const key = ele?.getAttribute('key')
+const url = cleanUrl(ele?.getAttribute('report') || 'http://120.79.27.173:2336/')
+
+function cleanUrl(url) {
+	if (url.endsWith('/')) {
+		url.substring(0, url.length - 1)
+	}
+	return url
+}
 
 // 捕获 js 异常 (Error 以及语法错误)
 window.onerror = (msg, url, row, col, error) => {
@@ -14,6 +21,10 @@ window.onerror = (msg, url, row, col, error) => {
 	console.log('Error url', url)
 	console.log('Error position', `${row}:${col}`)
 	console.log(error)
+	fetch(`${url}exception`, {
+		method: 'POST',
+
+	})
 }
 
 // 捕获资源加载错误，由于也会捕获到 window,onerror 的异常，需要过滤 js 异常
@@ -60,8 +71,7 @@ window.onload = () => {
 	const fp = datas.find(e => e.name == 'first-paint')
 	const fcp = datas.find(e => e.name == 'first-contentful-paint')
 	console.log(
-		`FP: ${performance.now() - fp.startTime}  FCP: ${
-			performance.now() - fcp.startTime
+		`FP: ${performance.now() - fp.startTime}  FCP: ${performance.now() - fcp.startTime
 		}`,
 	)
 }
