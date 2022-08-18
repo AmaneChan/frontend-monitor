@@ -44,7 +44,6 @@ const uvOption = {
 		},
 	],
 }
-let page = false
 let empty = true
 const add = function () {
 	router.push('setting')
@@ -52,7 +51,13 @@ const add = function () {
 </script>
 
 <template>
-	<div v-if="page">
+	<div v-if="empty">
+		<el-empty :image-size="200" />
+		<div style="width: 100%; text-align: center">
+			<el-button type="primary" @click="add">前去添加项目</el-button>
+		</div>
+	</div>
+	<div v-else>
 		<div class="cardList">
 			<el-card class="box-card">
 				<template #header>
@@ -164,12 +169,6 @@ const add = function () {
 			<el-card>
 				<Chart value="uvid" :option="uvOption"></Chart>
 			</el-card>
-		</div>
-	</div>
-	<div v-if="empty">
-		<el-empty :image-size="200" />
-		<div style="width: 100%; text-align: center">
-			<el-button type="primary" @click="add">前去添加项目</el-button>
 		</div>
 	</div>
 </template>

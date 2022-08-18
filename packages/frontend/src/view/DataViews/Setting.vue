@@ -4,8 +4,10 @@ import { CopyDocument, Hide, View } from '@element-plus/icons-vue'
 
 import { ElMessage } from 'element-plus'
 import { useProjectsStore } from '../../stores/projects'
+import { useUserStore } from '../../stores/user'
 import { axios } from '../../request.js'
 import type { ResponseResult } from '../../request.js'
+import router from '../../router'
 
 const projectsStore = useProjectsStore()
 
@@ -24,6 +26,14 @@ async function addProject() {
 	const result: ResponseResult = await axios.post('/project', { id: userid, name: name.value })
 	console.log(result)
 	ElMessage.success(result.message)
+}
+
+const userStore = useUserStore()
+
+function logout() {
+	userStore.logout()
+	ElMessage.success('已退出登录')
+	router.push('/entry')
 }
 </script>
 
@@ -59,6 +69,7 @@ async function addProject() {
 				<el-button
 					type="danger"
 					size="small"
+					@click="logout"
 				>
 					退出登录
 				</el-button>

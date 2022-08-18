@@ -1,14 +1,14 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import Chart from '../../components/Chart.vue'
-import router from '../../router';
+import router from '../../router'
 import { axios } from '../../request.js'
+
 const parentValue = ref('domid')
 const dom = ref('dom')
 const dom1 = ref('dom1')
 const dom2 = ref('dom2')
-let page = false
-let empty = true
+
 const opt = ref({
 	title: {
 		text: 'xx分析',
@@ -129,90 +129,94 @@ const add = function () {
 	router.push('setting')
 }
 
+const empty = true
 </script>
 
 <template>
-	<div>
-		<div v-if="page">
-			<el-row>
-				<el-col :span="8">
-					<el-card
-						class="box-card"
-						style="height: 10rem"
-					>
-						数据1
-					</el-card>
+	<div v-if="empty">
+		<el-empty :image-size="200" />
+		<div style="width: 100%; text-align: center">
+			<el-button
+				type="primary"
+				@click="add"
+			>
+				前去添加项目
+			</el-button>
+		</div>
+	</div>
+	<div v-else>
+		<el-row>
+			<el-col :span="8">
+				<el-card
+					class="box-card"
+					style="height: 10rem"
+				>
+					数据1
+				</el-card>
 
-					<el-card
-						class="box-card"
-						style="height: 10rem"
-					>
-						数据2
-					</el-card>
-				</el-col>
+				<el-card
+					class="box-card"
+					style="height: 10rem"
+				>
+					数据2
+				</el-card>
+			</el-col>
 
-				<el-col :span="8">
-					<div
-						class="cardContainer"
-						style="margin-top: 16px"
-					>
-						<el-card>
-							<Chart
-								:value="dom"
-								:option="opt1"
-							></Chart>
-						</el-card>
-					</div>
-				</el-col>
-				<el-col :span="8">
-					<el-card
-						class="box-card"
-						style="height: 10rem"
-					>
-						数据3
-					</el-card>
-
-					<el-card
-						class="box-card"
-						style="height: 10rem"
-					>
-						数据4
-					</el-card>
-				</el-col>
-			</el-row>
-
-			<el-card class="box-card">
-				<Chart
-					:value="parentValue"
-					:option="opt"
-				></Chart>
-			</el-card>
-
-			<el-row>
-				<el-col :span="12">
-					<el-card class="box-card">
+			<el-col :span="8">
+				<div
+					class="cardContainer"
+					style="margin-top: 16px"
+				>
+					<el-card>
 						<Chart
-							:value="dom1"
-							:option="opt"
-						></Chart>
-					</el-card>
-				</el-col>
-				<el-col :span="12">
-					<el-card class="box-card">
-						<Chart
-							:value="dom2"
+							:value="dom"
 							:option="opt1"
 						></Chart>
 					</el-card>
-				</el-col>
-			</el-row>
-		</div>
-		<div v-if="empty">
-		<el-empty :image-size="200" />
-		<div style="width: 100%; text-align: center">
-			<el-button type="primary" @click="add">前去添加项目</el-button>
-		</div>
-	</div>
+				</div>
+			</el-col>
+			<el-col :span="8">
+				<el-card
+					class="box-card"
+					style="height: 10rem"
+				>
+					数据3
+				</el-card>
+
+				<el-card
+					class="box-card"
+					style="height: 10rem"
+				>
+					数据4
+				</el-card>
+			</el-col>
+		</el-row>
+
+		<el-card class="box-card">
+			<Chart
+				:value="parentValue"
+				:option="opt"
+			></Chart>
+		</el-card>
+
+		<el-row>
+			<el-col :span="12">
+				<el-card class="box-card">
+					<Chart
+						:value="dom1"
+						:option="opt"
+					></Chart>
+				</el-card>
+			</el-col>
+			<el-col :span="12">
+				<el-card class="box-card">
+					<Chart
+						:value="dom2"
+						:option="opt1"
+					></Chart>
+				</el-card>
+			</el-col>
+		</el-row>
 	</div>
 </template>
 
