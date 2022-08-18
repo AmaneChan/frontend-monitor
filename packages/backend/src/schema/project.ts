@@ -9,10 +9,10 @@ import joi from 'joi'
  * pattern(正则表达式) 值必须符合正则表达式的规则
  */
 
-//项目名验证规则
+// 项目名验证规则
 const name = joi.string().max(255).required()
 
-//id验证规则
+// id验证规则
 const id = joi.number().required()
 
 const reg_addProject_schema = {

@@ -1,13 +1,13 @@
 import db from '../db/index.js'
 
-type Person = {
+interface Person {
 	addexceptionData(req: any, res: any): void
 	queryexceptionData(req: any, res: any): void
 }
 
 const project: Person = {
 	addexceptionData(req, res) {
-		const sql: string = 'SELECT id FROM project WHERE `key`=?'
+		const sql = 'SELECT id FROM project WHERE `key`=?'
 		db.query(sql, req.body.key, (err, results) => {
 			if (err) {
 				return res.cc(err, 500)
@@ -15,7 +15,7 @@ const project: Person = {
 			if (results.length !== 1) {
 				return res.cc('key值错误等!', 400)
 			}
-			const sql: string = 'INSERT INTO exception_data SET ?'
+			const sql = 'INSERT INTO exception_data SET ?'
 			const data: {
 				type: number
 				proj: number
@@ -39,10 +39,10 @@ const project: Person = {
 		})
 	},
 	queryexceptionData(req, res) {
-		let sql: string = ''
+		let sql = ''
 		if (req.query.type) {
-			sql =
-				' SELECT id,type,msg,position FROM exception_data  WHERE proj=? AND type=? LIMIT ?,? '
+			sql
+				= ' SELECT id,type,msg,position FROM exception_data  WHERE proj=? AND type=? LIMIT ?,? '
 			db.query(
 				sql,
 				[
@@ -55,7 +55,7 @@ const project: Person = {
 					if (err) {
 						return res.cc(err, 500)
 					}
-					if (results.length == 0) {
+					if (results.length === 0) {
 						return res.cc('暂无数据！', 400)
 					}
 
@@ -66,9 +66,10 @@ const project: Person = {
 					})
 				},
 			)
-		} else {
-			sql =
-				'SELECT id,type,msg,position FROM exception_data  WHERE proj=?  LIMIT ?,? '
+		}
+		else {
+			sql
+				= 'SELECT id,type,msg,position FROM exception_data  WHERE proj=?  LIMIT ?,? '
 			db.query(
 				sql,
 				[
@@ -80,7 +81,7 @@ const project: Person = {
 					if (err) {
 						return res.cc(err, 500)
 					}
-					if (results.length == 0) {
+					if (results.length === 0) {
 						return res.cc('暂无数据！', 400)
 					}
 

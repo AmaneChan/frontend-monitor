@@ -1,7 +1,7 @@
 import db from '../db/index.js'
 import hash from '../randomHash.js'
 
-type Person = {
+interface Person {
 	addProject(req: any, res: any): void
 	queryProject(req: any, res: any): void
 	alterProject(req: any, res: any): void
@@ -9,15 +9,15 @@ type Person = {
 
 const project: Person = {
 	addProject(req, res) {
-		const sql: string = `SELECT * FROM project WHERE name=? AND user=? `
+		const sql = 'SELECT * FROM project WHERE name=? AND user=? '
 		db.query(sql, [req.body.name, req.user.id], (err, results) => {
 			if (err) {
 				return res.cc(err, 500)
 			}
-			if (results.length == 1) {
+			if (results.length === 1) {
 				return res.cc('项目名重复！', 400)
 			}
-			const sql: string = `INSERT INTO project SET ? `
+			const sql = 'INSERT INTO project SET ? '
 			db.query(
 				sql,
 				{
@@ -38,12 +38,12 @@ const project: Person = {
 		})
 	},
 	queryProject(req, res) {
-		const sql: string = 'SELECT id,name,`key` FROM project WHERE user=?'
+		const sql = 'SELECT id,name,`key` FROM project WHERE user=?'
 		db.query(sql, req.user.id, (err, results) => {
 			if (err) {
 				return res.cc(err, 500)
 			}
-			if (results.length == 0) {
+			if (results.length === 0) {
 				return res.cc('暂无项目信息！', 400)
 			}
 			res.send({
@@ -54,15 +54,15 @@ const project: Person = {
 		})
 	},
 	alterProject(req, res) {
-		const sql: string = `SELECT * FROM project WHERE name=? AND user=?`
+		const sql = 'SELECT * FROM project WHERE name=? AND user=?'
 		db.query(sql, [req.body.name, req.user.id], (err, results) => {
 			if (err) {
 				return res.cc(err, 500)
 			}
-			if (results.length == 1) {
+			if (results.length === 1) {
 				return res.cc('新项目名称存在与旧项目名称或其它项目名称重复！', 400)
 			}
-			const sql: string = `UPDATE project SET name=? WHERE id=? AND user=? `
+			const sql = 'UPDATE project SET name=? WHERE id=? AND user=? '
 			db.query(
 				sql,
 				[req.body.name, req.body.id, req.user.id],

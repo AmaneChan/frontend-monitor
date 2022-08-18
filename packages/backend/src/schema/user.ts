@@ -12,7 +12,7 @@ import joi from 'joi'
 // 用户名验证规则
 const username = joi.string().max(255).required()
 
-//密码验证规则
+// 密码验证规则
 const pwd: any = joi.string().max(255).required()
 
 const reg_register_schema = {

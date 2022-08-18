@@ -9,16 +9,16 @@ import joi from 'joi'
  * pattern(正则表达式) 值必须符合正则表达式的规则
  */
 
-//项目标识符验证规则
+// 项目标识符验证规则
 const key = joi.string().max(255).required()
 
-//请求ip验证规则
+// 请求ip验证规则
 const ip = joi.string().max(255).required()
 
-//请求页面来源URL
+// 请求页面来源URL
 const from = joi.string().required()
 
-//查询id
+// 查询id
 const id = joi.number().min(1).required()
 
 const reg_addVisit_schema = {

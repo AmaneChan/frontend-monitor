@@ -1,7 +1,7 @@
 import db from '../db/index.js'
 import date from '../date.js'
 
-type Person = {
+interface Person {
 	addVisit(req: any, res: any): void
 	queryVisitPv(req: any, res: any): void
 	queryVisitUv(req: any, res: any): void
@@ -11,7 +11,7 @@ type Person = {
 
 const pageVisit: Person = {
 	addVisit(req, res) {
-		const sql: string = 'SELECT id FROM project WHERE `key`=?'
+		const sql = 'SELECT id FROM project WHERE `key`=?'
 		db.query(sql, req.body.key, (err, results_1) => {
 			if (err) {
 				return res.cc(err, 500)
@@ -20,8 +20,8 @@ const pageVisit: Person = {
 				return res.cc('key值错误等!', 400)
 			}
 
-			const sql: string =
-				'SELECT count FROM visit_history WHERE day=? AND proj=? AND ip=? AND `from`=?'
+			const sql
+				= 'SELECT count FROM visit_history WHERE day=? AND proj=? AND ip=? AND `from`=?'
 			db.query(
 				sql,
 				[date(false), results_1[0].id, req.body.ip, req.body.from],
@@ -29,8 +29,8 @@ const pageVisit: Person = {
 					if (err) {
 						return res.cc(err, 500)
 					}
-					if (results_2.length == 0) {
-						const sql: string = `INSERT INTO visit_history SET ?`
+					if (results_2.length === 0) {
+						const sql = 'INSERT INTO visit_history SET ?'
 						db.query(
 							sql,
 							{
@@ -44,15 +44,16 @@ const pageVisit: Person = {
 								if (err) {
 									return res.cc(err, 500)
 								}
-								if (results.affectedRows != 1) {
+								if (results.affectedRows !== 1) {
 									return res.cc('插入失败！', 400)
 								}
 								res.cc('插入成功！', 200)
 							},
 						)
-					} else {
-						const sql: string =
-							'UPDATE visit_history SET count=? WHERE day=? AND proj=? AND ip=? AND `from`=? '
+					}
+					else {
+						const sql
+							= 'UPDATE visit_history SET count=? WHERE day=? AND proj=? AND ip=? AND `from`=? '
 						db.query(
 							sql,
 							[
@@ -66,7 +67,7 @@ const pageVisit: Person = {
 								if (err) {
 									return res.cc(err, 500)
 								}
-								if (results.affectedRows != 1) {
+								if (results.affectedRows !== 1) {
 									return res.cc('插入失败！', 400)
 								}
 								res.cc('插入成功！', 200)
@@ -79,13 +80,12 @@ const pageVisit: Person = {
 	},
 	queryVisitPv(req, res) {
 		res.send('查询访问记录')
-	
 	},
 	queryVisitUv(req, res) {
 		res.send('查询访问记录')
 	},
 	addstay(req, res) {
-		const sql: string = 'SELECT id FROM project WHERE `key`=?'
+		const sql = 'SELECT id FROM project WHERE `key`=?'
 		db.query(sql, req.body.key, (err, results) => {
 			if (err) {
 				return res.cc(err, 500)
@@ -93,7 +93,7 @@ const pageVisit: Person = {
 			if (results.length !== 1) {
 				return res.cc('key值错误等!', 400)
 			}
-			const sql: string = `INSERT INTO page_visit SET ? `
+			const sql = 'INSERT INTO page_visit SET ? '
 			const stay: {
 				proj: number
 				from: string
@@ -117,13 +117,13 @@ const pageVisit: Person = {
 		})
 	},
 	querystay(req, res) {
-		const sql: string =
-			'SELECT `from`, duration FROM page_visit  WHERE proj=? ORDER BY duration DESC'
+		const sql
+			= 'SELECT `from`, duration FROM page_visit  WHERE proj=? ORDER BY duration DESC'
 		db.query(sql, req.params.id, (err, results) => {
 			if (err) {
 				return res.cc(err, 500)
 			}
-			if (results.length == 0) {
+			if (results.length === 0) {
 				return res.cc('暂无数据！', 400)
 			}
 			res.send({

@@ -1,13 +1,13 @@
 import db from '../db/index.js'
 
-type Person = {
+interface Person {
 	addperfData(req: any, res: any): void
 	queryperfData(req: any, res: any): void
 }
 
 const project: Person = {
 	addperfData(req, res) {
-		const sql: string = 'SELECT id FROM project WHERE `key`=?'
+		const sql = 'SELECT id FROM project WHERE `key`=?'
 		db.query(sql, req.body.key, (err, results) => {
 			if (err) {
 				return res.cc(err, 500)
@@ -15,7 +15,7 @@ const project: Person = {
 			if (results.length !== 1) {
 				return res.cc('key值错误等!', 400)
 			}
-			const sql: string = 'INSERT INTO perf_data SET ?'
+			const sql = 'INSERT INTO perf_data SET ?'
 			const data: {
 				type: number
 				proj: number
@@ -39,8 +39,8 @@ const project: Person = {
 		})
 	},
 	queryperfData(req, res) {
-		const sql: string =
-			' SELECT `from`, value FROM perf_data  WHERE proj=? AND type=? LIMIT ?,? '
+		const sql
+			= ' SELECT `from`, value FROM perf_data  WHERE proj=? AND type=? LIMIT ?,? '
 		db.query(
 			sql,
 			[
@@ -53,17 +53,17 @@ const project: Person = {
 				if (err) {
 					return res.cc(err, 500)
 				}
-				if (results1.length == 0) {
+				if (results1.length === 0) {
 					return res.cc('暂无数据！', 400)
 				}
-				const sql: string = `SELECT value FROM perf_data WHERE proj=? AND type=?`
-				let avg: number = 0
+				const sql = 'SELECT value FROM perf_data WHERE proj=? AND type=?'
+				let avg = 0
 				db.query(sql, [req.query.id, req.query.type], (err, results) => {
 					if (err) {
 						return res.cc(err, 500)
 					}
 					if (results.length !== 0) {
-						let add: number = 0
+						let add = 0
 						for (let i = 0; i < results.length; i++) {
 							add += results[i].value
 						}
