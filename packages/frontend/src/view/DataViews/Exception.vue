@@ -1,7 +1,10 @@
 <script lang="ts" setup>
-import Chart from '../../components/Chart.vue'
+import { ref } from 'vue'
+import VChart from 'vue-echarts'
 import router from '../../router'
-const dataExceptionType = {
+import { axios } from '../../request.js'
+const token: string | null = `${localStorage.getItem('token')}`
+const dataExceptionType = ref({
 	title: {
 		text: '异常类型',
 		subtext: 'Exception Type',
@@ -20,10 +23,10 @@ const dataExceptionType = {
 			type: 'pie',
 			radius: '50%',
 			data: [
-				{ value: 1048, name: 'JS错误' },
-				{ value: 735, name: '自定义异常' },
-				{ value: 580, name: '静态资源异常' },
-				{ value: 484, name: '接口异常' },
+				{ value: 0, name: 'JS错误' },
+				{ value: 0, name: '自定义异常' },
+				{ value: 0, name: '静态资源异常' },
+				{ value: 0, name: '接口异常' },
 			],
 			emphasis: {
 				itemStyle: {
@@ -34,7 +37,35 @@ const dataExceptionType = {
 			},
 		},
 	],
+})
+
+const tableData = ref([] as any[])
+
+const id = 1
+const limit = 10
+
+for (let index = 0; index < 4; index++) {
+	const type = index + 1
+	axios
+		.get('/exception', {
+			params: { id, type, limit },
+			headers: { Authorization: token },
+		})
+		.then((res) => {
+			console.log(res)
+			dataExceptionType.value.series[0].data[index].value = res.data.length
+			for (let i = 0; i < res.data.length; i++) {
+				const table = {
+					date: '2016-05-03',
+					name: res.data[i].msg,
+					address: res.data[i].position,
+				}
+				tableData.value.push(table)
+			}
+			console.log(tableData)
+		})
 }
+
 const JSoption = {
 	title: {
 		text: 'JS错误',
@@ -119,29 +150,6 @@ const CustomOption = {
 	],
 }
 
-const tableData = [
-	{
-		date: '2016-05-03',
-		name: 'Tom',
-		address: 'No. 189, Grove St, Los Angeles',
-	},
-	{
-		date: '2016-05-02',
-		name: 'Tom',
-		address: 'No. 189, Grove St, Los Angeles',
-	},
-	{
-		date: '2016-05-04',
-		name: 'Tom',
-		address: 'No. 189, Grove St, Los Angeles',
-	},
-	{
-		date: '2016-05-01',
-		name: 'Tom',
-		address: 'No. 189, Grove St, Los Angeles',
-	},
-]
-
 const DomId = {
 	ExceptionOver: 'ExceptionOver',
 	JSException: 'JSException',
@@ -149,7 +157,7 @@ const DomId = {
 	StaticException: 'StaticException',
 	CustomException: 'CustomException',
 }
-const empty = true
+const empty = false
 
 const add = function () {
 	router.push('setting')
@@ -175,10 +183,10 @@ const add = function () {
 		<el-row>
 			<el-col :span="12">
 				<el-card class="chartCard">
-					<Chart
-						:value="DomId.ExceptionOver"
+					<VChart
 						:option="dataExceptionType"
-					></Chart>
+						class="chart"
+					/>
 				</el-card>
 			</el-col>
 			<el-col :span="12">
@@ -213,36 +221,36 @@ const add = function () {
 		</el-row>
 
 		<el-row>
-			<el-col :span="6">
+			<el-col :span="12">
 				<el-card class="chartCard">
-					<Chart
-						:value="DomId.JSException"
+					<VChart
+						class="chart"
 						:option="JSoption"
-					></Chart>
+					/>
 				</el-card>
 			</el-col>
-			<el-col :span="6">
+			<el-col :span="12">
 				<el-card class="chartCard">
-					<Chart
-						:value="DomId.InterfaceException"
+					<VChart
+						class="chart"
 						:option="InterfaceOption"
-					></Chart>
+					/>
 				</el-card>
 			</el-col>
-			<el-col :span="6">
+			<el-col :span="12">
 				<el-card class="chartCard">
-					<Chart
-						:value="DomId.StaticException"
+					<VChart
+						class="chart"
 						:option="StaticOption"
-					></Chart>
+					/>
 				</el-card>
 			</el-col>
-			<el-col :span="6">
+			<el-col :span="12">
 				<el-card class="chartCard">
-					<Chart
-						:value="DomId.CustomException"
+					<VChart
+						class="chart"
 						:option="CustomOption"
-					></Chart>
+					/>
 				</el-card>
 			</el-col>
 		</el-row>
@@ -256,5 +264,8 @@ const add = function () {
 
 .container {
 	padding: 0.5rem;
+}
+.chart {
+	height: 300px;
 }
 </style>
