@@ -4,13 +4,13 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"build": "uglifyjs index.js -o dist/index.js"
+		"build": "esbuild ./src/index.js --outdir=./dist",
+		"build:min": "esbuild ./src/index.js --minify --outdir=./dist"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
 	"devDependencies": {
-		"uglify-js": "^3.16.3"
+		"esbuild": "^0.15.5"
 	}
 }
-
