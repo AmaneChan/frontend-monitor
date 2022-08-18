@@ -1,3 +1,4 @@
+import date from '../date.js'
 import db from '../db/index.js'
 
 interface Person {
@@ -21,11 +22,13 @@ const project: Person = {
 				proj: number
 				msg: string
 				position: string
+				time: string
 			} = {
 				type: req.body.type,
 				proj: results[0].id,
 				msg: req.body.msg,
 				position: req.body.position,
+				time: date(true),
 			}
 			db.query(sql, data, (err, results) => {
 				if (err) {
@@ -42,7 +45,7 @@ const project: Person = {
 		let sql = ''
 		if (req.query.type) {
 			sql
-				= ' SELECT id,type,msg,position FROM exception_data  WHERE proj=? AND type=? LIMIT ?,? '
+				= ' SELECT id,type,time,msg,position FROM exception_data  WHERE proj=? AND type=? LIMIT ?,? '
 			db.query(
 				sql,
 				[
@@ -69,7 +72,7 @@ const project: Person = {
 		}
 		else {
 			sql
-				= 'SELECT id,type,msg,position FROM exception_data  WHERE proj=?  LIMIT ?,? '
+				= 'SELECT id,type,time,msg,position FROM exception_data  WHERE proj=?  LIMIT ?,? '
 			db.query(
 				sql,
 				[
