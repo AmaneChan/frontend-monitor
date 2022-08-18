@@ -1,4 +1,5 @@
 import express from 'express'
+import dotenv from 'dotenv'
 
 // cors 跨域
 import cors from 'cors'
@@ -21,8 +22,10 @@ import perfRouter from './src/router/perf_data.js'
 // 异常数据路由模块
 import exceptionRouter from './src/router/exception_data.js'
 
+dotenv.config()
+
 const app = express()
-const PORT = 3000
+const PORT = process.env.PORT
 
 // 跨域处理中间件
 app.use(cors())
