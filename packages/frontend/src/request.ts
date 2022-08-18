@@ -23,7 +23,7 @@ axios.interceptors.response.use((response) => {
 	return response
 })
 
-export interface ReponseResult {
+export interface ResponseResult {
 	code: number
 	message: string
 	data?: any

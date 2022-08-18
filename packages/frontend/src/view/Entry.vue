@@ -3,8 +3,8 @@ import { ElMessage } from 'element-plus'
 import { reactive, ref } from 'vue'
 
 import { axios } from '../request.js'
-import type { ReponseResult } from '../request.js'
-import router from '../router/index.js';
+import type { ResponseResult } from '../request.js'
+import router from '../router/index.js'
 
 const signUpMode = ref(false)
 
@@ -22,23 +22,23 @@ const inputContent = reactive({
 
 async function login() {
 	const { username, pwd } = inputContent.login
-	const LoginResult: ReponseResult = await axios.post('/user/login', { username, pwd })
-	console.log(LoginResult);
-	if (LoginResult.code === 200) {
-		ElMessage.success(LoginResult.message)
-		localStorage.setItem('token',LoginResult.token+'')
+	const result: ResponseResult = await axios.post('/user/login', { username, pwd })
+	console.log(result)
+	if (result.code === 200) {
+		ElMessage.success(result.message)
+		localStorage.setItem('token', `${result.token}`)
 		router.push({
-			path:'/setting',
-			replace: true
+			path: '/setting',
+			replace: true,
 		})
 	} else {
-		ElMessage.error(LoginResult.message)
+		ElMessage.error(result.message)
 	}
 }
 
 async function register() {
 	const { username, pwd } = inputContent.register
-	const result: ReponseResult = await axios.post('/user/register', { username, pwd })
+	const result: ResponseResult = await axios.post('/user/register', { username, pwd })
 	if (result.code === 200) {
 		ElMessage.success(result.message)
 		inputContent.login.username = username
