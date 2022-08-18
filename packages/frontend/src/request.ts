@@ -4,7 +4,7 @@ import axiosStatic from 'axios'
 export const axios = axiosStatic.create({
 	method: 'GET',
 	timeout: 7000,
-	baseURL: 'http://localhost:3000/',
+	baseURL: 'http://120.79.27.173:2336',
 })
 
 axios.interceptors.request.use((config) => {

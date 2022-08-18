@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import Chart from '../../components/Chart.vue'
+import router from '../../router'
 const dataExceptionType = {
 	title: {
 		text: '异常类型',
@@ -148,10 +149,16 @@ const DomId = {
 	StaticException: 'StaticException',
 	CustomException: 'CustomException',
 }
+let page = false
+let empty = true
+
+const add = function () {
+	router.push('setting')
+}
 </script>
 
 <template>
-	<div class="container">
+	<div class="container" v-if="page">
 		<el-row>
 			<el-col :span="12">
 				<el-card class="chartCard">
@@ -163,30 +170,11 @@ const DomId = {
 			</el-col>
 			<el-col :span="12">
 				<el-card class="chartCard">
-					<el-table
-						:data="tableData"
-						height="300"
-						style="width: 100%"
-					>
-						<el-table-column
-							prop="date"
-							label="Date"
-							width="180"
-						/>
-						<el-table-column
-							prop="name"
-							label="Name"
-							width="180"
-						/>
-						<el-table-column
-							prop="address"
-							label="Address"
-						/>
-						<el-table-column
-							prop="name"
-							label="Name"
-							width="180"
-						/>
+					<el-table :data="tableData" height="300" style="width: 100%">
+						<el-table-column prop="date" label="Date" width="180" />
+						<el-table-column prop="name" label="Name" width="180" />
+						<el-table-column prop="address" label="Address" />
+						<el-table-column prop="name" label="Name" width="180" />
 					</el-table>
 				</el-card>
 			</el-col>
@@ -195,10 +183,7 @@ const DomId = {
 		<el-row>
 			<el-col :span="6">
 				<el-card class="chartCard">
-					<Chart
-						:value="DomId.JSException"
-						:option="JSoption"
-					></Chart>
+					<Chart :value="DomId.JSException" :option="JSoption"></Chart>
 				</el-card>
 			</el-col>
 			<el-col :span="6">
@@ -211,30 +196,30 @@ const DomId = {
 			</el-col>
 			<el-col :span="6">
 				<el-card class="chartCard">
-					<Chart
-						:value="DomId.StaticException"
-						:option="StaticOption"
-					></Chart>
+					<Chart :value="DomId.StaticException" :option="StaticOption"></Chart>
 				</el-card>
 			</el-col>
 			<el-col :span="6">
 				<el-card class="chartCard">
-					<Chart
-						:value="DomId.CustomException"
-						:option="CustomOption"
-					></Chart>
+					<Chart :value="DomId.CustomException" :option="CustomOption"></Chart>
 				</el-card>
 			</el-col>
 		</el-row>
+	</div>
+	<div v-if="empty">
+		<el-empty :image-size="200" />
+		<div style="width: 100%; text-align: center">
+			<el-button type="primary" @click="add">前去添加项目</el-button>
+		</div>
 	</div>
 </template>
 
 <style scoped>
 .chartCard {
-	margin: .5rem;
+	margin: 0.5rem;
 }
 
-.container{
-	padding: .5rem;
+.container {
+	padding: 0.5rem;
 }
 </style>

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed, VueElement } from 'vue'
 import type { MenuItemRegistered } from 'element-plus'
 
 import { useProjectsStore } from '../../stores/projects'
@@ -18,6 +18,7 @@ const onMenuSelected = (menuItem: MenuItemRegistered) => {
 	console.log(menuItem.index)
 	projectsStore.choose = parseInt(menuItem.index)
 }
+
 </script>
 
 <template>

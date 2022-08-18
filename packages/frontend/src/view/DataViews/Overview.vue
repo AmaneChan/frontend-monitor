@@ -1,12 +1,14 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import Chart from '../../components/Chart.vue'
-
+import router from '../../router';
+import { axios } from '../../request.js'
 const parentValue = ref('domid')
 const dom = ref('dom')
 const dom1 = ref('dom1')
 const dom2 = ref('dom2')
-
+let page = false
+let empty = true
 const opt = ref({
 	title: {
 		text: 'xx分析',
@@ -122,11 +124,16 @@ const opt1 = ref({
 		},
 	],
 })
+
+const add = function () {
+	router.push('setting')
+}
+
 </script>
 
 <template>
 	<div>
-		<div>
+		<div v-if="page">
 			<el-row>
 				<el-col :span="8">
 					<el-card
@@ -200,6 +207,12 @@ const opt1 = ref({
 				</el-col>
 			</el-row>
 		</div>
+		<div v-if="empty">
+		<el-empty :image-size="200" />
+		<div style="width: 100%; text-align: center">
+			<el-button type="primary" @click="add">前去添加项目</el-button>
+		</div>
+	</div>
 	</div>
 </template>
 

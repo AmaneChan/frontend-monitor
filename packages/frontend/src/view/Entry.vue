@@ -4,6 +4,7 @@ import { reactive, ref } from 'vue'
 
 import { axios } from '../request.js'
 import type { ReponseResult } from '../request.js'
+import router from '../router/index.js';
 
 const signUpMode = ref(false)
 
@@ -19,8 +20,20 @@ const inputContent = reactive({
 	},
 })
 
-function login() {
-
+async function login() {
+	const { username, pwd } = inputContent.login
+	const LoginResult: ReponseResult = await axios.post('/user/login', { username, pwd })
+	console.log(LoginResult);
+	if (LoginResult.code === 200) {
+		ElMessage.success(LoginResult.message)
+		localStorage.setItem('token',LoginResult.token+'')
+		router.push({
+			path:'/setting',
+			replace: true
+		})
+	} else {
+		ElMessage.error(LoginResult.message)
+	}
 }
 
 async function register() {

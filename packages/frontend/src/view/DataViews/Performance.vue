@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import Chart from '../../components/Chart.vue'
+import router from '../../router';
 const Page = {
 	TTFBTime: 158.91,
 	DomeTime: 1.52,
@@ -102,149 +103,114 @@ const tableData = [
 ]
 const PageChart = 'PageChart'
 const InterfaceChart = 'InterfaceChart'
+let empty = true
+let page = false
+const add = function () {
+	router.push('setting')
+}
 </script>
 
 <template>
 	<div>
-		<div class="ma">
-			<div class="title">
-				页面性能
+		<div v-if="page">
+			<div class="ma">
+				<div class="title">页面性能</div>
+				<el-row>
+					<el-col :span="8">
+						<el-card class="mal">
+							<span>TTFB平均时间</span>
+							<br />
+							<b class="fs">{{ Page.TTFBTime }}ms</b>
+						</el-card>
+					</el-col>
+					<el-col :span="8">
+						<el-card class="mal">
+							<span>Dom解析时间</span>
+							<br />
+							<b class="fs">{{ Page.DomeTime }}s</b>
+						</el-card>
+					</el-col>
+					<el-col :span="8">
+						<el-card class="mal">
+							<span>页面平均加载时间</span>
+							<br />
+							<b class="fs">{{ Page.LoadTime }}s</b>
+						</el-card>
+					</el-col>
+				</el-row>
 			</div>
-			<el-row>
-				<el-col :span="8">
-					<el-card class="mal">
-						<span>TTFB平均时间</span>
-						<br />
-						<b class="fs">{{ Page.TTFBTime }}ms</b>
-					</el-card>
-				</el-col>
-				<el-col :span="8">
-					<el-card class="mal">
-						<span>Dom解析时间</span>
-						<br />
-						<b class="fs">{{ Page.DomeTime }}s</b>
-					</el-card>
-				</el-col>
-				<el-col :span="8">
-					<el-card class="mal">
-						<span>页面平均加载时间</span>
-						<br />
-						<b class="fs">{{ Page.LoadTime }}s</b>
-					</el-card>
-				</el-col>
-			</el-row>
-		</div>
-		<div class="ma">
-			<el-row>
-				<el-col :span="8">
-					<el-card class="mal">
-						<Chart
-							:value="PageChart"
-							:option="PageOption"
-						></Chart>
-					</el-card>
-				</el-col>
-				<el-col :span="16">
-					<el-card class="mal">
-						<el-table
-							:data="tableData"
-							height="300"
-							style="width: 100%"
-						>
-							<el-table-column
-								prop="date"
-								label="Date"
-								width="180"
-							/>
-							<el-table-column
-								prop="name"
-								label="Name"
-								width="180"
-							/>
-							<el-table-column
-								prop="address"
-								label="Address"
-							/>
-							<el-table-column
-								prop="name"
-								label="Name"
-								width="180"
-							/>
-						</el-table>
-					</el-card>
-				</el-col>
-			</el-row>
-		</div>
+			<div class="ma">
+				<el-row>
+					<el-col :span="8">
+						<el-card class="mal">
+							<Chart :value="PageChart" :option="PageOption"></Chart>
+						</el-card>
+					</el-col>
+					<el-col :span="16">
+						<el-card class="mal">
+							<el-table :data="tableData" height="300" style="width: 100%">
+								<el-table-column prop="date" label="Date" width="180" />
+								<el-table-column prop="name" label="Name" width="180" />
+								<el-table-column prop="address" label="Address" />
+								<el-table-column prop="name" label="Name" width="180" />
+							</el-table>
+						</el-card>
+					</el-col>
+				</el-row>
+			</div>
 
-		<div class="ma">
-			<div class="title">
-				接口性能
+			<div class="ma">
+				<div class="title">接口性能</div>
+				<el-row>
+					<el-col :span="8">
+						<el-card class="mal">
+							<span>请求接口总数量</span>
+							<br />
+							<b class="fs">{{ Interface.Sum }}ms</b>
+						</el-card>
+					</el-col>
+					<el-col :span="8">
+						<el-card class="mal">
+							<span>接口请求平均耗时</span>
+							<br />
+							<b class="fs">{{ Interface.Time }}s</b>
+						</el-card>
+					</el-col>
+					<el-col :span="8">
+						<el-card class="mal">
+							<span>接口请求成功率</span>
+							<br />
+							<b class="fs">{{ Interface.SuccessRate }}s</b>
+						</el-card>
+					</el-col>
+				</el-row>
 			</div>
-			<el-row>
-				<el-col :span="8">
-					<el-card class="mal">
-						<span>请求接口总数量</span>
-						<br />
-						<b class="fs">{{ Interface.Sum }}ms</b>
-					</el-card>
-				</el-col>
-				<el-col :span="8">
-					<el-card class="mal">
-						<span>接口请求平均耗时</span>
-						<br />
-						<b class="fs">{{ Interface.Time }}s</b>
-					</el-card>
-				</el-col>
-				<el-col :span="8">
-					<el-card class="mal">
-						<span>接口请求成功率</span>
-						<br />
-						<b class="fs">{{ Interface.SuccessRate }}s</b>
-					</el-card>
-				</el-col>
-			</el-row>
+			<div class="ma">
+				<el-row>
+					<el-col :span="8">
+						<el-card class="mal">
+							<Chart :value="InterfaceChart" :option="InterfaceOption"></Chart>
+						</el-card>
+					</el-col>
+					<el-col :span="16">
+						<el-card class="mal">
+							<el-table :data="tableData" height="300" style="width: 100%">
+								<el-table-column prop="date" label="Date" width="180" />
+								<el-table-column prop="name" label="Name" width="180" />
+								<el-table-column prop="address" label="Address" />
+								<el-table-column prop="name" label="Name" width="180" />
+							</el-table>
+						</el-card>
+					</el-col>
+				</el-row>
+			</div>
 		</div>
-		<div class="ma">
-			<el-row>
-				<el-col :span="8">
-					<el-card class="mal">
-						<Chart
-							:value="InterfaceChart"
-							:option="InterfaceOption"
-						></Chart>
-					</el-card>
-				</el-col>
-				<el-col :span="16">
-					<el-card class="mal">
-						<el-table
-							:data="tableData"
-							height="300"
-							style="width: 100%"
-						>
-							<el-table-column
-								prop="date"
-								label="Date"
-								width="180"
-							/>
-							<el-table-column
-								prop="name"
-								label="Name"
-								width="180"
-							/>
-							<el-table-column
-								prop="address"
-								label="Address"
-							/>
-							<el-table-column
-								prop="name"
-								label="Name"
-								width="180"
-							/>
-						</el-table>
-					</el-card>
-				</el-col>
-			</el-row>
+		<div v-if="empty">
+		<el-empty :image-size="200" />
+		<div style="width: 100%; text-align: center">
+			<el-button type="primary" @click="add">前去添加项目</el-button>
 		</div>
+	</div>
 	</div>
 </template>
 

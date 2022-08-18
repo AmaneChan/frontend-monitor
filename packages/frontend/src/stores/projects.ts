@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-
+import { axios } from '../request.ts'
 export interface Project {
 	id: number
 	name: string
@@ -39,3 +39,15 @@ export const useProjectsStore = defineStore('projects', {
 		},
 	},
 })
+
+let token: string | null = localStorage.getItem('token') + '';
+	axios.get('/project', { headers: { Authorization: token } })
+	.then(function (res) {
+		console.log(res);
+		
+		if(res.code==200){
+			useProjectsStore().projects = res.data
+		}else{
+			useProjectsStore().projects = []
+		}
+	})
