@@ -1,21 +1,24 @@
 <script lang="ts" setup>
-import { log } from 'console';
-import { watch } from 'fs';
+import { log } from 'console'
+import { watch } from 'fs'
 import { ref } from 'vue'
-import { onBeforeRouteUpdate } from 'vue-router';
-import router from '../../router';
+import { onBeforeRouteUpdate } from 'vue-router'
+import router from '../../router'
 
 let index = ref('/overview')
-const IndexList = ['/overview','/exception','/behavior','/performance','/setting']
+const IndexList = ['/overview', '/exception', '/behavior', '/performance', '/setting']
 if (IndexList.includes(router.currentRoute.value.path)) {
 	index = ref(router.currentRoute.value.path)
 }
-
 </script>
 
 <template>
 	<div>
-		<el-menu :router="true" :default-active="router.currentRoute.value.path" class="menu">
+		<el-menu
+			:router="true"
+			:default-active="router.currentRoute.value.path"
+			class="menu"
+		>
 			<el-menu-item index="/overview">
 				<el-icon><Location /></el-icon>
 				<span>总览</span>

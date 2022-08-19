@@ -43,31 +43,6 @@ const dataExceptionType = ref({
 		},
 	],
 })
-
-const tableData = ref([] as any[])
-let id = 3
-// console.log(projectsStore.choose)
-if (projectsStore.choose > 0) {
-	id = projectsStore.choose
-}
-
-const limit = 10
-
-for (let index = 0; index < 4; index++) {
-	const type = index + 1
-	const result: ResponseResult = await axios.get('/exception', { params: { id, type, limit } })
-	dataExceptionType.value.series[0].data[index].value = result.data.length
-	for (let i = 0; i < result.data.length; i++) {
-		const table = {
-			date: '2016-05-03',
-			name: result.data[i].msg,
-			address: result.data[i].position,
-		}
-		tableData.value.push(table)
-	}
-	console.log(tableData)
-}
-
 const JSoption = {
 	title: {
 		text: 'JS错误',
@@ -76,19 +51,18 @@ const JSoption = {
 	},
 	xAxis: {
 		type: 'category',
-		data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+		data: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
 	},
 	yAxis: {
 		type: 'value',
 	},
 	series: [
 		{
-			data: [12, 32, 12, 32, 32, 4, 2],
+			data: [0, 0, 0, 0, 0, 0, 0],
 			type: 'line',
 		},
 	],
 }
-
 const InterfaceOption = {
 	title: {
 		text: '接口错误',
@@ -97,14 +71,14 @@ const InterfaceOption = {
 	},
 	xAxis: {
 		type: 'category',
-		data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+		data: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
 	},
 	yAxis: {
 		type: 'value',
 	},
 	series: [
 		{
-			data: [2, 4, 0, 12, 2, 12, 5],
+			data: [0, 0, 0, 0, 0, 0, 0],
 			type: 'line',
 		},
 	],
@@ -118,14 +92,14 @@ const StaticOption = {
 	},
 	xAxis: {
 		type: 'category',
-		data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+		data: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
 	},
 	yAxis: {
 		type: 'value',
 	},
 	series: [
 		{
-			data: [15, 23, 22, 21, 13, 14, 26],
+			data: [0, 0, 0, 0, 0, 0, 0],
 			type: 'line',
 		},
 	],
@@ -139,17 +113,61 @@ const CustomOption = {
 	},
 	xAxis: {
 		type: 'category',
-		data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+		data: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
 	},
 	yAxis: {
 		type: 'value',
 	},
 	series: [
 		{
-			data: [10, 20, 24, 28, 15, 17, 20],
+			data: [0, 0, 0, 0, 0, 0, 0],
 			type: 'line',
 		},
 	],
+}
+
+const tableData = ref([] as any[])
+
+const id = 3
+const limit = 10
+const weeks = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+for (let index = 0; index < 4; index++) {
+	const type = index + 1
+	const result: ResponseResult = await axios.get('/exception', { params: { id, type, limit } })
+	dataExceptionType.value.series[0].data[index].value = result.data.length
+	if (type === 1) {
+		for (let j = 0; j < result.data.length; j++) {
+			const inDay: number = new Date(result.data[j].time.split('T')[0]).getDay()
+			JSoption.series[0].data[inDay] = JSoption.series[0].data[inDay] + 1
+		}
+	} else
+	if (type === 2) {
+		for (let j = 0; j < result.data.length; j++) {
+			const inDay: number = new Date(result.data[j].time.split('T')[0]).getDay()
+			InterfaceOption.series[0].data[inDay] = JSoption.series[0].data[inDay] + 1
+		}
+	} else
+	if (type === 3) {
+		for (let j = 0; j < result.data.length; j++) {
+			const inDay: number = new Date(result.data[j].time.split('T')[0]).getDay()
+			StaticOption.series[0].data[inDay] = JSoption.series[0].data[inDay] + 1
+		}
+	}
+	if (type === 4) {
+		for (let j = 0; j < result.data.length; j++) {
+			const inDay: number = new Date(result.data[j].time.split('T')[0]).getDay()
+			CustomOption.series[0].data[inDay] = JSoption.series[0].data[inDay] + 1
+		}
+	}
+	for (let i = 0; i < result.data.length; i++) {
+		const table = {
+			date: result.data[i].time,
+			name: result.data[i].msg,
+			address: result.data[i].position,
+		}
+		tableData.value.push(table)
+	}
+	console.log(tableData)
 }
 
 const add = function () {
@@ -174,7 +192,7 @@ const add = function () {
 		class="container"
 	>
 		<el-row>
-			<el-col :span="12">
+			<el-col :span="24">
 				<el-card class="chartCard">
 					<VChart
 						:option="dataExceptionType"
@@ -182,7 +200,7 @@ const add = function () {
 					/>
 				</el-card>
 			</el-col>
-			<el-col :span="12">
+			<el-col :span="24">
 				<el-card class="chartCard">
 					<el-table
 						:data="tableData"
@@ -192,21 +210,16 @@ const add = function () {
 						<el-table-column
 							prop="date"
 							label="Date"
-							width="180"
+							width="250"
 						/>
 						<el-table-column
 							prop="name"
 							label="Name"
-							width="180"
 						/>
 						<el-table-column
 							prop="address"
 							label="Address"
-						/>
-						<el-table-column
-							prop="name"
-							label="Name"
-							width="180"
+							width="300"
 						/>
 					</el-table>
 				</el-card>
