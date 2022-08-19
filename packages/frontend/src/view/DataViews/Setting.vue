@@ -12,6 +12,8 @@ import router from '../../router'
 const projectsStore = useProjectsStore()
 const userStore = useUserStore()
 
+const username = userStore.username
+
 const projectName = ref('')
 
 async function addProject() {
@@ -29,121 +31,145 @@ function logout() {
 </script>
 
 <template>
-	<el-card style="margin: 1rem">
-		<template #header>
-			<div class="card-header">
-				<span>用户信息</span>
-			</div>
-		</template>
-		<div class="content">
-			<div>
-				<span class="valueContent">用户名:</span>
-				<span class="valueContent">{{ userStore.username }}</span>
-				<el-button
-					type="primary"
-					size="small"
-				>
-					修改
-				</el-button>
-			</div>
-			<div>
-				<span class="valueContent">密码:</span>
-				<span class="valueContent">********</span>
-				<el-button
-					type="primary"
-					size="small"
-				>
-					修改
-				</el-button>
-			</div>
-			<div>
-				<el-button
-					type="danger"
-					size="small"
-					@click="logout"
-				>
-					退出登录
-				</el-button>
-			</div>
-			<div>
-				<el-input
-					v-model="projectName"
-					placeholder="项目名称"
-					style="display: inline-block;"
-				/>
-				<el-button
-					type="danger"
-					size="small"
-					@click="addProject"
-				>
-					添加项目
-				</el-button>
-			</div>
-		</div>
-		<div class="title">
-			项目列表
-		</div>
-		<div class="content">
-			<el-table :data="projectsStore.projects">
-				<el-table-column
-					prop="id"
-					label="编号"
-				/>
-				<el-table-column
-					prop="name"
-					label="名称"
-				/>
-				<el-table-column
-					prop="key"
-					label="SDK Key"
-				>
-					<template #default="scope">
-						<div style="display: flex; align-items: center">
-							<span style="width: 6rem">
-								{{ scope.row.show ? scope.row.key : '******' }}
-							</span>
-							<el-button
-								type="primary"
-								size="small"
-								:icon="scope.row.show ? Hide : View"
-								@click="scope.row.show = !scope.row.show"
-							></el-button>
-							<el-button
-								type="primary"
-								size="small"
-								:icon="CopyDocument"
-							></el-button>
+	<div>
+		<el-row>
+			<el-col :span="10">
+				<el-card style="margin: 1rem;">
+					<template #header>
+						<div>
+							<span>用户信息</span>
 						</div>
 					</template>
-				</el-table-column>
-				<el-table-column label="操作">
-					<template #default>
-						<el-button
-							link
-							type="primary"
-							size="small"
-						>
-							选择项目
-						</el-button>
-						<el-button
-							link
-							type="primary"
-							size="small"
-						>
-							修改名称
-						</el-button>
-						<el-button
-							link
-							type="primary"
-							size="small"
-						>
-							删除项目
-						</el-button>
+					<div
+						class="content"
+						style="text-align: center;"
+					>
+						<div>
+							<span class="valueContent">用户名:</span>
+							<span class="valueContent">{{ username }}</span>
+							<el-button
+								type="primary"
+								size="small"
+							>
+								修改
+							</el-button>
+						</div>
+						<div>
+							<span class="valueContent">密码:</span>
+							<span class="valueContent">********</span>
+							<el-button
+								type="primary"
+								size="small"
+							>
+								修改
+							</el-button>
+						</div>
+						<div>
+							<el-button
+								type="danger"
+								size="small"
+								@click="logout"
+							>
+								退出登录
+							</el-button>
+						</div>
+						<div>
+							<el-input
+								v-model="projectName"
+								placeholder="项目名称"
+								style="display: inline-block;"
+							/>
+							<el-button
+								type="danger"
+								size="small"
+								@click="addProject"
+							>
+								添加项目
+							</el-button>
+						</div>
+					</div>
+				</el-card>
+			</el-col>
+			<el-col :span="14">
+				<el-card style="margin: 1rem;">
+					<template #header>
+						<div>
+							<span>公告栏</span>
+						</div>
 					</template>
-				</el-table-column>
-			</el-table>
-		</div>
-	</el-card>
+					<div style="height: 15rem;"></div>
+				</el-card>
+			</el-col>
+		</el-row>
+
+		<el-card style="margin: 1rem;">
+			<template #header>
+				<div>
+					<span>项目列表</span>
+				</div>
+			</template>
+			<div class="content">
+				<el-table :data="projectsStore.projects">
+					<el-table-column
+						prop="id"
+						label="编号"
+					/>
+					<el-table-column
+						prop="name"
+						label="名称"
+					/>
+					<el-table-column
+						prop="key"
+						label="SDK Key"
+					>
+						<template #default="scope">
+							<div style="display: flex; align-items: center">
+								<span style="width: 6rem">
+									{{ scope.row.show ? scope.row.key : '******' }}
+								</span>
+								<el-button
+									type="primary"
+									size="small"
+									:icon="scope.row.show ? Hide : View"
+									@click="scope.row.show = !scope.row.show"
+								></el-button>
+								<el-button
+									type="primary"
+									size="small"
+									:icon="CopyDocument"
+								></el-button>
+							</div>
+						</template>
+					</el-table-column>
+					<el-table-column label="操作">
+						<template #default>
+							<el-button
+								link
+								type="primary"
+								size="small"
+							>
+								选择项目
+							</el-button>
+							<el-button
+								link
+								type="primary"
+								size="small"
+							>
+								修改名称
+							</el-button>
+							<el-button
+								link
+								type="primary"
+								size="small"
+							>
+								删除项目
+							</el-button>
+						</template>
+					</el-table-column>
+				</el-table>
+			</div>
+		</el-card>
+	</div>
 </template>
 
 <style scoped>

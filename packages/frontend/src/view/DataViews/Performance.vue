@@ -155,15 +155,16 @@ const add = function () {
 		</div>
 		<div class="ma">
 			<el-row>
-				<el-col :span="8">
+				<el-col :span="10">
 					<el-card class="mal">
 						<VChart
 							class="chart"
 							:option="PageOption"
+							:autoresize="true"
 						></VChart>
 					</el-card>
 				</el-col>
-				<el-col :span="16">
+				<el-col :span="14">
 					<el-card class="mal">
 						<el-table
 							:data="tableData"
@@ -225,15 +226,16 @@ const add = function () {
 		</div>
 		<div class="ma">
 			<el-row>
-				<el-col :span="8">
+				<el-col :span="10">
 					<el-card class="mal">
 						<VChart
 							class="chart"
 							:option="InterfaceOption"
+							:autoresize="true"
 						></VChart>
 					</el-card>
 				</el-col>
-				<el-col :span="16">
+				<el-col :span="14">
 					<el-card class="mal">
 						<el-table
 							:data="tableData"

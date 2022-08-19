@@ -165,6 +165,7 @@ const add = function () {
 						<VChart
 							class="chart"
 							:option="opt1"
+							:autoresize="true"
 						></VChart>
 					</el-card>
 				</div>
@@ -190,6 +191,7 @@ const add = function () {
 			<VChart
 				class="chart"
 				:option="opt"
+				:autoresize="true"
 			></VChart>
 		</el-card>
 
@@ -199,6 +201,7 @@ const add = function () {
 					<VChart
 						class="chart"
 						:option="opt"
+						:autoresize="true"
 					></VChart>
 				</el-card>
 			</el-col>
@@ -207,6 +210,7 @@ const add = function () {
 					<VChart
 						class="chart"
 						:option="opt1"
+						:autoresize="true"
 					></VChart>
 				</el-card>
 			</el-col>

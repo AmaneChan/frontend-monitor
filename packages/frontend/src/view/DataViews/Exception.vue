@@ -128,34 +128,33 @@ const CustomOption = {
 
 const tableData = ref([] as any[])
 
-const id = 3
+const id = projectsStore.projects[projectsStore.choose].id
 const limit = 10
-const weeks = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 for (let index = 0; index < 4; index++) {
 	const type = index + 1
 	const result: ResponseResult = await axios.get('/exception', { params: { id, type, limit } })
 	dataExceptionType.value.series[0].data[index].value = result.data.length
 	if (type === 1) {
 		for (let j = 0; j < result.data.length; j++) {
-			const inDay: number = new Date(result.data[j].time.split('T')[0]).getDay()
+			const inDay: number = new Date(result.data[j].time).getDay()
 			JSoption.series[0].data[inDay] = JSoption.series[0].data[inDay] + 1
 		}
 	} else
 	if (type === 2) {
 		for (let j = 0; j < result.data.length; j++) {
-			const inDay: number = new Date(result.data[j].time.split('T')[0]).getDay()
+			const inDay: number = new Date(result.data[j].time).getDay()
 			InterfaceOption.series[0].data[inDay] = JSoption.series[0].data[inDay] + 1
 		}
 	} else
 	if (type === 3) {
 		for (let j = 0; j < result.data.length; j++) {
-			const inDay: number = new Date(result.data[j].time.split('T')[0]).getDay()
+			const inDay: number = new Date(result.data[j].time).getDay()
 			StaticOption.series[0].data[inDay] = JSoption.series[0].data[inDay] + 1
 		}
 	}
 	if (type === 4) {
 		for (let j = 0; j < result.data.length; j++) {
-			const inDay: number = new Date(result.data[j].time.split('T')[0]).getDay()
+			const inDay: number = new Date(result.data[j].time).getDay()
 			CustomOption.series[0].data[inDay] = JSoption.series[0].data[inDay] + 1
 		}
 	}
@@ -197,6 +196,7 @@ const add = function () {
 					<VChart
 						:option="dataExceptionType"
 						class="chart"
+						:autoresize="true"
 					/>
 				</el-card>
 			</el-col>
@@ -232,6 +232,7 @@ const add = function () {
 					<VChart
 						class="chart"
 						:option="JSoption"
+						:autoresize="true"
 					/>
 				</el-card>
 			</el-col>
@@ -240,6 +241,7 @@ const add = function () {
 					<VChart
 						class="chart"
 						:option="InterfaceOption"
+						:autoresize="true"
 					/>
 				</el-card>
 			</el-col>
@@ -248,6 +250,7 @@ const add = function () {
 					<VChart
 						class="chart"
 						:option="StaticOption"
+						:autoresize="true"
 					/>
 				</el-card>
 			</el-col>
@@ -256,6 +259,7 @@ const add = function () {
 					<VChart
 						class="chart"
 						:option="CustomOption"
+						:autoresize="true"
 					/>
 				</el-card>
 			</el-col>

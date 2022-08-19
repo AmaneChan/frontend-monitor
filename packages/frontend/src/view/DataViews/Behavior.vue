@@ -196,6 +196,7 @@ const add = function () {
 				<VChart
 					class="chart"
 					:option="uvOption"
+					:autoresize="true"
 				></VChart>
 			</el-card>
 		</div>
