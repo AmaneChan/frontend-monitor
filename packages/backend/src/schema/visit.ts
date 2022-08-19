@@ -49,9 +49,30 @@ const req_querystay_schema = {
 	},
 }
 
+const req_queryall = {
+	params: {
+		id,
+	},
+}
+
+const req_queryPopularUv = {
+	params: {
+		id,
+	},
+}
+
+const req_queryPopularPv = {
+	params: {
+		id,
+	},
+}
+
 export {
 	reg_addVisit_schema,
 	req_addstay_schema,
 	req_queryVisit_schema,
 	req_querystay_schema,
+	req_queryall,
+	req_queryPopularPv,
+	req_queryPopularUv,
 }
