@@ -16,18 +16,13 @@ const project: Person = {
 				return res.cc('key值错误等!', 400)
 			}
 			const sql = 'INSERT INTO perf_data SET ?'
-			const data: {
-				type: number
-				proj: number
-				from: string
-				value: number
-			} = {
+			db.query(sql, {
 				type: req.body.type,
 				proj: results[0].id,
 				from: req.body.from,
+				time: new Date(),
 				value: req.body.value,
-			}
-			db.query(sql, data, (err, results) => {
+			}, (err, results) => {
 				if (err) {
 					return res.cc(err, 500)
 				}
