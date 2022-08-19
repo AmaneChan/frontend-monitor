@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import VChart from 'vue-echarts'
 import router from '../../router'
+import type { ResponseResult } from '../../request.js'
 import { axios } from '../../request.js'
 
 import { useProjectsStore } from '../../stores/projects'
@@ -51,24 +52,17 @@ const limit = 10
 
 for (let index = 0; index < 4; index++) {
 	const type = index + 1
-	axios
-		.get('/exception', {
-			params: { id, type, limit },
-			headers: { Authorization: token },
-		})
-		.then((res) => {
-			console.log(res)
-			dataExceptionType.value.series[0].data[index].value = res.data.length
-			for (let i = 0; i < res.data.length; i++) {
-				const table = {
-					date: '2016-05-03',
-					name: res.data[i].msg,
-					address: res.data[i].position,
-				}
-				tableData.value.push(table)
-			}
-			console.log(tableData)
-		})
+	const result: ResponseResult = await axios.get('/exception', { params: { id, type, limit } })
+	dataExceptionType.value.series[0].data[index].value = result.data.length
+	for (let i = 0; i < result.data.length; i++) {
+		const table = {
+			date: '2016-05-03',
+			name: result.data[i].msg,
+			address: result.data[i].position,
+		}
+		tableData.value.push(table)
+	}
+	console.log(tableData)
 }
 
 const JSoption = {
