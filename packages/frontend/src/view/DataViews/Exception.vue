@@ -9,7 +9,6 @@ import { useProjectsStore } from '../../stores/projects'
 
 const projectsStore = useProjectsStore()
 
-const token: string | null = `${localStorage.getItem('token')}`
 const dataExceptionType = ref({
 	title: {
 		text: '异常类型',
