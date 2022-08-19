@@ -1,6 +1,11 @@
 <script lang="ts" setup>
 import Chart from '../../components/Chart.vue'
 import router from '../../router'
+
+import { useProjectsStore } from '../../stores/projects'
+
+const projectsStore = useProjectsStore()
+
 const Page = {
 	TTFBTime: 158.91,
 	DomeTime: 1.52,
@@ -103,14 +108,13 @@ const tableData = [
 ]
 const PageChart = 'PageChart'
 const InterfaceChart = 'InterfaceChart'
-const empty = true
 const add = function () {
 	router.push('setting')
 }
 </script>
 
 <template>
-	<div v-if="empty">
+	<div v-if="!projectsStore.hasProject">
 		<el-empty :image-size="200" />
 		<div style="width: 100%; text-align: center">
 			<el-button

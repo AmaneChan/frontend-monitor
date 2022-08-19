@@ -2,7 +2,9 @@
 import { ref } from 'vue'
 import Chart from '../../components/Chart.vue'
 import router from '../../router'
-import { axios } from '../../request.js'
+import { useProjectsStore } from '../../stores/projects'
+
+const projectsStore = useProjectsStore()
 
 const parentValue = ref('domid')
 const dom = ref('dom')
@@ -128,12 +130,10 @@ const opt1 = ref({
 const add = function () {
 	router.push('setting')
 }
-
-const empty = true
 </script>
 
 <template>
-	<div v-if="empty">
+	<div v-if="!projectsStore.hasProject">
 		<el-empty :image-size="200" />
 		<div style="width: 100%; text-align: center">
 			<el-button

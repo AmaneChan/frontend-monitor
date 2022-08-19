@@ -1,6 +1,16 @@
 <script lang="ts" setup>
+import { onMounted } from 'vue'
+import type { ResponseResult } from '../request.js'
+import { axios } from '../request.js'
+import { useProjectsStore } from '../stores/projects'
 import HeadMenu from './Home/HeadMenu.vue'
 import SideMenu from './Home/SideMenu.vue'
+
+const projectStore = useProjectsStore()
+
+onMounted(() => {
+	projectStore.updateProjects()
+})
 </script>
 
 <template>

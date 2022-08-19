@@ -3,6 +3,11 @@ import { ref } from 'vue'
 import VChart from 'vue-echarts'
 import router from '../../router'
 import { axios } from '../../request.js'
+
+import { useProjectsStore } from '../../stores/projects'
+
+const projectsStore = useProjectsStore()
+
 const token: string | null = `${localStorage.getItem('token')}`
 const dataExceptionType = ref({
 	title: {
@@ -157,7 +162,6 @@ const DomId = {
 	StaticException: 'StaticException',
 	CustomException: 'CustomException',
 }
-const empty = false
 
 const add = function () {
 	router.push('setting')
@@ -165,7 +169,7 @@ const add = function () {
 </script>
 
 <template>
-	<div v-if="empty">
+	<div v-if="!projectsStore.hasProject">
 		<el-empty :image-size="200" />
 		<div style="width: 100%; text-align: center">
 			<el-button

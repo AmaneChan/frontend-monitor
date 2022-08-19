@@ -10,25 +10,18 @@ import type { ResponseResult } from '../../request.js'
 import router from '../../router'
 
 const projectsStore = useProjectsStore()
+const userStore = useUserStore()
 
 const username = ref('')
-let userid = ''
-axios.get('/user/info')
-	.then((res) => {
-		console.log(res)
-		username.value = res.data.username
-		userid = res.data.id
-	})
 
-const name = ref('')
+const projectName = ref('')
 
 async function addProject() {
-	const result: ResponseResult = await axios.post('/project', { id: userid, name: name.value })
-	console.log(result)
+	const result: ResponseResult = await axios.post('/project', { id: userStore.id, name: projectName.value })
+	projectName.value = ''
+	projectsStore.updateProjects()
 	ElMessage.success(result.message)
 }
-
-const userStore = useUserStore()
 
 function logout() {
 	userStore.logout()
@@ -76,7 +69,7 @@ function logout() {
 			</div>
 			<div>
 				<el-input
-					v-model="name"
+					v-model="projectName"
 					placeholder="项目名称"
 					style="display: inline-block;"
 				/>

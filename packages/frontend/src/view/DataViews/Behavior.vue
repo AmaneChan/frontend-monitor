@@ -1,6 +1,10 @@
 <script lang="ts" setup>
 import Chart from '../../components/Chart.vue'
-import router from '../../router';
+import router from '../../router'
+import { useProjectsStore } from '../../stores/projects'
+
+const projectsStore = useProjectsStore()
+
 const tableData = [
 	{
 		userId: 'superd',
@@ -44,17 +48,21 @@ const uvOption = {
 		},
 	],
 }
-let empty = true
 const add = function () {
 	router.push('setting')
 }
 </script>
 
 <template>
-	<div v-if="empty">
+	<div v-if="!projectsStore.hasProject">
 		<el-empty :image-size="200" />
 		<div style="width: 100%; text-align: center">
-			<el-button type="primary" @click="add">前去添加项目</el-button>
+			<el-button
+				type="primary"
+				@click="add"
+			>
+				前去添加项目
+			</el-button>
 		</div>
 	</div>
 	<div v-else>
@@ -105,9 +113,18 @@ const add = function () {
 
 		<div class="userForm">
 			<el-card>
-				<el-table :data="tableData" style="width: 100%">
-					<el-table-column prop="userId" label="用户ID" />
-					<el-table-column prop="page" label="页面" />
+				<el-table
+					:data="tableData"
+					style="width: 100%"
+				>
+					<el-table-column
+						prop="userId"
+						label="用户ID"
+					/>
+					<el-table-column
+						prop="page"
+						label="页面"
+					/>
 					<el-table-column label="设备平台">
 						<svg
 							style="width: 15px; height: 15px; margin-right: 10px"
@@ -159,15 +176,27 @@ const add = function () {
 							/>
 						</svg>
 					</el-table-column>
-					<el-table-column prop="userIp" label="用户IP地址" />
-					<el-table-column prop="address" label="位置" />
-					<el-table-column prop="time" label="发生时间" />
+					<el-table-column
+						prop="userIp"
+						label="用户IP地址"
+					/>
+					<el-table-column
+						prop="address"
+						label="位置"
+					/>
+					<el-table-column
+						prop="time"
+						label="发生时间"
+					/>
 				</el-table>
 			</el-card>
 		</div>
 		<div class="userChart">
 			<el-card>
-				<Chart value="uvid" :option="uvOption"></Chart>
+				<Chart
+					value="uvid"
+					:option="uvOption"
+				></Chart>
 			</el-card>
 		</div>
 	</div>

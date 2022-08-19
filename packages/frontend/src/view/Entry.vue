@@ -6,6 +6,10 @@ import { axios } from '../request.js'
 import type { ResponseResult } from '../request.js'
 import router from '../router/index.js'
 
+import { useUserStore } from '../stores/user.js'
+
+const userStore = useUserStore()
+
 const signUpMode = ref(false)
 
 const inputContent = reactive({
@@ -24,11 +28,11 @@ async function login() {
 	const { username, pwd } = inputContent.login
 	const result: ResponseResult = await axios.post('/user/login', { username, pwd })
 	console.log(result)
-	if (result.code === 200) {
+	if (result.code === 200 && result.token) {
 		ElMessage.success(result.message)
-		localStorage.setItem('token', `${result.token}`)
+		userStore.login(result.token)
 		router.push({
-			path: '/setting',
+			path: '/',
 			replace: true,
 		})
 	} else {
