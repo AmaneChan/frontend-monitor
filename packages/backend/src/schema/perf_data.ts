@@ -13,7 +13,7 @@ import joi from 'joi'
 const key = joi.string().max(255).required()
 
 // 性能类型验证规则
-const type = joi.number().valid(1, 2, 3, 4, 5, 6).required()
+const type = joi.number().valid(1, 2, 3, 4, 5, 6, 7).required()
 
 // 请求页面来源URL
 const from = joi.string().required()
