@@ -4,6 +4,7 @@ import db from '../db/index.js'
 interface Person {
 	addexceptionData(req: any, res: any): void
 	queryexceptionData(req: any, res: any): void
+	queryRecentExceptionData(req: any, res: any): void
 }
 
 const project: Person = {
@@ -64,7 +65,7 @@ const project: Person = {
 
 					res.send({
 						code: 200,
-						message: '查询性能数据成功！',
+						message: '查询异常数据成功！',
 						data: results,
 					})
 				},
@@ -90,12 +91,33 @@ const project: Person = {
 
 					res.send({
 						code: 200,
-						message: '查询性能数据成功！',
+						message: '查询异常数据成功！',
 						data: results,
 					})
 				},
 			)
 		}
+	},
+	queryRecentExceptionData(req, res) {
+		const time = new Date()
+		const startTime = `${time.getFullYear()}-${time.getMonth() + 1}-${time.getDate() - 6}`
+		const endTime = `${time.getFullYear()}-${time.getMonth() + 1}-${time.getDate() + 1}`
+		let sql = 'SELECT id,type,time,msg,position FROM exception_data WHERE time BETWEEN ? AND ? AND proj=?'
+		const data = [startTime, endTime, req.query.id]
+		if (req.query.type) {
+			sql += ' AND type=?'
+			data.push(req.query.type)
+		}
+		db.query(sql, data, (err, results) => {
+			if (err) {
+				return res.cc(err, 500)
+			}
+			res.send({
+				code: 200,
+				message: '查询异常数据成功！',
+				data: results,
+			})
+		})
 	},
 }
 export default project

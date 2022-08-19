@@ -41,4 +41,11 @@ const req_queryexceptionData_schema = {
 	},
 }
 
-export { reg_addexceptionData_schema, req_queryexceptionData_schema }
+const req_queryRecentExceptionData_schema = {
+	query: {
+		id: joi.number().required(),
+		type: joi.number().valid(1, 2, 3, 4),
+	},
+}
+
+export { reg_addexceptionData_schema, req_queryexceptionData_schema, req_queryRecentExceptionData_schema }
