@@ -67,7 +67,6 @@ const project: Person = {
 						for (let i = 0; i < results.length; i++) {
 							add += results[i].value
 						}
-						console.log(add)
 						avg = add / results.length
 						res.send({
 							code: 200,
