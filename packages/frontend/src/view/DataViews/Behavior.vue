@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import Chart from '../../components/Chart.vue'
+import VChart from 'vue-echarts'
 import router from '../../router'
 import { useProjectsStore } from '../../stores/projects'
 
@@ -193,10 +193,10 @@ const add = function () {
 		</div>
 		<div class="userChart">
 			<el-card>
-				<Chart
-					value="uvid"
+				<VChart
+					class="chart"
 					:option="uvOption"
-				></Chart>
+				></VChart>
 			</el-card>
 		</div>
 	</div>
@@ -229,5 +229,8 @@ const add = function () {
 .userForm,
 .userChart {
 	margin: 1rem;
+}
+.chart {
+	height: 300px;
 }
 </style>

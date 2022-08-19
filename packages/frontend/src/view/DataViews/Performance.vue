@@ -1,7 +1,6 @@
 <script lang="ts" setup>
-import Chart from '../../components/Chart.vue'
+import VChart from 'vue-echarts'
 import router from '../../router'
-
 import { useProjectsStore } from '../../stores/projects'
 
 const projectsStore = useProjectsStore()
@@ -158,10 +157,10 @@ const add = function () {
 			<el-row>
 				<el-col :span="8">
 					<el-card class="mal">
-						<Chart
-							:value="PageChart"
+						<VChart
+							class="chart"
 							:option="PageOption"
-						></Chart>
+						></VChart>
 					</el-card>
 				</el-col>
 				<el-col :span="16">
@@ -228,10 +227,10 @@ const add = function () {
 			<el-row>
 				<el-col :span="8">
 					<el-card class="mal">
-						<Chart
-							:value="InterfaceChart"
+						<VChart
+							class="chart"
 							:option="InterfaceOption"
-						></Chart>
+						></VChart>
 					</el-card>
 				</el-col>
 				<el-col :span="16">
@@ -283,5 +282,8 @@ const add = function () {
 }
 .fs {
 	font-size: 2rem;
+}
+.chart {
+	height: 300px;
 }
 </style>

@@ -1,16 +1,10 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
-import Chart from '../../components/Chart.vue'
+import VChart from 'vue-echarts'
 import router from '../../router'
 import { useProjectsStore } from '../../stores/projects'
 
 const projectsStore = useProjectsStore()
-
-const parentValue = ref('domid')
-const dom = ref('dom')
-const dom1 = ref('dom1')
-const dom2 = ref('dom2')
-
 const opt = ref({
 	title: {
 		text: 'xx分析',
@@ -168,10 +162,10 @@ const add = function () {
 					style="margin-top: 16px"
 				>
 					<el-card>
-						<Chart
-							:value="dom"
+						<VChart
+							class="chart"
 							:option="opt1"
-						></Chart>
+						></VChart>
 					</el-card>
 				</div>
 			</el-col>
@@ -193,27 +187,27 @@ const add = function () {
 		</el-row>
 
 		<el-card class="box-card">
-			<Chart
-				:value="parentValue"
+			<VChart
+				class="chart"
 				:option="opt"
-			></Chart>
+			></VChart>
 		</el-card>
 
 		<el-row>
 			<el-col :span="12">
 				<el-card class="box-card">
-					<Chart
-						:value="dom1"
+					<VChart
+						class="chart"
 						:option="opt"
-					></Chart>
+					></VChart>
 				</el-card>
 			</el-col>
 			<el-col :span="12">
 				<el-card class="box-card">
-					<Chart
-						:value="dom2"
+					<VChart
+						class="chart"
 						:option="opt1"
-					></Chart>
+					></VChart>
 				</el-card>
 			</el-col>
 		</el-row>
@@ -223,5 +217,8 @@ const add = function () {
 <style scoped>
 .box-card {
 	margin: 1rem;
+}
+.chart {
+	height: 300px;
 }
 </style>

@@ -12,7 +12,7 @@ import router from '../../router'
 const projectsStore = useProjectsStore()
 const userStore = useUserStore()
 
-const username = ref('')
+const username = userStore.username
 
 const projectName = ref('')
 

@@ -45,8 +45,12 @@ const dataExceptionType = ref({
 })
 
 const tableData = ref([] as any[])
+let id = 3
+// console.log(projectsStore.choose)
+if (projectsStore.choose > 0) {
+	id = projectsStore.choose
+}
 
-const id = 1
 const limit = 10
 
 for (let index = 0; index < 4; index++) {
@@ -146,14 +150,6 @@ const CustomOption = {
 			type: 'line',
 		},
 	],
-}
-
-const DomId = {
-	ExceptionOver: 'ExceptionOver',
-	JSException: 'JSException',
-	InterfaceException: 'InterfaceException',
-	StaticException: 'StaticException',
-	CustomException: 'CustomException',
 }
 
 const add = function () {

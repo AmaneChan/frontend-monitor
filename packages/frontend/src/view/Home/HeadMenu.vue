@@ -20,7 +20,7 @@ const onMenuSelected = (menuItem: MenuItemRegistered) => {
 <template>
 	<div>
 		<el-menu
-			default-active="-1"
+			:default-active="projectsStore.choose"
 			class="el-menu-demo"
 			mode="horizontal"
 			:ellipsis="false"
