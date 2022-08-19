@@ -1,14 +1,18 @@
 <script lang="ts" setup>
 import VChart from 'vue-echarts'
 import router from '../../router'
+import { axios } from '../../request.js'
 import { useProjectsStore } from '../../stores/projects'
 
 const projectsStore = useProjectsStore()
 
 const Page = {
-	TTFBTime: 158.91,
-	DomeTime: 1.52,
-	LoadTime: 1.2,
+	FP: 158.91,
+	FCP: 1.52,
+	DOM_Ready: 1.2,
+	DOM_Complete:2,
+	DOM_Interactive:1,
+	LCP:3
 }
 const Interface = {
 	Sum: 156,
@@ -110,6 +114,42 @@ const InterfaceChart = 'InterfaceChart'
 const add = function () {
 	router.push('setting')
 }
+const id = 7
+const limit = 10
+const page = 0
+const token: string | null = `${localStorage.getItem('token')}`
+
+for (let index = 0; index < 6; index++){
+	const type = index + 1
+	await axios
+		.get('/perf',{
+		params: { id, type, page ,limit },
+		headers: { Authorization: token },
+		})
+		.then((res)=>{
+			console.log(res)
+			if(index === 0){
+				Page['FP'] = res.data.avg
+			}else 
+			if(index===1){
+				Page['FCP'] = res.data.avg
+			}else 
+			if(index===2){
+				Page['DOM_Ready'] = res.data.avg
+			}else 
+			if(index===3){
+				Page['DOM_Complete'] = res.data.avg
+			}else 
+			if(index===4){
+				Page['DOM_Interactive'] = res.data.avg
+			}else 
+			if(index===5){
+				Page['LCP'] = res.data.avg
+			}
+			
+		})
+		
+}
 </script>
 
 <template>
@@ -132,38 +172,65 @@ const add = function () {
 			<el-row>
 				<el-col :span="8">
 					<el-card class="mal">
-						<span>TTFB平均时间</span>
+						<span>平均FP</span>
 						<br />
-						<b class="fs">{{ Page.TTFBTime }}ms</b>
+						<b class="fs">{{ Page.FP }}</b>
 					</el-card>
 				</el-col>
 				<el-col :span="8">
 					<el-card class="mal">
-						<span>Dom解析时间</span>
+						<span>平均FCP</span>
 						<br />
-						<b class="fs">{{ Page.DomeTime }}s</b>
+						<b class="fs">{{ Page.FCP }}</b>
 					</el-card>
 				</el-col>
 				<el-col :span="8">
 					<el-card class="mal">
-						<span>页面平均加载时间</span>
+						<span>平均DOM_Ready</span>
 						<br />
-						<b class="fs">{{ Page.LoadTime }}s</b>
+						<b class="fs">{{ Page.DOM_Ready }}</b>
+					</el-card>
+				</el-col>
+			</el-row>
+		</div>
+		<div class="ma">
+			
+			<el-row>
+				<el-col :span="8">
+					<el-card class="mal">
+						<span>平均DOM_Complete</span>
+						<br />
+						<b class="fs">{{ Page.DOM_Complete }}</b>
+					</el-card>
+				</el-col>
+				<el-col :span="8">
+					<el-card class="mal">
+						<span>平均DOM_Interactive</span>
+						<br />
+						<b class="fs">{{ Page.DOM_Interactive }}</b>
+					</el-card>
+				</el-col>
+				<el-col :span="8">
+					<el-card class="mal">
+						<span>平均LCP</span>
+						<br />
+						<b class="fs">{{ Page.LCP }}</b>
 					</el-card>
 				</el-col>
 			</el-row>
 		</div>
 		<div class="ma">
 			<el-row>
-				<el-col :span="8">
+				<el-col :span="10">
 					<el-card class="mal">
 						<VChart
 							class="chart"
 							:option="PageOption"
+							:autoresize="true"
 						></VChart>
 					</el-card>
 				</el-col>
-				<el-col :span="16">
+				<el-col :span="14">
 					<el-card class="mal">
 						<el-table
 							:data="tableData"
@@ -225,15 +292,16 @@ const add = function () {
 		</div>
 		<div class="ma">
 			<el-row>
-				<el-col :span="8">
+				<el-col :span="10">
 					<el-card class="mal">
 						<VChart
 							class="chart"
 							:option="InterfaceOption"
+							:autoresize="true"
 						></VChart>
 					</el-card>
 				</el-col>
-				<el-col :span="16">
+				<el-col :span="14">
 					<el-card class="mal">
 						<el-table
 							:data="tableData"

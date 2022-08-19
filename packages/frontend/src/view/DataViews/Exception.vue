@@ -134,6 +134,7 @@ const weeks = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 for (let index = 0; index < 4; index++) {
 	const type = index + 1
 	const result: ResponseResult = await axios.get('/exception', { params: { id, type, limit } })
+	console.log(result)
 	dataExceptionType.value.series[0].data[index].value = result.data.length
 	if (type === 1) {
 		for (let j = 0; j < result.data.length; j++) {
