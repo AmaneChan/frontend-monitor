@@ -44,25 +44,25 @@ const req_queryVisit_schema = {
 }
 
 const req_querystay_schema = {
-	params: {
+	query: {
 		id,
 	},
 }
 
 const req_queryall = {
-	params: {
+	query: {
 		id,
 	},
 }
 
 const req_queryPopularUv = {
-	params: {
+	query: {
 		id,
 	},
 }
 
 const req_queryPopularPv = {
-	params: {
+	query: {
 		id,
 	},
 }
