@@ -24,7 +24,7 @@ const pageVisit: Person = {
 				= 'SELECT count FROM visit_history WHERE day=? AND proj=? AND ip=? AND `from`=?'
 			db.query(
 				sql,
-				[date(false), results_1[0].id, req.body.ip, req.body.from],
+				[date(false), results_1[0].id, req.ip, req.body.from],
 				(err, results_2) => {
 					if (err) {
 						return res.cc(err, 500)
@@ -36,7 +36,7 @@ const pageVisit: Person = {
 							{
 								proj: results_1[0].id,
 								from: req.body.from,
-								ip: req.body.ip,
+								ip: req.ip,
 								day: date(false),
 								count: 1,
 							},
@@ -60,7 +60,7 @@ const pageVisit: Person = {
 								++results_2[0].count,
 								date(false),
 								results_1[0].id,
-								req.body.ip,
+								req.ip,
 								req.body.from,
 							],
 							(err, results) => {

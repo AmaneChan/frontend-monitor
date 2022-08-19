@@ -24,7 +24,6 @@ const id = joi.number().min(1).required()
 const reg_addVisit_schema = {
 	body: {
 		key,
-		ip,
 		from,
 	},
 }
