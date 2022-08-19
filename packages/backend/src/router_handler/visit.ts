@@ -118,7 +118,7 @@ const pageVisit: Person = {
 	},
 	querystay(req, res) {
 		const sql
-			= 'SELECT `from`, duration FROM page_visit  WHERE proj=? ORDER BY duration DESC'
+			= 'SELECT `from`, AVG(`duration`) AS duration FROM page_visit WHERE proj=1 GROUP BY `from` ORDER BY duration DESC'
 		db.query(sql, req.params.id, (err, results) => {
 			if (err) {
 				return res.cc(err, 500)
