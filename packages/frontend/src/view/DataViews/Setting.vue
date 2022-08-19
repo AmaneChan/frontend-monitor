@@ -12,8 +12,6 @@ import router from '../../router'
 const projectsStore = useProjectsStore()
 const userStore = useUserStore()
 
-const username = userStore.username
-
 const projectName = ref('')
 
 async function addProject() {
@@ -40,7 +38,7 @@ function logout() {
 		<div class="content">
 			<div>
 				<span class="valueContent">用户名:</span>
-				<span class="valueContent">{{ username }}</span>
+				<span class="valueContent">{{ userStore.username }}</span>
 				<el-button
 					type="primary"
 					size="small"

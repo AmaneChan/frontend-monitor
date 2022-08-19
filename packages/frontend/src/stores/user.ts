@@ -26,11 +26,6 @@ export const useUserStore = defineStore('userStore', {
 			const result: ResponseResult = await axios.get('/user/info')
 			this.id = result.data.id
 			this.username = result.data.username
-			// const projResult: ResponseResult = await axios.get('/project')
-			// console.log(projResult)
-			// if (projResult.data) {
-			// 	projectsStore.setProjects(projResult.data)
-			// }
 		},
 	},
 })
