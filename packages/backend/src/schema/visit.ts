@@ -44,7 +44,7 @@ const req_queryVisit_schema = {
 }
 
 const req_querystay_schema = {
-	query: {
+	params: {
 		id,
 	},
 }
