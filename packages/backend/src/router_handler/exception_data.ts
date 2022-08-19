@@ -70,8 +70,7 @@ const project: Person = {
 					})
 				},
 			)
-		}
-		else {
+		} else {
 			sql
 				= 'SELECT id,type,time,msg,position FROM exception_data  WHERE proj=?  LIMIT ?,? '
 			db.query(

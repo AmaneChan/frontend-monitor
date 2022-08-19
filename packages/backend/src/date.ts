@@ -19,8 +19,7 @@ const date = function (format: boolean) {
 		const str
 			= `${year}-${month}-${day} ${hour}:${min}:${s}`
 		return str
-	}
-	else {
+	} else {
 		const str = `${year}-${month}-${day}`
 		return str
 	}

@@ -50,8 +50,7 @@ const pageVisit: Person = {
 								res.cc('插入成功！', 200)
 							},
 						)
-					}
-					else {
+					} else {
 						const sql
 							= 'UPDATE visit_history SET count=? WHERE day=? AND proj=? AND ip=? AND `from`=? '
 						db.query(
@@ -117,21 +116,35 @@ const pageVisit: Person = {
 		})
 	},
 	querystay(req, res) {
-		const sql
-			= 'SELECT `from`, AVG(`duration`) AS duration FROM page_visit WHERE proj=1 GROUP BY `from` ORDER BY duration DESC'
-		db.query(sql, req.params.id, (err, results) => {
-			if (err) {
-				return res.cc(err, 500)
-			}
-			if (results.length === 0) {
-				return res.cc('暂无数据！', 400)
-			}
-			res.send({
-				code: 200,
-				message: '查询停留记录成功！',
-				data: results,
+		if (!req.query.all) {
+			db.query('SELECT `from`, AVG(`duration`) AS duration FROM page_visit WHERE proj=1 GROUP BY `from` ORDER BY duration DESC', req.params.id, (err, results) => {
+				if (err) {
+					return res.cc(err, 500)
+				}
+				if (results.length === 0) {
+					return res.cc('暂无数据！', 400)
+				}
+				res.send({
+					code: 200,
+					message: '查询停留记录成功！',
+					data: results,
+				})
 			})
-		})
+		} else {
+			db.query('SELECT AVG(`duration`) AS duration FROM page_visit WHERE proj=1 ORDER BY duration DESC', req.params.id, (err, results) => {
+				if (err) {
+					return res.cc(err, 500)
+				}
+				if (results.length === 0) {
+					return res.cc('暂无数据！', 400)
+				}
+				res.send({
+					code: 200,
+					message: '查询停留记录成功！',
+					data: results[0].duration,
+				})
+			})
+		}
 	},
 }
 export default pageVisit
