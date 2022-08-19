@@ -141,8 +141,8 @@ const pageVisit: Person = {
 				if (err) {
 					return res.cc(err, 500)
 				}
-				if (results.length !== 1) {
-					return res.cc('key值错误等!', 400)
+				if (results.length === 0) {
+					return res.cc('暂无数据！', 400)
 				}
 				res.send({
 					code: 200,
@@ -160,8 +160,8 @@ const pageVisit: Person = {
 				if (err) {
 					return res.cc(err, 500)
 				}
-				if (results.length !== 1) {
-					return res.cc('key值错误等!', 400)
+				if (results.length === 0) {
+					return res.cc('暂无数据！', 400)
 				}
 				res.send({
 					code: 200,
