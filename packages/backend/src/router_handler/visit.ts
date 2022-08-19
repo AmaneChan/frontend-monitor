@@ -240,7 +240,7 @@ const pageVisit: Person = {
 				return res.cc(err, 500)
 			}
 			const pv = r1[0].pv
-			db.query('SELECT count(*) AS uv FROM visit_history WHERE AND proj=?', [id], (err, r2) => {
+			db.query('SELECT count(*) AS uv FROM visit_history WHERE proj=?', [id], (err, r2) => {
 				if (err) {
 					return res.cc(err, 500)
 				}
