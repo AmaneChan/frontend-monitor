@@ -55,10 +55,9 @@ onMounted(() => {
 		ElMessage.success('已成功复制到剪贴板')
 	})
 
-	clip.on('error', (e) => {
+	clip.on('error', (e: { action: any; trigger: any }) => {
 		console.error('Action:', e.action)
 		console.error('Trigger:', e.trigger)
-
 		ElMessage.error('你的浏览器暂不支持，请手动复制')
 	})
 })
