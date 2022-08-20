@@ -12,7 +12,7 @@ const attr = ele.getAttribute('report')
 if (!attr) {
 	throw new Error('Cannot get report address from monitor script tag')
 }
-const url = cleanUrl(attr)
+const reportUrl = cleanUrl(attr)
 
 function cleanUrl(url: string) {
 	if (url.endsWith('/')) {
@@ -39,7 +39,7 @@ enum PerformanceType {
 }
 
 function report(url: string, datas: Record<string, string>) {
-	fetch(`${url}`, {
+	fetch(`${reportUrl}${url}`, {
 		method: 'POST',
 		body: new URLSearchParams(datas),
 		headers: {
@@ -48,13 +48,15 @@ function report(url: string, datas: Record<string, string>) {
 	})
 }
 
+/* ======================异常捕获====================== */
+
 // 捕获 js 异常 (Error 以及语法错误)
 window.onerror = (msg, url, row, col, error) => {
-	// console.log('JS 异常')
-	// console.log('Error message', msg)
-	// console.log('Error url', url)
-	// console.log('Error position', `${row}:${col}`)
-	// console.log(error)
+	console.log('JS 异常')
+	console.log('Error message', msg)
+	console.log('Error url', url)
+	console.log('Error position', `${row}:${col}`)
+	console.log(error)
 	report('/exception', {
 		key,
 		type: Exception.JavaScript.toString(),
@@ -70,7 +72,7 @@ window.addEventListener(
 		if (isJsError(e)) {
 			return
 		}
-		// console.log('资源加载错误', e)
+		console.log('资源加载错误', e)
 		let position = e.target.src
 		if (!position) {
 			const node = e.path[0] as HTMLElement
@@ -103,7 +105,7 @@ function isJsError(e: any) {
 
 // 未捕获 promise 异常
 window.addEventListener('unhandledrejection', (e) => {
-	// console.log('未捕获 promise 异常', e)
+	console.log('未捕获 promise 异常', e)
 	report('/exception', {
 		key,
 		type: Exception.Promise.toString(),
@@ -119,7 +121,7 @@ window.fetch = function (...args) {
 		return
 	}
 	return originFetch.apply(this, args).catch((e) => {
-		// console.log('fetch 异常', e)
+		console.log('fetch 异常', e)
 		report('/exception', {
 			key,
 			type: Exception.Fetch.toString(),
@@ -129,32 +131,10 @@ window.fetch = function (...args) {
 	})
 }
 
-window.onload = () => {
-	// console.log('onload', performance.now())
-	const datas = performance.getEntriesByType('paint')
-
-	const fp = datas.find(e => e.name === 'first-paint')
-	const fcp = datas.find(e => e.name === 'first-contentful-paint')
-	// console.log(
-	// 	`FP: ${performance.now() - fp!.startTime}  FCP: ${performance.now() - fcp!.startTime
-	// 	}`,
-	// )
-	report('/perf', {
-		key,
-		type: PerformanceType.FP.toString(),
-		from: location.href,
-		value: (performance.now() - fp!.startTime).toString(),
-	})
-	report('/perf', {
-		key,
-		type: PerformanceType.FCP.toString(),
-		from: location.href,
-		value: (performance.now() - fcp!.startTime).toString(),
-	})
-}
+/* ======================性能数据====================== */
 
 window.addEventListener('DOMContentLoaded', () => {
-	// console.log('DOMContentLoaded', performance.now())
+	console.log('DOMContentLoaded', performance.now())
 	report('/perf', {
 		key,
 		type: PerformanceType.DOMReady.toString(),
@@ -165,7 +145,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 new PerformanceObserver((entries, observer) => {
 	for (const entry of entries.getEntries()) {
-		// console.log('LCP:', entry.startTime, entry)
+		console.log('LCP:', entry.startTime, entry)
 		report('/perf', {
 			key,
 			type: PerformanceType.LCP.toString(),
@@ -176,19 +156,53 @@ new PerformanceObserver((entries, observer) => {
 	observer.disconnect()
 }).observe({ type: 'largest-contentful-paint', buffered: true })
 
-new PerformanceObserver((entries, observer) => {
-	const { domInteractive: domi, fetchStart: fs, domComplete: domc, domContentLoadedEventStart: doms } = performance.timing
-	// console.log('交互', domi - fs)
-	// console.log('DOMComplete', domc - doms)
-	if (domi && fs && domc && doms) {
-		observer.disconnect()
+new PerformanceObserver((_entries, _observer) => {
+	console.log('onload', performance.now())
+	const datas = performance.getEntriesByType('paint')
+
+	const fp = datas.find(e => e.name === 'first-paint')
+	const fcp = datas.find(e => e.name === 'first-contentful-paint')
+	console.log('fp, fcp', fp, fcp)
+	if (fp) {
+		console.log(`FP: ${fp.startTime}`)
+		report('/perf', {
+			key,
+			type: PerformanceType.FP.toString(),
+			from: location.href,
+			value: (performance.now() - fp.startTime).toString(),
+		})
+	}
+	if (fcp) {
+		console.log(`FCP: ${fcp.startTime}`)
+		report('/perf', {
+			key,
+			type: PerformanceType.FCP.toString(),
+			from: location.href,
+			value: (performance.now() - fcp.startTime).toString(),
+		})
+	}
+}).observe({ type: 'paint', buffered: true })
+
+watchWhile(() => {
+	const { domInteractive: domi, fetchStart: fs } = performance.timing
+	const stop = domi !== 0 && fs !== 0
+	if (stop) {
+		console.log('交互', domi - fs)
 		report('/perf', {
 			key,
 			type: PerformanceType.DOMInteractive.toString(),
 			from: location.href,
 			value: (domi - fs).toString(),
 		})
-		observer.disconnect()
+	}
+	return stop
+})
+
+watchWhile(() => {
+	const { domComplete: domc, domContentLoadedEventStart: doms } = performance.timing
+	const stop = domc !== 0 && doms !== 0
+	if (stop) {
+		console.log('DOMComplete', domc - doms)
 		report('/perf', {
 			key,
 			type: PerformanceType.DOMComplete.toString(),
@@ -196,7 +210,19 @@ new PerformanceObserver((entries, observer) => {
 			value: (domc - doms).toString(),
 		})
 	}
-}).observe({ type: 'paint', buffered: true })
+	return stop
+})
+
+// stop while get true
+function watchWhile(func: Function) {
+	const interval = setInterval(() => {
+		if (func()) {
+			clearInterval(interval)
+		}
+	}, 3000)
+}
+
+/* ======================浏览计时====================== */
 
 const time = { total: 0, last: 0 }
 
@@ -214,14 +240,15 @@ function resetTime() {
 }
 
 window.addEventListener('unload', () => {
-	navigator.sendBeacon(url, JSON.stringify({ msg: 'aaaa' }))
-	resetTime()
-	report('/behavior/stay', {
+	navigator.sendBeacon(`${reportUrl}/behavior/stay`, new URLSearchParams({
 		key,
 		from: location.href,
 		duration: time.total.toString(),
-	})
+	}))
+	resetTime()
 })
+
+/* ======================访问记录====================== */
 
 report('/behavior/visit', {
 	key,
