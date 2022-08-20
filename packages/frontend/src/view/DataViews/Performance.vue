@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import VChart from 'vue-echarts'
-import { onMounted } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import router from '../../router'
 import type { ResponseResult } from '../../request.js'
 import { axios } from '../../request.js'
@@ -8,14 +8,14 @@ import { useProjectsStore } from '../../stores/projects'
 
 const projectsStore = useProjectsStore()
 
-const Page = {
+const Page = reactive({
 	FP: 158.91,
 	FCP: 1.52,
 	DOM_Ready: 1.2,
 	DOM_Complete: 2,
 	DOM_Interactive: 1,
 	LCP: 3,
-}
+})
 
 const Interface = {
 	Sum: 156,
@@ -265,7 +265,7 @@ onMounted(async () => {
 		const result: ResponseResult = await axios.get('/perf', { params: { id, type, page, limit } })
 		console.log(result)
 		if (type === 1) {
-			Page.FP = result.data.avg.toFixed(2)
+			Page.FP = result.data.avg
 			for (let i = 0; i < result.data.list.length; i++) {
 				if (result.data.list[i].value <= 100) {
 					FPOption.series[0].data[0].value++
@@ -281,7 +281,7 @@ onMounted(async () => {
 			}
 		} else
 		if (type === 2) {
-			Page.FCP = result.data.avg.toFixed(2)
+			Page.FCP = result.data.avg
 			for (let i = 0; i < result.data.list.length; i++) {
 				if (result.data.list[i].value <= 100) {
 					FCPOption.series[0].data[0].value++
@@ -297,13 +297,13 @@ onMounted(async () => {
 			}
 		} else
 		if (type === 3) {
-			Page.DOM_Ready = result.data.avg.toFixed(2)
+			Page.DOM_Ready = result.data.avg
 		} else
 		if (type === 5) {
-			Page.DOM_Complete = result.data.avg.toFixed(2)
+			Page.DOM_Complete = result.data.avg
 		} else
 		if (type === 6) {
-			Page.DOM_Interactive = result.data.avg.toFixed(2)
+			Page.DOM_Interactive = result.data.avg
 			for (let i = 0; i < result.data.list.length; i++) {
 				if (result.data.list[i].value <= 500) {
 					InteractiveOption.series[0].data[0].value++
@@ -319,7 +319,7 @@ onMounted(async () => {
 			}
 		} else
 		if (type === 7) {
-			Page.LCP = result.data.avg.toFixed(2)
+			Page.LCP = result.data.avg
 			for (let i = 0; i < result.data.list.length; i++) {
 				if (result.data.list[i].value <= 200) {
 					LCPOption.series[0].data[0].value++
