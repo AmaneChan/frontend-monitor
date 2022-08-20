@@ -52,11 +52,11 @@ function report(url: string, datas: Record<string, string>) {
 
 // 捕获 js 异常 (Error 以及语法错误)
 window.onerror = (msg, url, row, col, error) => {
-	console.log('JS 异常')
-	console.log('Error message', msg)
-	console.log('Error url', url)
-	console.log('Error position', `${row}:${col}`)
-	console.log(error)
+	// console.log('JS 异常')
+	// console.log('Error message', msg)
+	// console.log('Error url', url)
+	// console.log('Error position', `${row}:${col}`)
+	// console.log(error)
 	report('/exception', {
 		key,
 		type: Exception.JavaScript.toString(),
@@ -72,7 +72,7 @@ window.addEventListener(
 		if (isJsError(e)) {
 			return
 		}
-		console.log('资源加载错误', e)
+		// console.log('资源加载错误', e)
 		let position = e.target.src
 		if (!position) {
 			const node = e.path[0] as HTMLElement
@@ -105,7 +105,7 @@ function isJsError(e: any) {
 
 // 未捕获 promise 异常
 window.addEventListener('unhandledrejection', (e) => {
-	console.log('未捕获 promise 异常', e)
+	// console.log('未捕获 promise 异常', e)
 	report('/exception', {
 		key,
 		type: Exception.Promise.toString(),
@@ -121,7 +121,7 @@ window.fetch = function (...args) {
 		return
 	}
 	return originFetch.apply(this, args).catch((e) => {
-		console.log('fetch 异常', e)
+		// console.log('fetch 异常', e)
 		report('/exception', {
 			key,
 			type: Exception.Fetch.toString(),
@@ -134,7 +134,7 @@ window.fetch = function (...args) {
 /* ======================性能数据====================== */
 
 window.addEventListener('DOMContentLoaded', () => {
-	console.log('DOMContentLoaded', performance.now())
+	// console.log('DOMContentLoaded', performance.now())
 	report('/perf', {
 		key,
 		type: PerformanceType.DOMReady.toString(),
@@ -145,7 +145,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 new PerformanceObserver((entries, observer) => {
 	for (const entry of entries.getEntries()) {
-		console.log('LCP:', entry.startTime, entry)
+		// console.log('LCP:', entry.startTime, entry)
 		report('/perf', {
 			key,
 			type: PerformanceType.LCP.toString(),
@@ -157,14 +157,14 @@ new PerformanceObserver((entries, observer) => {
 }).observe({ type: 'largest-contentful-paint', buffered: true })
 
 new PerformanceObserver((_entries, _observer) => {
-	console.log('onload', performance.now())
+	// console.log('onload', performance.now())
 	const datas = performance.getEntriesByType('paint')
 
 	const fp = datas.find(e => e.name === 'first-paint')
 	const fcp = datas.find(e => e.name === 'first-contentful-paint')
-	console.log('fp, fcp', fp, fcp)
+	// console.log('fp, fcp', fp, fcp)
 	if (fp) {
-		console.log(`FP: ${fp.startTime}`)
+		// console.log(`FP: ${fp.startTime}`)
 		report('/perf', {
 			key,
 			type: PerformanceType.FP.toString(),
@@ -173,7 +173,7 @@ new PerformanceObserver((_entries, _observer) => {
 		})
 	}
 	if (fcp) {
-		console.log(`FCP: ${fcp.startTime}`)
+		// console.log(`FCP: ${fcp.startTime}`)
 		report('/perf', {
 			key,
 			type: PerformanceType.FCP.toString(),
@@ -187,7 +187,7 @@ watchWhile(() => {
 	const { domInteractive: domi, fetchStart: fs } = performance.timing
 	const stop = domi !== 0 && fs !== 0
 	if (stop) {
-		console.log('交互', domi - fs)
+		// console.log('交互', domi - fs)
 		report('/perf', {
 			key,
 			type: PerformanceType.DOMInteractive.toString(),
@@ -202,7 +202,7 @@ watchWhile(() => {
 	const { domComplete: domc, domContentLoadedEventStart: doms } = performance.timing
 	const stop = domc !== 0 && doms !== 0
 	if (stop) {
-		console.log('DOMComplete', domc - doms)
+		// console.log('DOMComplete', domc - doms)
 		report('/perf', {
 			key,
 			type: PerformanceType.DOMComplete.toString(),
