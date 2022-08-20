@@ -3,7 +3,6 @@ import { computed, onMounted, ref } from 'vue'
 import { CopyDocument, Hide, View } from '@element-plus/icons-vue'
 import ClipboardJS from 'clipboard'
 import { ElMessage } from 'element-plus'
-import type { Project } from '../../stores/projects'
 import { useProjectsStore } from '../../stores/projects'
 import { useUserStore } from '../../stores/user'
 import { axios } from '../../request.js'
@@ -40,7 +39,7 @@ const currentKey = computed(() => {
 })
 
 const scriptWithKey = computed(() => {
-	return `<script src="http://120.79.27.173:2349/index.js" id="__monitor" key="${currentKey.value}"><\/script>`
+	return `<script crossorigin report="http://120.79.27.173:2336" src="http://120.79.27.173:2349/index.js" id="__monitor" key="${currentKey.value}"><\/script>`
 })
 
 onMounted(() => {
