@@ -1,13 +1,12 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 import VChart from 'vue-echarts'
-import { number } from 'echarts'
 import router from '../../router'
 import { useProjectsStore } from '../../stores/projects'
 import { axios } from '../../request.js'
 const projectsStore = useProjectsStore()
 
-const tableData = [
+const tableData = ref([
 	{
 		userId: 'superd',
 		page: 'https://www.baidu.com',
@@ -29,8 +28,8 @@ const tableData = [
 		address: '中国 重庆 重庆市',
 		time: '2021-02-22 10:20:19',
 	},
-]
-const uvOption = {
+])
+const uvOption = ref({
 	title: {
 		text: '浏览量变化趋势',
 		subtext: 'Fake Data',
@@ -49,20 +48,20 @@ const uvOption = {
 			type: 'line',
 		},
 	],
-}
+})
 const add = function () {
 	router.push('setting')
 }
 
 const id = 3
-const Pdata = { PV: 0, UV: 0, Dtime: 0 }
+const Pdata = ref({ PV: 0, UV: 0, time: 0 })
 async function Bget(id: number) {
-	const PVreq = await axios.get(`/behavior/visit/pv?id=${id}`)
-	Pdata.PV = PVreq.data[new Date().getDay()]
-	const UVreq = await axios.get(`/behavior/visit/uv?id=${id}`)
-	Pdata.UV = UVreq.data[new Date().getDay()]
-	const Staytime = await axios.get('/behavior/stay/3')
-	Pdata.Dtime = Staytime.data.toFixed(2)
+	const pvreq = await axios.get(`/behavior/visit/pv?id=${id}`)
+	Pdata.value.PV = pvreq.data[new Date().getDay()]
+	const uvreq = await axios.get(`/behavior/visit/uv?id=${id}`)
+	Pdata.value.UV = uvreq.data[new Date().getDay()]
+	const staytime = await axios.get('/behavior/stay/3')
+	Pdata.value.time = staytime.data.toFixed(2)
 }
 
 onMounted(() => {
@@ -119,7 +118,7 @@ onMounted(() => {
 					</div>
 				</template>
 				<div class="card">
-					<p>{{ Pdata.Dtime }}</p>
+					<p>{{ Pdata.time }}</p>
 					<div class="compare">
 						较昨日
 						<span style="color: red">16.83% ↑</span>

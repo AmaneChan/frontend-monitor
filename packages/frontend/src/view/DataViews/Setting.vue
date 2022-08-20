@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { CopyDocument, Hide, View } from '@element-plus/icons-vue'
 
 import { ElMessage } from 'element-plus'
@@ -12,8 +12,6 @@ import router from '../../router'
 const projectsStore = useProjectsStore()
 const userStore = useUserStore()
 
-const username = userStore.username
-
 const projectName = ref('')
 
 async function addProject() {
@@ -21,6 +19,7 @@ async function addProject() {
 	projectName.value = ''
 	projectsStore.updateProjects()
 	ElMessage.success(result.message)
+	console.log(result.message)
 }
 
 function logout() {
@@ -46,7 +45,7 @@ function logout() {
 					>
 						<div>
 							<span class="valueContent">用户名:</span>
-							<span class="valueContent">{{ username }}</span>
+							<span class="valueContent">{{ userStore.username }}</span>
 							<el-button
 								type="primary"
 								size="small"
