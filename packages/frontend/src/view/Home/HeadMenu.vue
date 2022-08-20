@@ -15,12 +15,19 @@ const onMenuSelected = (menuItem: MenuItemRegistered) => {
 	console.log(menuItem.index)
 	projectsStore.choose = parseInt(menuItem.index)
 }
+
+const activeMenu = computed(() => {
+	if (projectsStore.choose === -1) {
+		return '0'
+	}
+	return projectsStore.choose.toString()
+})
 </script>
 
 <template>
 	<div>
 		<el-menu
-			:default-active="projectsStore.choose"
+			:default-active="activeMenu"
 			class="el-menu-demo"
 			mode="horizontal"
 			:ellipsis="false"
