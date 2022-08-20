@@ -35,7 +35,7 @@ const project: Person = {
 	},
 	queryperfData(req, res) {
 		const sql
-			= ' SELECT `from`, value FROM perf_data  WHERE proj=? AND type=? LIMIT ?,? '
+			= ' SELECT `from`, value FROM perf_data  WHERE proj=? AND type=? ORDER BY value DESC LIMIT ?,? '
 		db.query(
 			sql,
 			[
