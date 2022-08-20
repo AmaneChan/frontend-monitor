@@ -135,38 +135,55 @@ async function Eget(id: number, limit: number) {
 	for (let index = 0; index < 4; index++) {
 		const type = index + 1
 		const result: ResponseResult = await axios.get('/exception', { params: { id, type, limit } })
-		dataExceptionType.value.series[0].data[index].value = result.data.length
-		if (type === 1) {
-			for (let j = 0; j < result.data.length; j++) {
-				const inDay: number = new Date(result.data[j].time).getDay()
-				JSoption.value.series[0].data[inDay] = JSoption.value.series[0].data[inDay] + 1
+		if (result.data) {
+			dataExceptionType.value.series[0].data[index].value = result.data.length
+			if (type === 1) {
+				for (let j = 0; j < result.data.length; j++) {
+					const inDay: number = new Date(result.data[j].time).getDay()
+					JSoption.value.series[0].data[inDay] = JSoption.value.series[0].data[inDay] + 1
+				}
+			} else
+			if (type === 2) {
+				for (let j = 0; j < result.data.length; j++) {
+					const inDay: number = new Date(result.data[j].time).getDay()
+					InterfaceOption.value.series[0].data[inDay] = InterfaceOption.value.series[0].data[inDay] + 1
+				}
+			} else
+			if (type === 3) {
+				for (let j = 0; j < result.data.length; j++) {
+					const inDay: number = new Date(result.data[j].time).getDay()
+					StaticOption.value.series[0].data[inDay] = StaticOption.value.series[0].data[inDay] + 1
+				}
+			} else
+			if (type === 4) {
+				for (let j = 0; j < result.data.length; j++) {
+					const inDay: number = new Date(result.data[j].time).getDay()
+					CustomOption.value.series[0].data[inDay] = CustomOption.value.series[0].data[inDay] + 1
+				}
 			}
-		} else
-		if (type === 2) {
-			for (let j = 0; j < result.data.length; j++) {
-				const inDay: number = new Date(result.data[j].time).getDay()
-				InterfaceOption.value.series[0].data[inDay] = InterfaceOption.value.series[0].data[inDay] + 1
+			for (let i = 0; i < result.data.length; i++) {
+				const table = {
+					tiem: result.data[i].time,
+					data: result.data[i].msg,
+					ip: result.data[i].position,
+				}
+				tableData.value.push(table)
 			}
-		} else
-		if (type === 3) {
-			for (let j = 0; j < result.data.length; j++) {
-				const inDay: number = new Date(result.data[j].time).getDay()
-				StaticOption.value.series[0].data[inDay] = StaticOption.value.series[0].data[inDay] + 1
+		} else {
+			dataExceptionType.value.series[0].data[index].value = 0
+			for (let index = 0; index < JSoption.value.series[0].data.length; index++) {
+				JSoption.value.series[0].data[index] = 0
 			}
-		} else
-		if (type === 4) {
-			for (let j = 0; j < result.data.length; j++) {
-				const inDay: number = new Date(result.data[j].time).getDay()
-				CustomOption.value.series[0].data[inDay] = CustomOption.value.series[0].data[inDay] + 1
+			for (let index = 0; index < JSoption.value.series[0].data.length; index++) {
+				InterfaceOption.value.series[0].data[index] = 0
 			}
-		}
-		for (let i = 0; i < result.data.length; i++) {
-			const table = {
-				tiem: result.data[i].time,
-				data: result.data[i].msg,
-				ip: result.data[i].position,
+			for (let index = 0; index < JSoption.value.series[0].data.length; index++) {
+				StaticOption.value.series[0].data[index] = 0
 			}
-			tableData.value.push(table)
+			for (let index = 0; index < JSoption.value.series[0].data.length; index++) {
+				CustomOption.value.series[0].data[index] = 0
+			}
+			tableData.value = []
 		}
 		// const Ereq: ResponseResult = await axios.get('/exception/recent', { params: { id, type } })
 		// for (let index = 0; index < Ereq.data.length; index++) {
