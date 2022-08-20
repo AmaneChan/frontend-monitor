@@ -16,11 +16,13 @@ const Page = {
 	DOM_Interactive: 1,
 	LCP: 3,
 }
+
 const Interface = {
 	Sum: 156,
 	Time: 124.22,
 	SuccessRate: 100,
 }
+
 const FPOption = {
 	title: {
 		text: 'FP分段数量占比',
@@ -252,50 +254,48 @@ const tableData = [
 const add = function () {
 	router.push('setting')
 }
+
 const id = 3
 const limit = 10
 const page = 0
 
-for (let index = 0; index < 7; index++) {
-	const type = index + 1
-	await axios
-		.get('/perf', {
-			params: { id, type, page, limit },
-		})
-		.then((res) => {
-			console.log(res)
-			if (type === 1) {
-				Page.FP = res.data.avg.toFixed(2)
-				for (let i = 0; i < res.data.list.length; i++) {
-					if (res.data.list[i].value <= 100) { FPOption.series[0].data[0].value++ } else if (res.data.list[i].value <= 300) { FPOption.series[0].data[1].value++ } else if (res.data.list[i].value <= 500) { FPOption.series[0].data[2].value++ } else if (res.data.list[i].value <= 1000) { FPOption.series[0].data[3].value++ } else { FPOption.series[0].data[4].value++ }
-				}
-			} else
-			if (type === 2) {
-				Page.FCP = res.data.avg.toFixed(2)
-				for (let i = 0; i < res.data.list.length; i++) {
-					if (res.data.list[i].value <= 100) { FCPOption.series[0].data[0].value++ } else if (res.data.list[i].value <= 300) { FCPOption.series[0].data[1].value++ } else if (res.data.list[i].value <= 500) { FCPOption.series[0].data[2].value++ } else if (res.data.list[i].value <= 1000) { FCPOption.series[0].data[3].value++ } else { FCPOption.series[0].data[4].value++ }
-				}
-			} else
-			if (type === 3) {
-				Page.DOM_Ready = res.data.avg.toFixed(2)
-			} else
-			if (type === 5) {
-				Page.DOM_Complete = res.data.avg.toFixed(2)
-			} else
-			if (type === 6) {
-				Page.DOM_Interactive = res.data.avg.toFixed(2)
-				for (let i = 0; i < res.data.list.length; i++) {
-					if (res.data.list[i].value <= 500) { InteractiveOption.series[0].data[0].value++ } else if (res.data.list[i].value <= 1000) { InteractiveOption.series[0].data[1].value++ } else if (res.data.list[i].value <= 2000) { InteractiveOption.series[0].data[2].value++ } else if (res.data.list[i].value <= 5000) { InteractiveOption.series[0].data[3].value++ } else { InteractiveOption.series[0].data[4].value++ }
-				}
-			} else
-			if (type === 7) {
-				Page.LCP = res.data.avg.toFixed(2)
-				for (let i = 0; i < res.data.list.length; i++) {
-					if (res.data.list[i].value <= 200) { LCPOption.series[0].data[0].value++ } else if (res.data.list[i].value <= 500) { LCPOption.series[0].data[1].value++ } else if (res.data.list[i].value <= 1000) { LCPOption.series[0].data[2].value++ } else { LCPOption.series[0].data[3].value++ }
-				}
+onMounted(async () => {
+	for (let index = 0; index < 7; index++) {
+		const type = index + 1
+		const result: ResponseResult = await axios.get('/perf', { params: { id, type, page, limit } })
+		console.log(result)
+		if (type === 1) {
+			Page.FP = result.data.avg.toFixed(2)
+			for (let i = 0; i < result.data.list.length; i++) {
+				if (result.data.list[i].value <= 100) { FPOption.series[0].data[0].value++ } else if (result.data.list[i].value <= 300) { FPOption.series[0].data[1].value++ } else if (result.data.list[i].value <= 500) { FPOption.series[0].data[2].value++ } else if (result.data.list[i].value <= 1000) { FPOption.series[0].data[3].value++ } else { FPOption.series[0].data[4].value++ }
 			}
-		})
-}
+		} else
+		if (type === 2) {
+			Page.FCP = result.data.avg.toFixed(2)
+			for (let i = 0; i < result.data.list.length; i++) {
+				if (result.data.list[i].value <= 100) { FCPOption.series[0].data[0].value++ } else if (result.data.list[i].value <= 300) { FCPOption.series[0].data[1].value++ } else if (result.data.list[i].value <= 500) { FCPOption.series[0].data[2].value++ } else if (result.data.list[i].value <= 1000) { FCPOption.series[0].data[3].value++ } else { FCPOption.series[0].data[4].value++ }
+			}
+		} else
+		if (type === 3) {
+			Page.DOM_Ready = result.data.avg.toFixed(2)
+		} else
+		if (type === 5) {
+			Page.DOM_Complete = result.data.avg.toFixed(2)
+		} else
+		if (type === 6) {
+			Page.DOM_Interactive = result.data.avg.toFixed(2)
+			for (let i = 0; i < result.data.list.length; i++) {
+				if (result.data.list[i].value <= 500) { InteractiveOption.series[0].data[0].value++ } else if (result.data.list[i].value <= 1000) { InteractiveOption.series[0].data[1].value++ } else if (result.data.list[i].value <= 2000) { InteractiveOption.series[0].data[2].value++ } else if (result.data.list[i].value <= 5000) { InteractiveOption.series[0].data[3].value++ } else { InteractiveOption.series[0].data[4].value++ }
+			}
+		} else
+		if (type === 7) {
+			Page.LCP = result.data.avg.toFixed(2)
+			for (let i = 0; i < result.data.list.length; i++) {
+				if (result.data.list[i].value <= 200) { LCPOption.series[0].data[0].value++ } else if (result.data.list[i].value <= 500) { LCPOption.series[0].data[1].value++ } else if (result.data.list[i].value <= 1000) { LCPOption.series[0].data[2].value++ } else { LCPOption.series[0].data[3].value++ }
+			}
+		}
+	}
+})
 </script>
 
 <template>
