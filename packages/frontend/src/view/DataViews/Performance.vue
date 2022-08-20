@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import VChart from 'vue-echarts'
-import { onMounted } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import router from '../../router'
 import type { ResponseResult } from '../../request.js'
 import { axios } from '../../request.js'
@@ -8,19 +8,157 @@ import { useProjectsStore } from '../../stores/projects'
 
 const projectsStore = useProjectsStore()
 
-const Page = {
+const Page = reactive({
 	FP: 158.91,
 	FCP: 1.52,
 	DOM_Ready: 1.2,
 	DOM_Complete: 2,
 	DOM_Interactive: 1,
 	LCP: 3,
-}
+})
+
 const Interface = {
 	Sum: 156,
 	Time: 124.22,
 	SuccessRate: 100,
 }
+
+const FPOption = {
+	title: {
+		text: 'FP分段数量占比',
+		left: 'center',
+	},
+	tooltip: {
+		trigger: 'item',
+	},
+	legend: {
+		orient: 'vertical',
+		left: 'left',
+	},
+	series: [
+		{
+			name: 'Access From',
+			type: 'pie',
+			radius: '50%',
+			data: [
+				{ value: 0, name: '<100ms' },
+				{ value: 0, name: '100-300ms' },
+				{ value: 0, name: '300-500ms' },
+				{ value: 0, name: '500-1000ms' },
+				{ value: 0, name: '>1000ms' },
+			],
+			emphasis: {
+				itemStyle: {
+					shadowBlur: 10,
+					shadowOffsetX: 0,
+					shadowColor: 'rgba(0, 0, 0, 0.5)',
+				},
+			},
+		},
+	],
+}
+const FCPOption = {
+	title: {
+		text: 'FCP分段数量占比',
+		left: 'center',
+	},
+	tooltip: {
+		trigger: 'item',
+	},
+	legend: {
+		orient: 'vertical',
+		left: 'left',
+	},
+	series: [
+		{
+			name: 'Access From',
+			type: 'pie',
+			radius: '50%',
+			data: [
+				{ value: 0, name: '<100ms' },
+				{ value: 0, name: '100-300ms' },
+				{ value: 0, name: '300-500ms' },
+				{ value: 0, name: '500-1000ms' },
+				{ value: 0, name: '>1000ms' },
+			],
+			emphasis: {
+				itemStyle: {
+					shadowBlur: 10,
+					shadowOffsetX: 0,
+					shadowColor: 'rgba(0, 0, 0, 0.5)',
+				},
+			},
+		},
+	],
+}
+const InteractiveOption = {
+	title: {
+		text: 'DOM_Interactive分段数量占比',
+		left: 'center',
+	},
+	tooltip: {
+		trigger: 'item',
+	},
+	legend: {
+		orient: 'vertical',
+		left: 'left',
+	},
+	series: [
+		{
+			name: 'Access From',
+			type: 'pie',
+			radius: '50%',
+			data: [
+				{ value: 0, name: '<500ms' },
+				{ value: 0, name: '500-1000ms' },
+				{ value: 0, name: '1000-2000ms' },
+				{ value: 0, name: '2000-5000ms' },
+				{ value: 0, name: '>5000ms' },
+			],
+			emphasis: {
+				itemStyle: {
+					shadowBlur: 10,
+					shadowOffsetX: 0,
+					shadowColor: 'rgba(0, 0, 0, 0.5)',
+				},
+			},
+		},
+	],
+}
+const LCPOption = {
+	title: {
+		text: 'LCP分段数量占比',
+		left: 'center',
+	},
+	tooltip: {
+		trigger: 'item',
+	},
+	legend: {
+		orient: 'vertical',
+		left: 'left',
+	},
+	series: [
+		{
+			name: 'Access From',
+			type: 'pie',
+			radius: '50%',
+			data: [
+				{ value: 0, name: '<200ms' },
+				{ value: 0, name: '200-500ms' },
+				{ value: 0, name: '500-1000ms' },
+				{ value: 0, name: '>1000ms' },
+			],
+			emphasis: {
+				itemStyle: {
+					shadowBlur: 10,
+					shadowOffsetX: 0,
+					shadowColor: 'rgba(0, 0, 0, 0.5)',
+				},
+			},
+		},
+	],
+}
+
 const PageOption = {
 	title: {
 		text: '页面加载耗时分段数量占比',
@@ -55,6 +193,7 @@ const PageOption = {
 		},
 	],
 }
+
 const InterfaceOption = {
 	title: {
 		text: '接口请求耗时分段数量占比',
@@ -115,31 +254,83 @@ const tableData = [
 const add = function () {
 	router.push('setting')
 }
+
 const id = 3
 const limit = 10
 const page = 0
 
 onMounted(async () => {
-	for (let index = 0; index < 6; index++) {
+	for (let index = 0; index < 7; index++) {
 		const type = index + 1
 		const result: ResponseResult = await axios.get('/perf', { params: { id, type, page, limit } })
-		if (index === 0) {
+		console.log(result)
+		if (type === 1) {
 			Page.FP = result.data.avg
+			for (let i = 0; i < result.data.list.length; i++) {
+				if (result.data.list[i].value <= 100) {
+					FPOption.series[0].data[0].value++
+				} else if (result.data.list[i].value <= 300) {
+					FPOption.series[0].data[1].value++
+				} else if (result.data.list[i].value <= 500) {
+					FPOption.series[0].data[2].value++
+				} else if (result.data.list[i].value <= 1000) {
+					FPOption.series[0].data[3].value++
+				} else {
+					FPOption.series[0].data[4].value++
+				}
+			}
 		} else
-		if (index === 1) {
+		if (type === 2) {
 			Page.FCP = result.data.avg
+			for (let i = 0; i < result.data.list.length; i++) {
+				if (result.data.list[i].value <= 100) {
+					FCPOption.series[0].data[0].value++
+				} else if (result.data.list[i].value <= 300) {
+					FCPOption.series[0].data[1].value++
+				} else if (result.data.list[i].value <= 500) {
+					FCPOption.series[0].data[2].value++
+				} else if (result.data.list[i].value <= 1000) {
+					FCPOption.series[0].data[3].value++
+				} else {
+					FCPOption.series[0].data[4].value++
+				}
+			}
 		} else
-		if (index === 2) {
+		if (type === 3) {
 			Page.DOM_Ready = result.data.avg
 		} else
-		if (index === 3) {
+		if (type === 5) {
 			Page.DOM_Complete = result.data.avg
 		} else
-		if (index === 4) {
+		if (type === 6) {
 			Page.DOM_Interactive = result.data.avg
+			for (let i = 0; i < result.data.list.length; i++) {
+				if (result.data.list[i].value <= 500) {
+					InteractiveOption.series[0].data[0].value++
+				} else if (result.data.list[i].value <= 1000) {
+					InteractiveOption.series[0].data[1].value++
+				} else if (result.data.list[i].value <= 2000) {
+					InteractiveOption.series[0].data[2].value++
+				} else if (result.data.list[i].value <= 5000) {
+					InteractiveOption.series[0].data[3].value++
+				} else {
+					InteractiveOption.series[0].data[4].value++
+				}
+			}
 		} else
-		if (index === 5) {
+		if (type === 7) {
 			Page.LCP = result.data.avg
+			for (let i = 0; i < result.data.list.length; i++) {
+				if (result.data.list[i].value <= 200) {
+					LCPOption.series[0].data[0].value++
+				} else if (result.data.list[i].value <= 500) {
+					LCPOption.series[0].data[1].value++
+				} else if (result.data.list[i].value <= 1000) {
+					LCPOption.series[0].data[2].value++
+				} else {
+					LCPOption.series[0].data[3].value++
+				}
+			}
 		}
 	}
 })
@@ -211,6 +402,51 @@ onMounted(async () => {
 				</el-col>
 			</el-row>
 		</div>
+		<div class="ma">
+			<el-row>
+				<el-col :span="12">
+					<el-card class="mal">
+						<VChart
+							class="chart"
+							:option="FPOption"
+							:autoresize="true"
+						></VChart>
+					</el-card>
+				</el-col>
+				<el-col :span="12">
+					<el-card class="mal">
+						<VChart
+							class="chart"
+							:option="FCPOption"
+							:autoresize="true"
+						></VChart>
+					</el-card>
+				</el-col>
+			</el-row>
+		</div>
+		<div class="ma">
+			<el-row>
+				<el-col :span="12">
+					<el-card class="mal">
+						<VChart
+							class="chart"
+							:option="InteractiveOption"
+							:autoresize="true"
+						></VChart>
+					</el-card>
+				</el-col>
+				<el-col :span="12">
+					<el-card class="mal">
+						<VChart
+							class="chart"
+							:option="LCPOption"
+							:autoresize="true"
+						></VChart>
+					</el-card>
+				</el-col>
+			</el-row>
+		</div>
+		<!-- e -->
 		<div class="ma">
 			<el-row>
 				<el-col :span="10">
@@ -337,12 +573,15 @@ onMounted(async () => {
 .ma {
 	margin: 1rem;
 }
+
 .mal {
 	margin-right: 0.5rem;
 }
+
 .fs {
 	font-size: 2rem;
 }
+
 .chart {
 	height: 300px;
 }
