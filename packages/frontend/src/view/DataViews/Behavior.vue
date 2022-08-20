@@ -260,12 +260,12 @@ onMounted(() => {
 <style scoped>
 .box-card {
 	width: 30%;
-	margin: 1rem;
+	margin: .5rem 0;
 }
 
 .cardList {
 	display: flex;
-	justify-content: space-around;
+	justify-content: space-between;
 }
 
 .compare {
@@ -279,12 +279,9 @@ onMounted(() => {
 
 .card p {
 	font-size: 50px;
-	margin: 10px 0;
+	/* margin: 10px 0; */
 }
-.userForm,
-.userChart {
-	margin: 1rem;
-}
+
 .chart {
 	height: 300px;
 }
