@@ -267,13 +267,33 @@ onMounted(async () => {
 		if (type === 1) {
 			Page.FP = result.data.avg.toFixed(2)
 			for (let i = 0; i < result.data.list.length; i++) {
-				if (result.data.list[i].value <= 100) { FPOption.series[0].data[0].value++ } else if (result.data.list[i].value <= 300) { FPOption.series[0].data[1].value++ } else if (result.data.list[i].value <= 500) { FPOption.series[0].data[2].value++ } else if (result.data.list[i].value <= 1000) { FPOption.series[0].data[3].value++ } else { FPOption.series[0].data[4].value++ }
+				if (result.data.list[i].value <= 100) {
+					FPOption.series[0].data[0].value++
+				} else if (result.data.list[i].value <= 300) {
+					FPOption.series[0].data[1].value++
+				} else if (result.data.list[i].value <= 500) {
+					FPOption.series[0].data[2].value++
+				} else if (result.data.list[i].value <= 1000) {
+					FPOption.series[0].data[3].value++
+				} else {
+					FPOption.series[0].data[4].value++
+				}
 			}
 		} else
 		if (type === 2) {
 			Page.FCP = result.data.avg.toFixed(2)
 			for (let i = 0; i < result.data.list.length; i++) {
-				if (result.data.list[i].value <= 100) { FCPOption.series[0].data[0].value++ } else if (result.data.list[i].value <= 300) { FCPOption.series[0].data[1].value++ } else if (result.data.list[i].value <= 500) { FCPOption.series[0].data[2].value++ } else if (result.data.list[i].value <= 1000) { FCPOption.series[0].data[3].value++ } else { FCPOption.series[0].data[4].value++ }
+				if (result.data.list[i].value <= 100) {
+					FCPOption.series[0].data[0].value++
+				} else if (result.data.list[i].value <= 300) {
+					FCPOption.series[0].data[1].value++
+				} else if (result.data.list[i].value <= 500) {
+					FCPOption.series[0].data[2].value++
+				} else if (result.data.list[i].value <= 1000) {
+					FCPOption.series[0].data[3].value++
+				} else {
+					FCPOption.series[0].data[4].value++
+				}
 			}
 		} else
 		if (type === 3) {
@@ -285,13 +305,31 @@ onMounted(async () => {
 		if (type === 6) {
 			Page.DOM_Interactive = result.data.avg.toFixed(2)
 			for (let i = 0; i < result.data.list.length; i++) {
-				if (result.data.list[i].value <= 500) { InteractiveOption.series[0].data[0].value++ } else if (result.data.list[i].value <= 1000) { InteractiveOption.series[0].data[1].value++ } else if (result.data.list[i].value <= 2000) { InteractiveOption.series[0].data[2].value++ } else if (result.data.list[i].value <= 5000) { InteractiveOption.series[0].data[3].value++ } else { InteractiveOption.series[0].data[4].value++ }
+				if (result.data.list[i].value <= 500) {
+					InteractiveOption.series[0].data[0].value++
+				} else if (result.data.list[i].value <= 1000) {
+					InteractiveOption.series[0].data[1].value++
+				} else if (result.data.list[i].value <= 2000) {
+					InteractiveOption.series[0].data[2].value++
+				} else if (result.data.list[i].value <= 5000) {
+					InteractiveOption.series[0].data[3].value++
+				} else {
+					InteractiveOption.series[0].data[4].value++
+				}
 			}
 		} else
 		if (type === 7) {
 			Page.LCP = result.data.avg.toFixed(2)
 			for (let i = 0; i < result.data.list.length; i++) {
-				if (result.data.list[i].value <= 200) { LCPOption.series[0].data[0].value++ } else if (result.data.list[i].value <= 500) { LCPOption.series[0].data[1].value++ } else if (result.data.list[i].value <= 1000) { LCPOption.series[0].data[2].value++ } else { LCPOption.series[0].data[3].value++ }
+				if (result.data.list[i].value <= 200) {
+					LCPOption.series[0].data[0].value++
+				} else if (result.data.list[i].value <= 500) {
+					LCPOption.series[0].data[1].value++
+				} else if (result.data.list[i].value <= 1000) {
+					LCPOption.series[0].data[2].value++
+				} else {
+					LCPOption.series[0].data[3].value++
+				}
 			}
 		}
 	}
