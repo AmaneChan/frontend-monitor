@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 import VChart from 'vue-echarts'
+import { number } from 'echarts'
 import router from '../../router'
 import { useProjectsStore } from '../../stores/projects'
 import { axios } from '../../request.js'
@@ -55,12 +56,18 @@ const add = function () {
 
 const id = 3
 const Pdata = { PV: 0, UV: 0, Dtime: 0 }
-const PVreq = await axios.get(`/behavior/visit/pv?id=${id}`)
-Pdata.PV = PVreq.data[new Date().getDay()]
-const UVreq = await axios.get(`/behavior/visit/uv?id=${id}`)
-Pdata.UV = UVreq.data[new Date().getDay()]
-const Staytime = await axios.get('/behavior/stay/3')
-Pdata.Dtime = Staytime.data.toFixed(2)
+async function Bget(id: number) {
+	const PVreq = await axios.get(`/behavior/visit/pv?id=${id}`)
+	Pdata.PV = PVreq.data[new Date().getDay()]
+	const UVreq = await axios.get(`/behavior/visit/uv?id=${id}`)
+	Pdata.UV = UVreq.data[new Date().getDay()]
+	const Staytime = await axios.get('/behavior/stay/3')
+	Pdata.Dtime = Staytime.data.toFixed(2)
+}
+
+onMounted(() => {
+	Bget(id)
+})
 </script>
 
 <template>
