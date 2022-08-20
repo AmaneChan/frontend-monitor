@@ -10,9 +10,9 @@ const Page = {
 	FP: 158.91,
 	FCP: 1.52,
 	DOM_Ready: 1.2,
-	DOM_Complete:2,
-	DOM_Interactive:1,
-	LCP:3
+	DOM_Complete: 2,
+	DOM_Interactive: 1,
+	LCP: 3,
 }
 const Interface = {
 	Sum: 156,
@@ -114,41 +114,39 @@ const InterfaceChart = 'InterfaceChart'
 const add = function () {
 	router.push('setting')
 }
-const id = 7
+const id = 3
 const limit = 10
 const page = 0
 const token: string | null = `${localStorage.getItem('token')}`
 
-for (let index = 0; index < 6; index++){
+for (let index = 0; index < 6; index++) {
 	const type = index + 1
 	await axios
-		.get('/perf',{
-		params: { id, type, page ,limit },
-		headers: { Authorization: token },
+		.get('/perf', {
+			params: { id, type, page, limit },
+			headers: { Authorization: token },
 		})
-		.then((res)=>{
+		.then((res) => {
 			console.log(res)
-			if(index === 0){
-				Page['FP'] = res.data.avg
-			}else 
-			if(index===1){
-				Page['FCP'] = res.data.avg
-			}else 
-			if(index===2){
-				Page['DOM_Ready'] = res.data.avg
-			}else 
-			if(index===3){
-				Page['DOM_Complete'] = res.data.avg
-			}else 
-			if(index===4){
-				Page['DOM_Interactive'] = res.data.avg
-			}else 
-			if(index===5){
-				Page['LCP'] = res.data.avg
+			if (index === 0) {
+				Page.FP = res.data.avg
+			} else
+			if (index === 1) {
+				Page.FCP = res.data.avg
+			} else
+			if (index === 2) {
+				Page.DOM_Ready = res.data.avg
+			} else
+			if (index === 3) {
+				Page.DOM_Complete = res.data.avg
+			} else
+			if (index === 4) {
+				Page.DOM_Interactive = res.data.avg
+			} else
+			if (index === 5) {
+				Page.LCP = res.data.avg
 			}
-			
 		})
-		
 }
 </script>
 
@@ -174,47 +172,46 @@ for (let index = 0; index < 6; index++){
 					<el-card class="mal">
 						<span>平均FP</span>
 						<br />
-						<b class="fs">{{ Page.FP }}</b>
+						<b class="fs">{{ Page.FP.toFixed(2) }}ms</b>
 					</el-card>
 				</el-col>
 				<el-col :span="8">
 					<el-card class="mal">
 						<span>平均FCP</span>
 						<br />
-						<b class="fs">{{ Page.FCP }}</b>
+						<b class="fs">{{ Page.FCP.toFixed(2) }}ms</b>
 					</el-card>
 				</el-col>
 				<el-col :span="8">
 					<el-card class="mal">
 						<span>平均DOM_Ready</span>
 						<br />
-						<b class="fs">{{ Page.DOM_Ready }}</b>
+						<b class="fs">{{ Page.DOM_Ready.toFixed(2) }}ms</b>
 					</el-card>
 				</el-col>
 			</el-row>
 		</div>
 		<div class="ma">
-			
 			<el-row>
 				<el-col :span="8">
 					<el-card class="mal">
 						<span>平均DOM_Complete</span>
 						<br />
-						<b class="fs">{{ Page.DOM_Complete }}</b>
+						<b class="fs">{{ Page.DOM_Complete.toFixed(2) }}ms</b>
 					</el-card>
 				</el-col>
 				<el-col :span="8">
 					<el-card class="mal">
 						<span>平均DOM_Interactive</span>
 						<br />
-						<b class="fs">{{ Page.DOM_Interactive }}</b>
+						<b class="fs">{{ Page.DOM_Interactive.toFixed(2) }}ms</b>
 					</el-card>
 				</el-col>
 				<el-col :span="8">
 					<el-card class="mal">
 						<span>平均LCP</span>
 						<br />
-						<b class="fs">{{ Page.LCP }}</b>
+						<b class="fs">{{ Page.LCP.toFixed(2) }}ms</b>
 					</el-card>
 				</el-col>
 			</el-row>
@@ -271,21 +268,21 @@ for (let index = 0; index < 6; index++){
 					<el-card class="mal">
 						<span>请求接口总数量</span>
 						<br />
-						<b class="fs">{{ Interface.Sum }}ms</b>
+						<b class="fs">{{ Interface.Sum.toFixed(2) }}</b>
 					</el-card>
 				</el-col>
 				<el-col :span="8">
 					<el-card class="mal">
 						<span>接口请求平均耗时</span>
 						<br />
-						<b class="fs">{{ Interface.Time }}s</b>
+						<b class="fs">{{ Interface.Time.toFixed(2) }}ms</b>
 					</el-card>
 				</el-col>
 				<el-col :span="8">
 					<el-card class="mal">
 						<span>接口请求成功率</span>
 						<br />
-						<b class="fs">{{ Interface.SuccessRate }}s</b>
+						<b class="fs">{{ Interface.SuccessRate.toFixed(2) }}%</b>
 					</el-card>
 				</el-col>
 			</el-row>
