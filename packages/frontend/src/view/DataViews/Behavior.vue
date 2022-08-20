@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, reactive, ref, watch } from 'vue'
 import VChart from 'vue-echarts'
 import router from '../../router'
 import { useProjectsStore } from '../../stores/projects'
@@ -59,11 +59,14 @@ const add = function () {
 }
 let id = 3
 const list = 1
-const Pdata = ref({ PV: 0, UV: 0, time: 0 })
+const topData = reactive({ PV: 0, UV: 0, time: 0, pvUp: 0, uvUp: 0 })
 async function Bget(id: number) {
 	const pvreq = await axios.get(`/behavior/visit/pv?id=${id}`)
 
-	Pdata.value.PV = pvreq.data[new Date().getDay()]
+	topData.PV = pvreq.data[new Date().getDay()]
+
+	topData.pvUp = pvreq.data[pvreq.data.length - 2] / pvreq.data[pvreq.data.length - 1]
+	topData.pvUp = Number((topData.pvUp * 100).toFixed(1))
 
 	for (let index = 0; index < pvreq.data.length; index++) {
 		pvOption.value.series[0].data[index] = pvreq.data[index]
@@ -75,11 +78,17 @@ async function Bget(id: number) {
 		uvOption.value.series[0].data[index] = uvreq.data[index]
 	}
 
-	Pdata.value.UV = uvreq.data[new Date().getDay()]
+	topData.UV = uvreq.data[new Date().getDay()]
+
+	topData.uvUp = uvreq.data[uvreq.data.length - 2] / uvreq.data[uvreq.data.length - 1]
+	topData.uvUp = Number((topData.uvUp * 100).toFixed(1))
+
+	console.log(topData.uvUp, topData.pvUp)
 
 	const staytime = await axios.get('/behavior/stay/3')
+	console.log(uvreq, pvreq, staytime)
 
-	Pdata.value.time = staytime.data.toFixed(2)
+	topData.time = staytime.data.toFixed(0)
 
 	const pvtable = await axios.get(`/behavior/popular/pv?id=${id}`)
 	for (let o = 0; o < pvtable.data.length; o++) {
@@ -132,36 +141,53 @@ onMounted(() => {
 	</div>
 	<div v-else>
 		<div class="cardList">
-			<el-card class="box-card">
+			<el-card>
 				<template #header>
-					<div class="card-header">
-						<span>浏览量(PV)</span>
-					</div>
+					<span>用户访问数据</span>
 				</template>
-				<div class="card">
-					<p>
-						{{ Pdata.PV }}个
-					</p>
-				</div>
-			</el-card>
-			<el-card class="box-card">
-				<template #header>
-					<div class="card-header">
-						<span>访问量(UV)</span>
+				<div class="dataBox">
+					<div>
+						<div>浏览量(PV)</div>
+						<p class="data">
+							{{ topData.PV }}
+						</p>
+						<p class="compare">
+							较昨日
+							<span
+								:class="{
+									down: topData.pvUp < 0,
+									up: topData.pvUp > 0,
+								}"
+							>
+								{{ topData.pvUp === Infinity ? '∞' : topData.pvUp }}%
+								{{ topData.pvUp > 0 ? '↑' : '↓' }}
+							</span>
+						</p>
 					</div>
-				</template>
-				<div class="card">
-					<p>{{ Pdata.UV }}个</p>
-				</div>
-			</el-card>
-			<el-card class="box-card">
-				<template #header>
-					<div class="card-header">
-						<span>用户停留时间</span>
+					<div>
+						<div>访客数(UV)</div>
+						<p class="data">
+							{{ topData.UV }}
+						</p>
+						<p class="compare">
+							较昨日
+							<span
+								:class="{
+									down: topData.uvUp < 0,
+									up: topData.uvUp > 0,
+								}"
+							>
+								{{ topData.uvUp === Infinity ? '∞' : topData.uvUp }}%
+								{{ topData.uvUp > 0 ? '↑' : '↓' }}
+							</span>
+						</p>
 					</div>
-				</template>
-				<div class="card">
-					<p>{{ Pdata.time }}S</p>
+					<div>
+						<div>平均浏览时长</div>
+						<p class="data">
+							{{ topData.time }} s
+						</p>
+					</div>
 				</div>
 			</el-card>
 		</div>
@@ -265,20 +291,46 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.dataBox {
+	display: flex;
+	justify-content: space-between;
+	flex-direction: row;
+	text-align: center;
+}
+
+.dataBox>div {
+	width: 33%;
+	display: flex;
+	flex-direction: column;
+}
+
+.dataBox>div>.data {
+	font-size: 48px;
+	margin: .3rem 0 0 0;
+}
+
+.compare {
+	font-size: 15px;
+	color: gray;
+}
+
+.compare>span.up {
+	color: rgb(228, 23, 23);
+}
+
+.compare>span.down {
+	color: rgb(6, 122, 11);
+}
+
 .box-card {
 	width: 30%;
 	margin: .5rem 0;
 }
 
 .cardList {
-	display: flex;
-	justify-content: space-between;
+	width: calc(100% - 2rem);
 	padding: 1rem;
-}
-
-.compare {
-	font-size: 15px;
-	color: gray;
+	text-align: center;
 }
 
 .card {
@@ -287,7 +339,6 @@ onMounted(() => {
 
 .card p {
 	font-size: 50px;
-	/* margin: 10px 0; */
 }
 
 .chart {
