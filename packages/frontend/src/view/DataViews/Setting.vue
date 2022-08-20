@@ -207,11 +207,12 @@ onMounted(() => {
 						</template>
 					</el-table-column>
 					<el-table-column label="操作">
-						<template #default>
+						<template #default="scope">
 							<el-button
 								link
 								type="primary"
 								size="small"
+								@click="projectsStore.setCurrentProj(scope.$index)"
 							>
 								选择项目
 							</el-button>
