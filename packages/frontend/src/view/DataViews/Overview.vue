@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, reactive, ref, watch } from 'vue'
 import VChart from 'vue-echarts'
 import router from '../../router'
 import { useProjectsStore } from '../../stores/projects'
@@ -91,7 +91,7 @@ const Page = reactive({
 	DOM_Interactive: 1,
 	LCP: 3,
 })
-const id = 3
+let id = 3
 const limit = 10
 const list = 1
 async function Eget(id: number, limit: number) {
@@ -183,6 +183,14 @@ onMounted(() => {
 	Eget(id, limit)
 	Bget(id)
 	BPet(page, day)
+	watch(() => projectsStore.choose, (newVal, oldVal) => {
+		if (newVal !== -1) {
+			id = projectsStore.projects[projectsStore.choose].id
+			Eget(id, limit)
+			Bget(id)
+			BPet(page, day)
+		}
+	})
 })
 const add = function () {
 	router.push('setting')

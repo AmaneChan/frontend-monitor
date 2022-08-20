@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import VChart from 'vue-echarts'
 import router from '../../router'
 import { useProjectsStore } from '../../stores/projects'
@@ -57,8 +57,7 @@ const pvOption = ref({
 const add = function () {
 	router.push('setting')
 }
-
-const id = 3
+let id = 3
 const list = 1
 const Pdata = ref({ PV: 0, UV: 0, time: 0 })
 async function Bget(id: number) {
@@ -110,6 +109,12 @@ async function Bget(id: number) {
 
 onMounted(() => {
 	Bget(id)
+	watch(() => projectsStore.choose, (newVal, oldVal) => {
+		if (newVal !== -1) {
+			id = projectsStore.projects[projectsStore.choose].id
+			Bget(id)
+		}
+	})
 })
 </script>
 
@@ -134,7 +139,9 @@ onMounted(() => {
 					</div>
 				</template>
 				<div class="card">
-					<p>{{ Pdata.PV }}个</p>
+					<p>
+						{{ Pdata.PV }}个
+					</p>
 				</div>
 			</el-card>
 			<el-card class="box-card">

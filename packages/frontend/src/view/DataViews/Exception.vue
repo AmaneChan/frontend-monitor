@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import VChart from 'vue-echarts'
 import router from '../../router'
 import type { ResponseResult } from '../../request.js'
@@ -126,8 +126,9 @@ const CustomOption = ref({
 	],
 })
 const tableData = ref([] as any[])
+let id = 3
 // const id = projectsStore.projects[projectsStore.choose].id
-const id = 3
+
 const limit = 10
 
 async function Eget(id: number, limit: number) {
@@ -139,28 +140,24 @@ async function Eget(id: number, limit: number) {
 			for (let j = 0; j < result.data.length; j++) {
 				const inDay: number = new Date(result.data[j].time).getDay()
 				JSoption.value.series[0].data[inDay] = JSoption.value.series[0].data[inDay] + 1
-				console.log(JSoption.value.series[0].data[inDay] + 1)
 			}
 		} else
 		if (type === 2) {
 			for (let j = 0; j < result.data.length; j++) {
 				const inDay: number = new Date(result.data[j].time).getDay()
 				InterfaceOption.value.series[0].data[inDay] = InterfaceOption.value.series[0].data[inDay] + 1
-				console.log(InterfaceOption.value.series[0].data[inDay] + 1)
 			}
 		} else
 		if (type === 3) {
 			for (let j = 0; j < result.data.length; j++) {
 				const inDay: number = new Date(result.data[j].time).getDay()
 				StaticOption.value.series[0].data[inDay] = StaticOption.value.series[0].data[inDay] + 1
-				console.log(StaticOption.value.series[0].data[inDay] + 1)
 			}
 		} else
 		if (type === 4) {
 			for (let j = 0; j < result.data.length; j++) {
 				const inDay: number = new Date(result.data[j].time).getDay()
 				CustomOption.value.series[0].data[inDay] = CustomOption.value.series[0].data[inDay] + 1
-				console.log(CustomOption.value.series[0].data[inDay] + 1)
 			}
 		}
 		for (let i = 0; i < result.data.length; i++) {
@@ -185,6 +182,12 @@ async function Eget(id: number, limit: number) {
 
 onMounted(() => {
 	Eget(id, limit)
+	watch(() => projectsStore.choose, (newVal, oldVal) => {
+		if (newVal !== -1) {
+			id = projectsStore.projects[projectsStore.choose].id
+			Eget(id, limit)
+		}
+	})
 })
 const add = function () {
 	router.push('setting')
