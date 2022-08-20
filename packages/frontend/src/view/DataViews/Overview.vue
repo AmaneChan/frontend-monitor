@@ -202,50 +202,56 @@ const add = function () {
 		</div>
 	</div>
 	<div v-else>
-		<el-row class="box-card">
-			<el-col :span="8">
-				<el-card class="mal">
-					<span>平均FP</span>
-					<br />
-					<b class="fs">{{ Page.FP.toFixed(2) }}ms</b>
-				</el-card>
-			</el-col>
-			<el-col :span="8">
-				<el-card class="mal">
-					<span>平均FCP</span>
-					<br />
-					<b class="fs">{{ Page.FCP.toFixed(2) }}ms</b>
-				</el-card>
-			</el-col>
-			<el-col :span="8">
-				<el-card class="mal">
-					<span>平均DOM_Ready</span>
-					<br />
-					<b class="fs">{{ Page.DOM_Ready.toFixed(2) }}ms</b>
-				</el-card>
-			</el-col>
-			<el-col :span="8">
-				<el-card class="mal">
-					<span>平均DOM_Complete</span>
-					<br />
-					<b class="fs">{{ Page.DOM_Complete.toFixed(2) }}ms</b>
-				</el-card>
-			</el-col>
-			<el-col :span="8">
-				<el-card class="mal">
-					<span>平均DOM_Interactive</span>
-					<br />
-					<b class="fs">{{ Page.DOM_Interactive.toFixed(2) }}ms</b>
-				</el-card>
-			</el-col>
-			<el-col :span="8">
-				<el-card class="mal">
-					<span>平均LCP</span>
-					<br />
-					<b class="fs">{{ Page.LCP.toFixed(2) }}ms</b>
-				</el-card>
-			</el-col>
-		</el-row>
+		<div class="ma">
+			<el-row>
+				<el-col :span="8">
+					<el-card class="mal">
+						<span>平均FP</span>
+						<br />
+						<b class="fs">{{ Page.FP.toFixed(2) }}ms</b>
+					</el-card>
+				</el-col>
+				<el-col :span="8">
+					<el-card class="mal">
+						<span>平均FCP</span>
+						<br />
+						<b class="fs">{{ Page.FCP.toFixed(2) }}ms</b>
+					</el-card>
+				</el-col>
+				<el-col :span="8">
+					<el-card class="mal">
+						<span>平均DOM_Ready</span>
+						<br />
+						<b class="fs">{{ Page.DOM_Ready.toFixed(2) }}ms</b>
+					</el-card>
+				</el-col>
+			</el-row>
+		</div>
+		<div class="ma">
+			<el-row>
+				<el-col :span="8">
+					<el-card class="mal">
+						<span>平均DOM_Complete</span>
+						<br />
+						<b class="fs">{{ Page.DOM_Complete.toFixed(2) }}ms</b>
+					</el-card>
+				</el-col>
+				<el-col :span="8">
+					<el-card class="mal">
+						<span>平均DOM_Interactive</span>
+						<br />
+						<b class="fs">{{ Page.DOM_Interactive.toFixed(2) }}ms</b>
+					</el-card>
+				</el-col>
+				<el-col :span="8">
+					<el-card class="mal">
+						<span>平均LCP</span>
+						<br />
+						<b class="fs">{{ Page.LCP.toFixed(2) }}ms</b>
+					</el-card>
+				</el-col>
+			</el-row>
+		</div>
 		<el-row>
 			<el-col :span="24">
 				<el-card class="box-card">
@@ -354,15 +360,22 @@ const add = function () {
 </template>
 
 <style scoped>
+.ma {
+	margin: 1rem;
+}
+
 .box-card {
 	margin: 1rem;
 }
+
 .chart {
 	height: 300px;
 }
+
 .mal {
 	margin-right: 0.5rem;
 }
+
 .fs {
 	font-size: 2rem;
 }
