@@ -1,8 +1,9 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { CopyDocument, Hide, View } from '@element-plus/icons-vue'
-
+import ClipboardJS from 'clipboard'
 import { ElMessage } from 'element-plus'
+import type { Project } from '../../stores/projects'
 import { useProjectsStore } from '../../stores/projects'
 import { useUserStore } from '../../stores/user'
 import { axios } from '../../request.js'
@@ -27,6 +28,37 @@ function logout() {
 	ElMessage.success('已退出登录')
 	router.push('/entry')
 }
+
+const currentKey = computed(() => {
+	if (projectsStore.choose < 0) {
+		return ''
+	}
+	return projectsStore.projects[projectsStore.choose].key
+})
+
+const scriptWithKey = computed(() => {
+	return `<script src="http://120.79.27.173:2349/index.js" id="__monitor" key="${currentKey.value}"><\/script>`
+})
+
+onMounted(() => {
+	const clip = new ClipboardJS('.copyable')
+	clip.on('success', (e) => {
+		console.info('Action:', e.action)
+		console.info('Text:', e.text)
+		console.info('Trigger:', e.trigger)
+
+		e.clearSelection()
+
+		ElMessage.success('已成功复制到剪贴板')
+	})
+
+	clip.on('error', (e) => {
+		console.error('Action:', e.action)
+		console.error('Trigger:', e.trigger)
+
+		ElMessage.error('你的浏览器暂不支持，请手动复制')
+	})
+})
 </script>
 
 <template>
@@ -93,10 +125,41 @@ function logout() {
 				<el-card style="margin: 1rem;">
 					<template #header>
 						<div>
-							<span>公告栏</span>
+							<span>SDK Key 使用方法</span>
 						</div>
 					</template>
-					<div style="height: 15rem;"></div>
+					<div style="height: 15rem;">
+						<p>
+							点击下方项目列表中的复制按钮
+							<span>
+								<ElIcon color="#60608F">
+									<CopyDocument></CopyDocument>
+								</ElIcon>
+							</span>
+							，将复制 SDK Key。将 SDK Key 添加到 script 标签中。
+						</p>
+						<p>
+							或者点击下方直接复制当前选择项目的 script 标签，标签上已经包含 SDK Key 信息。
+						</p>
+						<p>
+							将 script 标签添加到你的页面中即可。
+						</p>
+						<p>
+							<el-input
+								v-model="scriptWithKey"
+								style="width: 100%;"
+								readonly
+							></el-input>
+						</p>
+						<el-button
+							class="copyable"
+							type="primary"
+							:icon="CopyDocument"
+							:data-clipboard-text="scriptWithKey"
+						>
+							复制
+						</el-button>
+					</div>
 				</el-card>
 			</el-col>
 		</el-row>
@@ -112,6 +175,7 @@ function logout() {
 					<el-table-column
 						prop="id"
 						label="编号"
+						width="96"
 					/>
 					<el-table-column
 						prop="name"
@@ -135,7 +199,9 @@ function logout() {
 								<el-button
 									type="primary"
 									size="small"
+									class="copyable"
 									:icon="CopyDocument"
+									:data-clipboard-text="scope.row.key"
 								></el-button>
 							</div>
 						</template>
