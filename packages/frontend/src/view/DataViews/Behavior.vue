@@ -1,8 +1,10 @@
 <script lang="ts" setup>
+import { onMounted, ref } from 'vue'
 import VChart from 'vue-echarts'
+import { number } from 'echarts'
 import router from '../../router'
 import { useProjectsStore } from '../../stores/projects'
-
+import { axios } from '../../request.js'
 const projectsStore = useProjectsStore()
 
 const tableData = [
@@ -51,6 +53,21 @@ const uvOption = {
 const add = function () {
 	router.push('setting')
 }
+
+const id = 3
+const Pdata = { PV: 0, UV: 0, Dtime: 0 }
+async function Bget(id: number) {
+	const PVreq = await axios.get(`/behavior/visit/pv?id=${id}`)
+	Pdata.PV = PVreq.data[new Date().getDay()]
+	const UVreq = await axios.get(`/behavior/visit/uv?id=${id}`)
+	Pdata.UV = UVreq.data[new Date().getDay()]
+	const Staytime = await axios.get('/behavior/stay/3')
+	Pdata.Dtime = Staytime.data.toFixed(2)
+}
+
+onMounted(() => {
+	Bget(id)
+})
 </script>
 
 <template>
@@ -74,7 +91,7 @@ const add = function () {
 					</div>
 				</template>
 				<div class="card">
-					<p>200033</p>
+					<p>{{ Pdata.PV }}</p>
 					<div class="compare">
 						较昨日
 						<span style="color: red">16.83% ↑</span>
@@ -88,7 +105,7 @@ const add = function () {
 					</div>
 				</template>
 				<div class="card">
-					<p>200033</p>
+					<p>{{ Pdata.UV }}</p>
 					<div class="compare">
 						较昨日
 						<span style="color: red">16.83% ↑</span>
@@ -102,7 +119,7 @@ const add = function () {
 					</div>
 				</template>
 				<div class="card">
-					<p>200033</p>
+					<p>{{ Pdata.Dtime }}</p>
 					<div class="compare">
 						较昨日
 						<span style="color: red">16.83% ↑</span>

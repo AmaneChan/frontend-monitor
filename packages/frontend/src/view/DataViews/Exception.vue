@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import VChart from 'vue-echarts'
 import router from '../../router'
 import type { ResponseResult } from '../../request.js'
@@ -125,51 +125,54 @@ const CustomOption = {
 		},
 	],
 }
-
 const tableData = ref([] as any[])
-
-const id = projectsStore.projects[projectsStore.choose].id
+// const id = projectsStore.projects[projectsStore.choose].id
+const id = 3
 const limit = 10
-for (let index = 0; index < 4; index++) {
-	const type = index + 1
-	const result: ResponseResult = await axios.get('/exception', { params: { id, type, limit } })
-	console.log(result)
-	dataExceptionType.value.series[0].data[index].value = result.data.length
-	if (type === 1) {
-		for (let j = 0; j < result.data.length; j++) {
-			const inDay: number = new Date(result.data[j].time).getDay()
-			JSoption.series[0].data[inDay] = JSoption.series[0].data[inDay] + 1
+
+async function Eget(id: number, limit: number) {
+	for (let index = 0; index < 4; index++) {
+		const type = index + 1
+		const result: ResponseResult = await axios.get('/exception', { params: { id, type, limit } })
+		dataExceptionType.value.series[0].data[index].value = result.data.length
+		if (type === 1) {
+			for (let j = 0; j < result.data.length; j++) {
+				const inDay: number = new Date(result.data[j].time).getDay()
+				JSoption.series[0].data[inDay] = JSoption.series[0].data[inDay] + 1
+			}
+		} else
+		if (type === 2) {
+			for (let j = 0; j < result.data.length; j++) {
+				const inDay: number = new Date(result.data[j].time).getDay()
+				InterfaceOption.series[0].data[inDay] = JSoption.series[0].data[inDay] + 1
+			}
+		} else
+		if (type === 3) {
+			for (let j = 0; j < result.data.length; j++) {
+				const inDay: number = new Date(result.data[j].time).getDay()
+				StaticOption.series[0].data[inDay] = JSoption.series[0].data[inDay] + 1
+			}
 		}
-	} else
-	if (type === 2) {
-		for (let j = 0; j < result.data.length; j++) {
-			const inDay: number = new Date(result.data[j].time).getDay()
-			InterfaceOption.series[0].data[inDay] = JSoption.series[0].data[inDay] + 1
+		if (type === 4) {
+			for (let j = 0; j < result.data.length; j++) {
+				const inDay: number = new Date(result.data[j].time).getDay()
+				CustomOption.series[0].data[inDay] = JSoption.series[0].data[inDay] + 1
+			}
 		}
-	} else
-	if (type === 3) {
-		for (let j = 0; j < result.data.length; j++) {
-			const inDay: number = new Date(result.data[j].time).getDay()
-			StaticOption.series[0].data[inDay] = JSoption.series[0].data[inDay] + 1
+		for (let i = 0; i < result.data.length; i++) {
+			const table = {
+				date: result.data[i].time,
+				name: result.data[i].msg,
+				address: result.data[i].position,
+			}
+			tableData.value.push(table)
 		}
 	}
-	if (type === 4) {
-		for (let j = 0; j < result.data.length; j++) {
-			const inDay: number = new Date(result.data[j].time).getDay()
-			CustomOption.series[0].data[inDay] = JSoption.series[0].data[inDay] + 1
-		}
-	}
-	for (let i = 0; i < result.data.length; i++) {
-		const table = {
-			date: result.data[i].time,
-			name: result.data[i].msg,
-			address: result.data[i].position,
-		}
-		tableData.value.push(table)
-	}
-	console.log(tableData)
 }
 
+onMounted(() => {
+	Eget(id, limit)
+})
 const add = function () {
 	router.push('setting')
 }
