@@ -46,7 +46,7 @@ const dataExceptionType = ref({
 const JSoption = ref({
 	title: {
 		text: 'JS错误',
-		subtext: 'Fake Data',
+		subtext: 'JS Exception',
 		left: 'center',
 	},
 	xAxis: {
@@ -66,7 +66,7 @@ const JSoption = ref({
 const InterfaceOption = ref({
 	title: {
 		text: '接口错误',
-		subtext: 'Fake Data',
+		subtext: 'Resource Exception',
 		left: 'center',
 	},
 	xAxis: {
@@ -87,7 +87,7 @@ const InterfaceOption = ref({
 const StaticOption = ref({
 	title: {
 		text: '静态资源错误',
-		subtext: 'Fake Data',
+		subtext: 'Fetch Exception',
 		left: 'center',
 	},
 	xAxis: {
@@ -108,7 +108,7 @@ const StaticOption = ref({
 const CustomOption = ref({
 	title: {
 		text: '自定义错误',
-		subtext: 'Fake Data',
+		subtext: 'Promise Exception',
 		left: 'center',
 	},
 	xAxis: {
@@ -155,7 +155,7 @@ async function Eget(id: number, limit: number) {
 				StaticOption.value.series[0].data[inDay] = StaticOption.value.series[0].data[inDay] + 1
 				console.log(StaticOption.value.series[0].data[inDay] + 1)
 			}
-		}
+		} else
 		if (type === 4) {
 			for (let j = 0; j < result.data.length; j++) {
 				const inDay: number = new Date(result.data[j].time).getDay()
@@ -165,12 +165,21 @@ async function Eget(id: number, limit: number) {
 		}
 		for (let i = 0; i < result.data.length; i++) {
 			const table = {
-				date: result.data[i].time,
-				name: result.data[i].msg,
-				address: result.data[i].position,
+				tiem: result.data[i].time,
+				data: result.data[i].msg,
+				ip: result.data[i].position,
 			}
 			tableData.value.push(table)
 		}
+		// const Ereq: ResponseResult = await axios.get('/exception/recent', { params: { id, type } })
+		// for (let index = 0; index < Ereq.data.length; index++) {
+		// 	const table = {
+		// 		date: result.data[index].time,
+		// 		name: result.data[index].msg,
+		// 		address: result.data[index].position,
+		// 	}
+		// 	tableData.value.push(table)
+		// }
 	}
 }
 
@@ -210,23 +219,28 @@ const add = function () {
 			</el-col>
 			<el-col :span="24">
 				<el-card class="chartCard">
+					<template #header>
+						<div class="card-header">
+							<span>异常列表</span>
+						</div>
+					</template>
 					<el-table
 						:data="tableData"
 						height="300"
 						style="width: 100%"
 					>
 						<el-table-column
-							prop="date"
-							label="Date"
+							prop="tiem"
+							label="Time"
 							width="250"
 						/>
 						<el-table-column
-							prop="name"
-							label="Name"
+							prop="data"
+							label="Data"
 						/>
 						<el-table-column
-							prop="address"
-							label="Address"
+							prop="ip"
+							label="IP"
 							width="300"
 						/>
 					</el-table>
