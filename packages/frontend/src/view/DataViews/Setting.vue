@@ -16,6 +16,9 @@ const userStore = useUserStore()
 const projectName = ref('')
 
 async function addProject() {
+	if (projectName.value === '') {
+		return ElMessage.error('项目名称不能为空')
+	}
 	const result: ResponseResult = await axios.post('/project', { id: userStore.id, name: projectName.value })
 	projectName.value = ''
 	projectsStore.updateProjects()
@@ -111,8 +114,7 @@ onMounted(() => {
 								style="display: inline-block;"
 							/>
 							<el-button
-								type="danger"
-								size="small"
+								type="primary"
 								@click="addProject"
 							>
 								添加项目
