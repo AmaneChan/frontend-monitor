@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import VChart from 'vue-echarts'
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, reactive, ref, watch } from 'vue'
 import router from '../../router'
 import type { ResponseResult } from '../../request.js'
 import { axios } from '../../request.js'
@@ -153,7 +153,7 @@ const LCPOption = ref({
 	],
 })
 
-const PageOption = {
+const PageOption = ref({
 	title: {
 		text: '页面加载耗时分段数量占比',
 		left: 'center',
@@ -186,9 +186,9 @@ const PageOption = {
 			},
 		},
 	],
-}
+})
 
-const tableData = [
+const tableData = ref([
 	{
 		date: '2016-05-03',
 		name: 'Tom',
@@ -209,18 +209,17 @@ const tableData = [
 		name: 'Tom',
 		address: 'No. 189, Grove St, Los Angeles',
 	},
-]
+])
 
 const add = function () {
 	router.push('setting')
 }
 
-const id = 7
+let id = 7
 const limit = 10
 const page = 0
 const day = 7
-
-onMounted(async () => {
+async function Pget() {
 	for (let index = 0; index < 7; index++) {
 		const type = index + 1
 		const result: ResponseResult = await axios.get('/perf', { params: { id, type, page, limit } })
@@ -268,6 +267,16 @@ onMounted(async () => {
 			}
 		}
 	}
+}
+
+onMounted(() => {
+	Pget()
+	watch(() => projectsStore.choose, (newVal, oldVal) => {
+		if (newVal !== -1) {
+			id = projectsStore.projects[projectsStore.choose].id
+			Pget()
+		}
+	})
 })
 </script>
 
