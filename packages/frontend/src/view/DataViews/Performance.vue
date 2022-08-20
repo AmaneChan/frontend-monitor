@@ -17,12 +17,6 @@ const Page = reactive({
 	LCP: 3,
 })
 
-const Interface = {
-	Sum: 156,
-	Time: 124.22,
-	SuccessRate: 100,
-}
-
 const FPOption = ref({
 	title: {
 		text: 'FP分段数量占比',
@@ -194,40 +188,6 @@ const PageOption = {
 	],
 }
 
-const InterfaceOption = {
-	title: {
-		text: '接口请求耗时分段数量占比',
-		left: 'center',
-	},
-	tooltip: {
-		trigger: 'item',
-	},
-	legend: {
-		orient: 'vertical',
-		left: 'left',
-	},
-	series: [
-		{
-			name: 'Access From',
-			type: 'pie',
-			radius: '50%',
-			data: [
-				{ value: 523, name: '<1秒' },
-				{ value: 3, name: '1-5秒' },
-				{ value: 0, name: '5-10秒' },
-				{ value: 0, name: '10-30秒' },
-				{ value: 0, name: '>30秒' },
-			],
-			emphasis: {
-				itemStyle: {
-					shadowBlur: 10,
-					shadowOffsetX: 0,
-					shadowColor: 'rgba(0, 0, 0, 0.5)',
-				},
-			},
-		},
-	],
-}
 const tableData = [
 	{
 		date: '2016-05-03',
@@ -429,77 +389,6 @@ onMounted(async () => {
 						<VChart
 							class="chart"
 							:option="PageOption"
-							:autoresize="true"
-						></VChart>
-					</el-card>
-				</el-col>
-				<el-col :span="14">
-					<el-card class="mal">
-						<el-table
-							:data="tableData"
-							height="300"
-							style="width: 100%"
-						>
-							<el-table-column
-								prop="date"
-								label="Date"
-								width="180"
-							/>
-							<el-table-column
-								prop="name"
-								label="Name"
-								width="180"
-							/>
-							<el-table-column
-								prop="address"
-								label="Address"
-							/>
-							<el-table-column
-								prop="name"
-								label="Name"
-								width="180"
-							/>
-						</el-table>
-					</el-card>
-				</el-col>
-			</el-row>
-		</div>
-
-		<div class="ma">
-			<div class="title">
-				接口性能
-			</div>
-			<el-row>
-				<el-col :span="8">
-					<el-card class="mal">
-						<span>请求接口总数量</span>
-						<br />
-						<b class="fs">{{ Interface.Sum.toFixed(2) }}</b>
-					</el-card>
-				</el-col>
-				<el-col :span="8">
-					<el-card class="mal">
-						<span>接口请求平均耗时</span>
-						<br />
-						<b class="fs">{{ Interface.Time.toFixed(2) }}ms</b>
-					</el-card>
-				</el-col>
-				<el-col :span="8">
-					<el-card class="mal">
-						<span>接口请求成功率</span>
-						<br />
-						<b class="fs">{{ Interface.SuccessRate.toFixed(2) }}%</b>
-					</el-card>
-				</el-col>
-			</el-row>
-		</div>
-		<div class="ma">
-			<el-row>
-				<el-col :span="10">
-					<el-card class="mal">
-						<VChart
-							class="chart"
-							:option="InterfaceOption"
 							:autoresize="true"
 						></VChart>
 					</el-card>
