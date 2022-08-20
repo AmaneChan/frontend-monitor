@@ -23,7 +23,7 @@ const Interface = {
 	SuccessRate: 100,
 }
 
-const FPOption = {
+const FPOption = ref({
 	title: {
 		text: 'FP分段数量占比',
 		left: 'center',
@@ -56,8 +56,8 @@ const FPOption = {
 			},
 		},
 	],
-}
-const FCPOption = {
+})
+const FCPOption = ref({
 	title: {
 		text: 'FCP分段数量占比',
 		left: 'center',
@@ -90,8 +90,8 @@ const FCPOption = {
 			},
 		},
 	],
-}
-const InteractiveOption = {
+})
+const InteractiveOption = ref({
 	title: {
 		text: 'DOM_Interactive分段数量占比',
 		left: 'center',
@@ -124,8 +124,8 @@ const InteractiveOption = {
 			},
 		},
 	],
-}
-const LCPOption = {
+})
+const LCPOption = ref({
 	title: {
 		text: 'LCP分段数量占比',
 		left: 'center',
@@ -157,7 +157,7 @@ const LCPOption = {
 			},
 		},
 	],
-}
+})
 
 const PageOption = {
 	title: {
@@ -255,9 +255,10 @@ const add = function () {
 	router.push('setting')
 }
 
-const id = 3
+const id = 7
 const limit = 10
 const page = 0
+const day = 7
 
 onMounted(async () => {
 	for (let index = 0; index < 7; index++) {
@@ -266,34 +267,20 @@ onMounted(async () => {
 		console.log(result)
 		if (type === 1) {
 			Page.FP = result.data.avg
-			for (let i = 0; i < result.data.list.length; i++) {
-				if (result.data.list[i].value <= 100) {
-					FPOption.series[0].data[0].value++
-				} else if (result.data.list[i].value <= 300) {
-					FPOption.series[0].data[1].value++
-				} else if (result.data.list[i].value <= 500) {
-					FPOption.series[0].data[2].value++
-				} else if (result.data.list[i].value <= 1000) {
-					FPOption.series[0].data[3].value++
-				} else {
-					FPOption.series[0].data[4].value++
-				}
+			const seg = '100,300,500,1000'
+			const FPSeries = await axios.get('/perf/seg', { params: { id, type, day, seg } })
+			console.log(FPSeries)
+			for (let i = 0; i < FPSeries.data.length; i++) {
+				FPOption.value.series[0].data[i].value = FPSeries.data[i]
 			}
 		} else
 		if (type === 2) {
 			Page.FCP = result.data.avg
-			for (let i = 0; i < result.data.list.length; i++) {
-				if (result.data.list[i].value <= 100) {
-					FCPOption.series[0].data[0].value++
-				} else if (result.data.list[i].value <= 300) {
-					FCPOption.series[0].data[1].value++
-				} else if (result.data.list[i].value <= 500) {
-					FCPOption.series[0].data[2].value++
-				} else if (result.data.list[i].value <= 1000) {
-					FCPOption.series[0].data[3].value++
-				} else {
-					FCPOption.series[0].data[4].value++
-				}
+			const seg = '100,300,500,1000'
+			const FCPSeries = await axios.get('/perf/seg', { params: { id, type, day, seg } })
+			console.log(FCPSeries)
+			for (let i = 0; i < FCPSeries.data.length; i++) {
+				FCPOption.value.series[0].data[i].value = FCPSeries.data[i]
 			}
 		} else
 		if (type === 3) {
@@ -304,32 +291,20 @@ onMounted(async () => {
 		} else
 		if (type === 6) {
 			Page.DOM_Interactive = result.data.avg
-			for (let i = 0; i < result.data.list.length; i++) {
-				if (result.data.list[i].value <= 500) {
-					InteractiveOption.series[0].data[0].value++
-				} else if (result.data.list[i].value <= 1000) {
-					InteractiveOption.series[0].data[1].value++
-				} else if (result.data.list[i].value <= 2000) {
-					InteractiveOption.series[0].data[2].value++
-				} else if (result.data.list[i].value <= 5000) {
-					InteractiveOption.series[0].data[3].value++
-				} else {
-					InteractiveOption.series[0].data[4].value++
-				}
+			const seg = '500,1000,2000,5000'
+			const InteractiveSeries = await axios.get('/perf/seg', { params: { id, type, day, seg } })
+			console.log(InteractiveSeries)
+			for (let i = 0; i < InteractiveSeries.data.length; i++) {
+				InteractiveOption.value.series[0].data[i].value = InteractiveSeries.data[i]
 			}
 		} else
 		if (type === 7) {
 			Page.LCP = result.data.avg
-			for (let i = 0; i < result.data.list.length; i++) {
-				if (result.data.list[i].value <= 200) {
-					LCPOption.series[0].data[0].value++
-				} else if (result.data.list[i].value <= 500) {
-					LCPOption.series[0].data[1].value++
-				} else if (result.data.list[i].value <= 1000) {
-					LCPOption.series[0].data[2].value++
-				} else {
-					LCPOption.series[0].data[3].value++
-				}
+			const seg = '200,500,1000'
+			const LCPSeries = await axios.get('/perf/seg', { params: { id, type, day, seg } })
+			console.log(LCPSeries)
+			for (let i = 0; i < LCPSeries.data.length; i++) {
+				LCPOption.value.series[0].data[i].value = LCPSeries.data[i]
 			}
 		}
 	}
