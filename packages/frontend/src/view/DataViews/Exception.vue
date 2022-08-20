@@ -43,7 +43,7 @@ const dataExceptionType = ref({
 		},
 	],
 })
-const JSoption = {
+const JSoption = ref({
 	title: {
 		text: 'JS错误',
 		subtext: 'Fake Data',
@@ -62,8 +62,8 @@ const JSoption = {
 			type: 'line',
 		},
 	],
-}
-const InterfaceOption = {
+})
+const InterfaceOption = ref({
 	title: {
 		text: '接口错误',
 		subtext: 'Fake Data',
@@ -82,9 +82,9 @@ const InterfaceOption = {
 			type: 'line',
 		},
 	],
-}
+})
 
-const StaticOption = {
+const StaticOption = ref({
 	title: {
 		text: '静态资源错误',
 		subtext: 'Fake Data',
@@ -103,9 +103,9 @@ const StaticOption = {
 			type: 'line',
 		},
 	],
-}
+})
 
-const CustomOption = {
+const CustomOption = ref({
 	title: {
 		text: '自定义错误',
 		subtext: 'Fake Data',
@@ -124,7 +124,7 @@ const CustomOption = {
 			type: 'line',
 		},
 	],
-}
+})
 const tableData = ref([] as any[])
 // const id = projectsStore.projects[projectsStore.choose].id
 const id = 3
@@ -138,25 +138,29 @@ async function Eget(id: number, limit: number) {
 		if (type === 1) {
 			for (let j = 0; j < result.data.length; j++) {
 				const inDay: number = new Date(result.data[j].time).getDay()
-				JSoption.series[0].data[inDay] = JSoption.series[0].data[inDay] + 1
+				JSoption.value.series[0].data[inDay] = JSoption.value.series[0].data[inDay] + 1
+				console.log(JSoption.value.series[0].data[inDay] + 1)
 			}
 		} else
 		if (type === 2) {
 			for (let j = 0; j < result.data.length; j++) {
 				const inDay: number = new Date(result.data[j].time).getDay()
-				InterfaceOption.series[0].data[inDay] = JSoption.series[0].data[inDay] + 1
+				InterfaceOption.value.series[0].data[inDay] = InterfaceOption.value.series[0].data[inDay] + 1
+				console.log(InterfaceOption.value.series[0].data[inDay] + 1)
 			}
 		} else
 		if (type === 3) {
 			for (let j = 0; j < result.data.length; j++) {
 				const inDay: number = new Date(result.data[j].time).getDay()
-				StaticOption.series[0].data[inDay] = JSoption.series[0].data[inDay] + 1
+				StaticOption.value.series[0].data[inDay] = StaticOption.value.series[0].data[inDay] + 1
+				console.log(StaticOption.value.series[0].data[inDay] + 1)
 			}
 		}
 		if (type === 4) {
 			for (let j = 0; j < result.data.length; j++) {
 				const inDay: number = new Date(result.data[j].time).getDay()
-				CustomOption.series[0].data[inDay] = JSoption.series[0].data[inDay] + 1
+				CustomOption.value.series[0].data[inDay] = CustomOption.value.series[0].data[inDay] + 1
+				console.log(CustomOption.value.series[0].data[inDay] + 1)
 			}
 		}
 		for (let i = 0; i < result.data.length; i++) {
