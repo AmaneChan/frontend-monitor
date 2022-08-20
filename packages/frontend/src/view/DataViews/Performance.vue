@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import VChart from 'vue-echarts'
+import { onMounted } from 'vue'
 import router from '../../router'
+import type { ResponseResult } from '../../request.js'
 import { axios } from '../../request.js'
 import { useProjectsStore } from '../../stores/projects'
 
@@ -109,45 +111,38 @@ const tableData = [
 		address: 'No. 189, Grove St, Los Angeles',
 	},
 ]
-const PageChart = 'PageChart'
-const InterfaceChart = 'InterfaceChart'
+
 const add = function () {
 	router.push('setting')
 }
 const id = 3
 const limit = 10
 const page = 0
-const token: string | null = `${localStorage.getItem('token')}`
 
-for (let index = 0; index < 6; index++) {
-	const type = index + 1
-	await axios
-		.get('/perf', {
-			params: { id, type, page, limit },
-			headers: { Authorization: token },
-		})
-		.then((res) => {
-			console.log(res)
-			if (index === 0) {
-				Page.FP = res.data.avg
-			} else
-			if (index === 1) {
-				Page.FCP = res.data.avg
-			} else
-			if (index === 2) {
-				Page.DOM_Ready = res.data.avg
-			} else
-			if (index === 3) {
-				Page.DOM_Complete = res.data.avg
-			} else
-			if (index === 4) {
-				Page.DOM_Interactive = res.data.avg
-			} else
-			if (index === 5) {
-				Page.LCP = res.data.avg
-			}
-		})
-}
+onMounted(async () => {
+	for (let index = 0; index < 6; index++) {
+		const type = index + 1
+		const result: ResponseResult = await axios.get('/perf', { params: { id, type, page, limit } })
+		if (index === 0) {
+			Page.FP = result.data.avg
+		} else
+		if (index === 1) {
+			Page.FCP = result.data.avg
+		} else
+		if (index === 2) {
+			Page.DOM_Ready = result.data.avg
+		} else
+		if (index === 3) {
+			Page.DOM_Complete = result.data.avg
+		} else
+		if (index === 4) {
+			Page.DOM_Interactive = result.data.avg
+		} else
+		if (index === 5) {
+			Page.LCP = result.data.avg
+		}
+	}
+})
 </script>
 
 <template>

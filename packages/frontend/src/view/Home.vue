@@ -29,9 +29,7 @@ onMounted(() => {
 		>
 			<RouterView v-slot=" { Component } ">
 				<KeepAlive>
-					<Suspense>
-						<component :is="Component"></component>
-					</Suspense>
+					<component :is="Component"></component>
 				</KeepAlive>
 			</RouterView>
 		</el-col>
