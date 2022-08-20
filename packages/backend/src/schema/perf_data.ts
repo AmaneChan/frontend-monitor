@@ -39,4 +39,17 @@ const req_queryperfData_schema = {
 	},
 }
 
-export { reg_addperfData_schema, req_queryperfData_schema }
+const req_querySegPerf_schema = {
+	query: {
+		id: joi.number().required(),
+		type,
+		day: joi.number(),
+		seg: joi.required(),
+	},
+}
+
+export {
+	reg_addperfData_schema,
+	req_queryperfData_schema,
+	req_querySegPerf_schema,
+}

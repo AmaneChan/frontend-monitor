@@ -3,6 +3,7 @@ import db from '../db/index.js'
 interface Person {
 	addperfData(req: any, res: any): void
 	queryperfData(req: any, res: any): void
+	querySegPerf(req: any, res: any): void
 }
 
 const project: Person = {
@@ -34,8 +35,7 @@ const project: Person = {
 		})
 	},
 	queryperfData(req, res) {
-		const sql
-			= ' SELECT `from`, value FROM perf_data  WHERE proj=? AND type=? ORDER BY value DESC LIMIT ?,? '
+		const sql = ' SELECT `from`, value FROM perf_data  WHERE proj=? AND type=? ORDER BY value DESC LIMIT ?,? '
 		db.query(
 			sql,
 			[
@@ -75,6 +75,46 @@ const project: Person = {
 				})
 			},
 		)
+	},
+	querySegPerf(req, res) {
+		const { id, type, day = 7, seg } = req.query
+		const segs = (seg as string).split(',').map((str: string) => parseInt(str))
+		let sql = 'SELECT '
+		const arr: any[] = []
+		segs.forEach((seg, index, array) => {
+			if (index === 0) {
+				sql += '\n SUM(CASE WHEN `value`<? THEN 1 ELSE 0 END) AS ?, '
+				arr.push(seg, `c${index}`)
+			} else {
+				sql += '\n SUM(CASE WHEN `value`>=? AND `value`<? THEN 1 ELSE 0 END) AS ?, '
+				arr.push(array[index - 1], seg, `c${index}`)
+			}
+		})
+		sql += '\n SUM(CASE WHEN `value`>=? THEN 1 ELSE 0 END) AS ? '
+		arr.push(segs[segs.length - 1], `c${segs.length}`)
+		const time = new Date()
+		const startTime = `${time.getFullYear()}-${time.getMonth() + 1}-${time.getDate() - day + 1} 00:00:00`
+		const endTime = `${time.getFullYear()}-${time.getMonth() + 1}-${time.getDate()} 23:59:59`
+		sql += '\n FROM perf_data WHERE proj=? AND type=? AND time BETWEEN ? AND ? '
+		arr.push(id, type, startTime, endTime)
+		console.log(sql)
+		console.log(arr)
+		db.query(sql, arr, (err, result) => {
+			if (err) {
+				return res.cc(err, 500)
+			}
+			const arr: any[] = []
+			result = result[0]
+			console.log(result)
+			for (let i = 0; i <= segs.length; i++) {
+				arr.push(result[`c${i}`])
+			}
+			res.send({
+				code: 200,
+				message: '查询性能数据成功！',
+				data: arr,
+			})
+		})
 	},
 }
 export default project

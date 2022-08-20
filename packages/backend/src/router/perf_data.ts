@@ -7,6 +7,7 @@ import config from '../config.js'
 
 import {
 	reg_addperfData_schema,
+	req_querySegPerf_schema,
 	req_queryperfData_schema,
 } from '../schema/perf_data.js'
 
@@ -27,6 +28,16 @@ router.get(
 		expressJoi(req_queryperfData_schema),
 	],
 	perfDataHandler.queryperfData,
+)
+
+// 查询性能数据分段
+router.get(
+	'/seg',
+	[
+		expressJWt({ secret: config.jwtSecreKey, algorithms: ['HS256'] }),
+		expressJoi(req_querySegPerf_schema),
+	],
+	perfDataHandler.querySegPerf,
 )
 
 export default router
