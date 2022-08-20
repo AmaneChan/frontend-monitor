@@ -64,55 +64,61 @@ async function Bget(id: number) {
 	const pvreq = await axios.get(`/behavior/visit/pv?id=${id}`)
 
 	topData.PV = pvreq.data[new Date().getDay()]
-
 	topData.pvUp = pvreq.data[pvreq.data.length - 2] / pvreq.data[pvreq.data.length - 1]
 	topData.pvUp = Number((topData.pvUp * 100).toFixed(1))
-
 	for (let index = 0; index < pvreq.data.length; index++) {
 		pvOption.value.series[0].data[index] = pvreq.data[index]
 	}
-
 	const uvreq = await axios.get(`/behavior/visit/uv?id=${id}`)
-
 	for (let index = 0; index < uvreq.data.length; index++) {
 		uvOption.value.series[0].data[index] = uvreq.data[index]
 	}
-
 	topData.UV = uvreq.data[new Date().getDay()]
-
 	topData.uvUp = uvreq.data[uvreq.data.length - 2] / uvreq.data[uvreq.data.length - 1]
 	topData.uvUp = Number((topData.uvUp * 100).toFixed(1))
-
-	console.log(topData.uvUp, topData.pvUp)
-
 	const staytime = await axios.get('/behavior/stay/3')
-	console.log(uvreq, pvreq, staytime)
-
-	topData.time = staytime.data.toFixed(0)
+	console.log(staytime.data)
+	if (staytime.data) {
+		topData.time = staytime.data.toFixed(0)
+	} else {
+		topData.time = 0
+	}
 
 	const pvtable = await axios.get(`/behavior/popular/pv?id=${id}`)
-	for (let o = 0; o < pvtable.data.length; o++) {
-		const table = {
-			pv: pvtable.data[o].pv,
-			from: pvtable.data[o].from,
+	if (pvtable.data) {
+		for (let o = 0; o < pvtable.data.length; o++) {
+			const table = {
+				pv: pvtable.data[o].pv,
+				from: pvtable.data[o].from,
+			}
+			pvtableData.value.push(table)
 		}
-		pvtableData.value.push(table)
+	} else {
+		pvtableData.value = []
 	}
 	const uvtable = await axios.get(`/behavior/popular/uv?id=${id}`)
-	for (let o = 0; o < uvtable.data.length; o++) {
-		const table = {
-			uv: uvtable.data[o].uv,
-			from: uvtable.data[o].from,
+	if (uvtable.data) {
+		for (let o = 0; o < uvtable.data.length; o++) {
+			const table = {
+				uv: uvtable.data[o].uv,
+				from: uvtable.data[o].from,
+			}
+			uvtableData.value.push(table)
 		}
-		uvtableData.value.push(table)
+	} else {
+		uvtableData.value = []
 	}
 	const staytable = await axios.get(`/behavior/stay/${id}?list=${list}`)
-	for (let o = 0; o < staytable.data.length; o++) {
-		const table = {
-			from: staytable.data[o].from,
-			duration: `${staytable.data[o].duration}s`,
+	if (staytable.data) {
+		for (let o = 0; o < staytable.data.length; o++) {
+			const table = {
+				from: staytable.data[o].from,
+				duration: `${staytable.data[o].duration}s`,
+			}
+			usertime.value.push(table)
 		}
-		usertime.value.push(table)
+	} else {
+		usertime.value = []
 	}
 }
 

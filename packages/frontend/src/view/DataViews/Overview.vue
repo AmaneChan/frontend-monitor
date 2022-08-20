@@ -84,12 +84,12 @@ const uvOption = ref({
 })
 const uvtableData = ref([] as any[])
 const Page = reactive({
-	FP: 158.91,
-	FCP: 1.52,
-	DOM_Ready: 1.2,
-	DOM_Complete: 2,
-	DOM_Interactive: 1,
-	LCP: 3,
+	FP: 0,
+	FCP: 0,
+	DOM_Ready: 0,
+	DOM_Complete: 0,
+	DOM_Interactive: 0,
+	LCP: 0,
 })
 let id = 3
 const limit = 10
@@ -98,24 +98,20 @@ async function Eget(id: number, limit: number) {
 	for (let index = 0; index < 4; index++) {
 		const type = index + 1
 		const result: ResponseResult = await axios.get('/exception', { params: { id, type, limit } })
-		dataExceptionType.value.series[0].data[index].value = result.data.length
-		for (let i = 0; i < result.data.length; i++) {
-			const table = {
-				tiem: result.data[i].time,
-				data: result.data[i].msg,
-				ip: result.data[i].position,
+		if (result.data) {
+			dataExceptionType.value.series[0].data[index].value = result.data.length
+			for (let i = 0; i < result.data.length; i++) {
+				const table = {
+					tiem: result.data[i].time,
+					data: result.data[i].msg,
+					ip: result.data[i].position,
+				}
+				tableData.value.push(table)
 			}
-			tableData.value.push(table)
+		} else {
+			tableData.value = []
+			dataExceptionType.value.series[0].data[index].value = 0
 		}
-		// const Ereq: ResponseResult = await axios.get('/exception/recent', { params: { id, type } })
-		// for (let index = 0; index < Ereq.data.length; index++) {
-		// 	const table = {
-		// 		date: result.data[index].time,
-		// 		name: result.data[index].msg,
-		// 		address: result.data[index].position,
-		// 	}
-		// 	tableData.value.push(table)
-		// }
 	}
 }
 async function Bget(id: number) {
@@ -132,20 +128,28 @@ async function Bget(id: number) {
 	}
 
 	const pvtable = await axios.get(`/behavior/popular/pv?id=${id}`)
-	for (let o = 0; o < pvtable.data.length; o++) {
-		const table = {
-			pv: pvtable.data[o].pv,
-			from: pvtable.data[o].from,
+	if (pvtable.data) {
+		for (let o = 0; o < pvtable.data.length; o++) {
+			const table = {
+				pv: pvtable.data[o].pv,
+				from: pvtable.data[o].from,
+			}
+			pvtableData.value.push(table)
 		}
-		pvtableData.value.push(table)
+	} else {
+		pvtableData.value = []
 	}
 	const uvtable = await axios.get(`/behavior/popular/uv?id=${id}`)
-	for (let o = 0; o < uvtable.data.length; o++) {
-		const table = {
-			uv: uvtable.data[o].uv,
-			from: uvtable.data[o].from,
+	if (uvtable.data) {
+		for (let o = 0; o < uvtable.data.length; o++) {
+			const table = {
+				uv: uvtable.data[o].uv,
+				from: uvtable.data[o].from,
+			}
+			uvtableData.value.push(table)
 		}
-		uvtableData.value.push(table)
+	} else {
+		uvtableData.value = []
 	}
 }
 async function BPet(page: number, day: number) {
@@ -153,27 +157,38 @@ async function BPet(page: number, day: number) {
 		const type = index + 1
 		const result: ResponseResult = await axios.get('/perf', { params: { id, type, page, limit } })
 		console.log(result)
-		if (type === 1) {
-			Page.FP = result.data.avg
-			const seg = '100,300,500,1000'
-			const FPSeries = await axios.get('/perf/seg', { params: { id, type, day, seg } })
-			console.log(FPSeries)
-		} else
-		if (type === 2) {
-			Page.FCP = result.data.avg
-			const seg = '100,300,500,1000'
-			const FCPSeries = await axios.get('/perf/seg', { params: { id, type, day, seg } })
-			console.log(FCPSeries)
-		} else
-		if (type === 6) {
-			Page.DOM_Interactive = result.data.avg
-			const seg = '500,1000,2000,5000'
-			const InteractiveSeries = await axios.get('/perf/seg', { params: { id, type, day, seg } })
-		} else
-		if (type === 7) {
-			Page.LCP = result.data.avg
-			const seg = '200,500,1000'
-			const LCPSeries = await axios.get('/perf/seg', { params: { id, type, day, seg } })
+		if (result.data) {
+			if (type === 1) {
+				Page.FP = result.data.avg
+				const seg = '100,300,500,1000'
+				const FPSeries = await axios.get('/perf/seg', { params: { id, type, day, seg } })
+				console.log(FPSeries)
+			} else
+			if (type === 2) {
+				Page.FCP = result.data.avg
+				const seg = '100,300,500,1000'
+				const FCPSeries = await axios.get('/perf/seg', { params: { id, type, day, seg } })
+				console.log(FCPSeries)
+			} else
+			if (type === 3) {
+				Page.DOM_Ready = result.data.avg
+			} else
+			if (type === 5) {
+				Page.DOM_Complete = result.data.avg
+			} else
+			if (type === 6) {
+				Page.DOM_Interactive = result.data.avg
+			} else
+			if (type === 7) {
+				Page.LCP = result.data.avg
+			}
+		} else {
+			Page.FP = 0
+			Page.FCP = 0
+			Page.DOM_Interactive = 0
+			Page.LCP = 0
+			Page.DOM_Complete = 0
+			Page.DOM_Ready = 0
 		}
 	}
 }
