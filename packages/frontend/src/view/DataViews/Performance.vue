@@ -19,6 +19,142 @@ const Interface = {
 	Time: 124.22,
 	SuccessRate: 100,
 }
+const FPOption = {
+	title: {
+		text: 'FP分段数量占比',
+		left: 'center',
+	},
+	tooltip: {
+		trigger: 'item',
+	},
+	legend: {
+		orient: 'vertical',
+		left: 'left',
+	},
+	series: [
+		{
+			name: 'Access From',
+			type: 'pie',
+			radius: '50%',
+			data: [
+				{ value: 0, name: '<100ms' },
+				{ value: 0, name: '100-300ms' },
+				{ value: 0, name: '300-500ms' },
+				{ value: 0, name: '500-1000ms' },
+				{ value: 0, name: '>1000ms' },
+			],
+			emphasis: {
+				itemStyle: {
+					shadowBlur: 10,
+					shadowOffsetX: 0,
+					shadowColor: 'rgba(0, 0, 0, 0.5)',
+				},
+			},
+		},
+	],
+}
+const FCPOption = {
+	title: {
+		text: 'FCP分段数量占比',
+		left: 'center',
+	},
+	tooltip: {
+		trigger: 'item',
+	},
+	legend: {
+		orient: 'vertical',
+		left: 'left',
+	},
+	series: [
+		{
+			name: 'Access From',
+			type: 'pie',
+			radius: '50%',
+			data: [
+				{ value: 0, name: '<100ms' },
+				{ value: 0, name: '100-300ms' },
+				{ value: 0, name: '300-500ms' },
+				{ value: 0, name: '500-1000ms' },
+				{ value: 0, name: '>1000ms' },
+			],
+			emphasis: {
+				itemStyle: {
+					shadowBlur: 10,
+					shadowOffsetX: 0,
+					shadowColor: 'rgba(0, 0, 0, 0.5)',
+				},
+			},
+		},
+	],
+}
+const InteractiveOption = {
+	title: {
+		text: 'DOM_Interactive分段数量占比',
+		left: 'center',
+	},
+	tooltip: {
+		trigger: 'item',
+	},
+	legend: {
+		orient: 'vertical',
+		left: 'left',
+	},
+	series: [
+		{
+			name: 'Access From',
+			type: 'pie',
+			radius: '50%',
+			data: [
+				{ value: 0, name: '<500ms' },
+				{ value: 0, name: '500-1000ms' },
+				{ value: 0, name: '1000-2000ms' },
+				{ value: 0, name: '2000-5000ms' },
+				{ value: 0, name: '>5000ms' },
+			],
+			emphasis: {
+				itemStyle: {
+					shadowBlur: 10,
+					shadowOffsetX: 0,
+					shadowColor: 'rgba(0, 0, 0, 0.5)',
+				},
+			},
+		},
+	],
+}
+const LCPOption = {
+	title: {
+		text: 'LCP分段数量占比',
+		left: 'center',
+	},
+	tooltip: {
+		trigger: 'item',
+	},
+	legend: {
+		orient: 'vertical',
+		left: 'left',
+	},
+	series: [
+		{
+			name: 'Access From',
+			type: 'pie',
+			radius: '50%',
+			data: [
+				{ value: 0, name: '<200ms' },
+				{ value: 0, name: '200-500ms' },
+				{ value: 0, name: '500-1000ms' },
+				{ value: 0, name: '>1000ms' },
+			],
+			emphasis: {
+				itemStyle: {
+					shadowBlur: 10,
+					shadowOffsetX: 0,
+					shadowColor: 'rgba(0, 0, 0, 0.5)',
+				},
+			},
+		},
+	],
+}
+
 const PageOption = {
 	title: {
 		text: '页面加载耗时分段数量占比',
@@ -53,6 +189,7 @@ const PageOption = {
 		},
 	],
 }
+
 const InterfaceOption = {
 	title: {
 		text: '接口请求耗时分段数量占比',
@@ -119,7 +256,7 @@ const limit = 10
 const page = 0
 const token: string | null = `${localStorage.getItem('token')}`
 
-for (let index = 0; index < 6; index++){
+for (let index = 0; index < 7; index++){
 	const type = index + 1
 	await axios
 		.get('/perf',{
@@ -128,23 +265,50 @@ for (let index = 0; index < 6; index++){
 		})
 		.then((res)=>{
 			console.log(res)
-			if(index === 0){
-				Page['FP'] = res.data.avg
+			if(type === 1){
+				Page['FP'] = res.data.avg.toFixed(2)
+				for(let i=0;i<res.data.list.length;i++){
+					if(res.data.list[i].value<=100){FPOption.series[0].data[0].value++}
+					else if(res.data.list[i].value<=300){FPOption.series[0].data[1].value++}
+					else if(res.data.list[i].value<=500){FPOption.series[0].data[2].value++}
+					else if(res.data.list[i].value<=1000){FPOption.series[0].data[3].value++}
+					else {FPOption.series[0].data[4].value++}
+				}
 			}else 
-			if(index===1){
-				Page['FCP'] = res.data.avg
+			if(type === 2){
+				Page['FCP'] = res.data.avg.toFixed(2)
+				for(let i=0;i<res.data.list.length;i++){
+					if(res.data.list[i].value<=100){FCPOption.series[0].data[0].value++}
+					else if(res.data.list[i].value<=300){FCPOption.series[0].data[1].value++}
+					else if(res.data.list[i].value<=500){FCPOption.series[0].data[2].value++}
+					else if(res.data.list[i].value<=1000){FCPOption.series[0].data[3].value++}
+					else {FCPOption.series[0].data[4].value++}
+				}
 			}else 
-			if(index===2){
-				Page['DOM_Ready'] = res.data.avg
+			if(type === 3){
+				Page['DOM_Ready'] = res.data.avg.toFixed(2)
 			}else 
-			if(index===3){
-				Page['DOM_Complete'] = res.data.avg
+			if(type === 5){
+				Page['DOM_Complete'] = res.data.avg.toFixed(2)
 			}else 
-			if(index===4){
-				Page['DOM_Interactive'] = res.data.avg
+			if(type === 6){
+				Page['DOM_Interactive'] = res.data.avg.toFixed(2)
+				for(let i=0;i<res.data.list.length;i++){
+					if(res.data.list[i].value<=500){InteractiveOption.series[0].data[0].value++}
+					else if(res.data.list[i].value<=1000){InteractiveOption.series[0].data[1].value++}
+					else if(res.data.list[i].value<=2000){InteractiveOption.series[0].data[2].value++}
+					else if(res.data.list[i].value<=5000){InteractiveOption.series[0].data[3].value++}
+					else {InteractiveOption.series[0].data[4].value++}
+				}
 			}else 
-			if(index===5){
-				Page['LCP'] = res.data.avg
+			if(type === 7){
+				Page['LCP'] = res.data.avg.toFixed(2)
+				for(let i=0;i<res.data.list.length;i++){
+					if(res.data.list[i].value<=200){LCPOption.series[0].data[0].value++}
+					else if(res.data.list[i].value<=500){LCPOption.series[0].data[1].value++}
+					else if(res.data.list[i].value<=1000){LCPOption.series[0].data[2].value++}
+					else {LCPOption.series[0].data[3].value++}
+				}
 			}
 			
 		})
@@ -194,7 +358,6 @@ for (let index = 0; index < 6; index++){
 			</el-row>
 		</div>
 		<div class="ma">
-			
 			<el-row>
 				<el-col :span="8">
 					<el-card class="mal">
@@ -219,6 +382,51 @@ for (let index = 0; index < 6; index++){
 				</el-col>
 			</el-row>
 		</div>
+		<div class="ma">
+			<el-row>
+				<el-col :span="12">
+					<el-card class="mal">
+						<VChart
+							class="chart"
+							:option="FPOption"
+							:autoresize="true"
+						></VChart>
+					</el-card>
+				</el-col>
+				<el-col :span="12">
+					<el-card class="mal">
+						<VChart
+							class="chart"
+							:option="FCPOption"
+							:autoresize="true"
+						></VChart>
+					</el-card>
+				</el-col>
+			</el-row>
+		</div>
+		<div class="ma">
+			<el-row>
+				<el-col :span="12">
+					<el-card class="mal">
+						<VChart
+							class="chart"
+							:option="InteractiveOption"
+							:autoresize="true"
+						></VChart>
+					</el-card>
+				</el-col>
+				<el-col :span="12">
+					<el-card class="mal">
+						<VChart
+							class="chart"
+							:option="LCPOption"
+							:autoresize="true"
+						></VChart>
+					</el-card>
+				</el-col>
+			</el-row>
+		</div>
+<!-- e -->
 		<div class="ma">
 			<el-row>
 				<el-col :span="10">
