@@ -83,7 +83,7 @@ const pageVisit: Person = {
 	queryVisitPv(req, res) {
 		const time = new Date()
 		const startTime = `${time.getFullYear()}-${time.getMonth() + 1}-${time.getDate() - 6}`
-		const endTime = `${time.getFullYear()}-${time.getMonth() + 1}-${time.getDate() + 1}`
+		const endTime = `${time.getFullYear()}-${time.getMonth() + 1}-${time.getDate()}`
 		db.query('SELECT `day`,SUM(count) AS pv FROM visit_history WHERE `day` BETWEEN ? AND ? AND proj=? GROUP BY `day` ORDER BY `day` DESC',
 			[startTime, endTime, req.query.id],
 			(err, result) => {
@@ -92,7 +92,7 @@ const pageVisit: Person = {
 				}
 				const arr = []
 				for (let t = new Date(startTime); t <= new Date(endTime); t = new Date(t.setDate(t.getDate() + 1))) {
-					const s = result.find((d: { day: string }) => d.day === `${t.getFullYear()}-${t.getMonth() + 1}-${t.getDate() + 1}`)
+					const s = result.find((d: any) => `${d.day.getFullYear()}-${d.day.getMonth() + 1}-${d.day.getDate() + 1}` === `${t.getFullYear()}-${t.getMonth() + 1}-${t.getDate() + 1}`)
 					if (s) {
 						arr.push(s.pv)
 					} else {
@@ -109,7 +109,7 @@ const pageVisit: Person = {
 	queryVisitUv(req, res) {
 		const time = new Date()
 		const startTime = `${time.getFullYear()}-${time.getMonth() + 1}-${time.getDate() - 6}`
-		const endTime = `${time.getFullYear()}-${time.getMonth() + 1}-${time.getDate() + 1}`
+		const endTime = `${time.getFullYear()}-${time.getMonth() + 1}-${time.getDate()}`
 		db.query('SELECT `day`,count(*) AS uv FROM visit_history WHERE `day` BETWEEN ? AND ? AND proj=? GROUP BY `day` ORDER BY `day` DESC',
 			[startTime, endTime, req.query.id],
 			(err, result) => {
@@ -118,7 +118,7 @@ const pageVisit: Person = {
 				}
 				const arr = []
 				for (let t = new Date(startTime); t <= new Date(endTime); t = new Date(t.setDate(t.getDate() + 1))) {
-					const s = result.find((d: { day: string }) => d.day === `${t.getFullYear()}-${t.getMonth() + 1}-${t.getDate() + 1}`)
+					const s = result.find((d: any) => `${d.day.getFullYear()}-${d.day.getMonth() + 1}-${d.day.getDate() + 1}` === `${t.getFullYear()}-${t.getMonth() + 1}-${t.getDate() + 1}`)
 					if (s) {
 						arr.push(s.uv)
 					} else {
@@ -203,34 +203,39 @@ const pageVisit: Person = {
 		})
 	},
 	querystay(req, res) {
-		if (!req.query.all) {
-			db.query('SELECT `from`, AVG(`duration`) AS duration FROM page_visit WHERE proj=1 GROUP BY `from` ORDER BY duration DESC', req.params.id, (err, results) => {
-				if (err) {
-					return res.cc(err, 500)
-				}
-				if (results.length === 0) {
-					return res.cc('暂无数据！', 400)
-				}
-				res.send({
-					code: 200,
-					message: '查询停留记录成功！',
-					data: results,
+		if (parseInt(req.query.list) === 1) {
+			const max = req.query.limit || 20
+			db.query('SELECT `from`, AVG(`duration`) AS duration FROM page_visit WHERE proj=? GROUP BY `from` ORDER BY duration DESC LIMIT ?',
+				[req.params.id, max],
+				(err, results) => {
+					if (err) {
+						return res.cc(err, 500)
+					}
+					if (results.length === 0) {
+						return res.cc('暂无数据！', 400)
+					}
+					res.send({
+						code: 200,
+						message: '查询停留记录成功！',
+						data: results,
+					})
 				})
-			})
 		} else {
-			db.query('SELECT AVG(`duration`) AS duration FROM page_visit WHERE proj=1 ORDER BY duration DESC', req.params.id, (err, results) => {
-				if (err) {
-					return res.cc(err, 500)
-				}
-				if (results.length === 0) {
-					return res.cc('暂无数据！', 400)
-				}
-				res.send({
-					code: 200,
-					message: '查询停留记录成功！',
-					data: results[0].duration,
+			db.query('SELECT AVG(`duration`) AS duration FROM page_visit WHERE proj=? ORDER BY duration DESC',
+				req.params.id,
+				(err, results) => {
+					if (err) {
+						return res.cc(err, 500)
+					}
+					if (results.length === 0) {
+						return res.cc('暂无数据！', 400)
+					}
+					res.send({
+						code: 200,
+						message: '查询停留记录成功！',
+						data: results[0].duration,
+					})
 				})
-			})
 		}
 	},
 	queryAll(req, res) {
