@@ -45,5 +45,9 @@ export const useProjectsStore = defineStore('projects', {
 			const result: ResponseResult = await axios.get('/project')
 			this.setProjects(result.data)
 		},
+		refresh() {
+			this.projects = []
+			this.choose = -1
+		},
 	},
 })

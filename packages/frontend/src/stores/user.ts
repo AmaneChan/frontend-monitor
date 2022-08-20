@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 
 import { axios } from '../request.js'
 import type { ResponseResult } from '../request.js'
+import { useProjectsStore } from './projects.js'
 
 export const useUserStore = defineStore('userStore', {
 	state: () => ({
@@ -16,6 +17,8 @@ export const useUserStore = defineStore('userStore', {
 	},
 	actions: {
 		logout() {
+			const projectStore = useProjectsStore()
+			projectStore.refresh()
 			this.token = ''
 			this.username = ''
 			localStorage.removeItem('token')
