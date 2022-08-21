@@ -327,6 +327,7 @@ onMounted(() => {
 			}
 		},
 	)
+	switchPerfRank('tableDataFP')
 })
 onActivated(() => {
 	console.log('onActivated')
