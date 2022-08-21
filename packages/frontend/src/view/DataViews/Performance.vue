@@ -300,25 +300,6 @@ async function Pget() {
 					LCPOption.value.series[0].data[i].value = LCPSeries.data ? LCPSeries.data[i] : 0
 				}
 			}
-		} else {
-			if (type === 1) {
-				Page.FP = 0
-			} else
-			if (type === 2) {
-				Page.FCP = 0
-			} else
-			if (type === 3) {
-				Page.DOM_Ready = 0
-			} else
-			if (type === 5) {
-				Page.DOM_Complete = 0
-			} else
-			if (type === 6) {
-				Page.DOM_Interactive = 0
-			} else
-			if (type === 7) {
-				Page.LCP = 0
-			}
 		}
 	}
 }
@@ -328,6 +309,19 @@ onMounted(() => {
 		() => projectsStore.choose,
 		(newVal, oldVal) => {
 			if (newVal !== -1) {
+				Page.FP = 0
+				Page.FCP = 0
+				Page.DOM_Ready = 0
+				Page.DOM_Complete = 0
+				Page.DOM_Interactive = 0
+				Page.LCP = 0
+				tableDataComplete.value = []
+				tableDataInteractive.value = []
+				tableDataLCP.value = []
+				FPOption.value.series[0].data = [{ value: 0, name: '<100ms' }, { value: 0, name: '100-300ms' }, { value: 0, name: '300-500ms' }, { value: 0, name: '500-1000ms' }, { value: 0, name: '>1000ms' }]
+				FCPOption.value.series[0].data = [{ value: 0, name: '<100ms' }, { value: 0, name: '100-300ms' }, { value: 0, name: '300-500ms' }, { value: 0, name: '500-1000ms' }, { value: 0, name: '>1000ms' }]
+				InteractiveOption.value.series[0].data = [{ value: 0, name: '<500ms' }, { value: 0, name: '500-1000ms' }, { value: 0, name: '1000-2000ms' }, { value: 0, name: '2000-5000ms' }, { value: 0, name: '>5000ms' }]
+				LCPOption.value.series[0].data = [{ value: 0, name: '<200ms' }, { value: 0, name: '200-500ms' }, { value: 0, name: '500-1000ms' }, { value: 0, name: '>1000ms' }]
 				id = projectsStore.projects[projectsStore.choose].id
 				Pget()
 			}

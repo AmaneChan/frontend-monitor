@@ -137,9 +137,6 @@ async function Eget(id: number, limit: number) {
 		const result: ResponseResult = await axios.get('/exception', {
 			params: { id, type, limit },
 		})
-		console.log(type)
-		console.log(index)
-		console.log(result.data)
 		if (result.data) {
 			dataExceptionType.value.series[0].data[index].value = result.data.length
 			if (type === 1) {
@@ -171,16 +168,6 @@ async function Eget(id: number, limit: number) {
 				}
 				tableData.value.push(table)
 			}
-		} else {
-			if (type === 1) {
-				JSoption.value.series[0].data = []
-			} else if (type === 2) {
-				InterfaceOption.value.series[0].data = []
-			} else if (type === 3) {
-				StaticOption.value.series[0].data = []
-			} else if (type === 4) {
-				CustomOption.value.series[0].data = []
-			}
 		}
 	}
 }
@@ -190,6 +177,12 @@ onMounted(() => {
 		() => projectsStore.choose,
 		(newVal, oldVal) => {
 			if (newVal !== -1) {
+				dataExceptionType.value.series[0].data = [{ value: 0, name: 'JS错误' }, { value: 0, name: '自定义异常' }, { value: 0, name: '静态资源异常' }, { value: 0, name: '接口异常' }]
+				tableData.value = []
+				JSoption.value.series[0].data = [0, 0, 0, 0, 0, 0, 0]
+				InterfaceOption.value.series[0].data = [0, 0, 0, 0, 0, 0, 0]
+				StaticOption.value.series[0].data = [0, 0, 0, 0, 0, 0, 0]
+				CustomOption.value.series[0].data = [0, 0, 0, 0, 0, 0, 0]
 				id = projectsStore.projects[projectsStore.choose].id
 				Eget(id, limit)
 			}

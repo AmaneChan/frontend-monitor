@@ -117,10 +117,6 @@ async function Bget(id: number) {
 		for (let index = 0; index < pvreq.data.length; index++) {
 			pvOption.value.series[0].data[index] = pvreq.data[index]
 		}
-	} else {
-		for (let index = 0; index < pvOption.value.series[0].data.length; index++) {
-			pvOption.value.series[0].data[index] = 0
-		}
 	}
 
 	const uvreq = await axios.get(`/behavior/visit/uv?id=${id}`)
@@ -138,8 +134,6 @@ async function Bget(id: number) {
 			}
 			pvtableData.value.push(table)
 		}
-	} else {
-		pvtableData.value = []
 	}
 	const uvtable = await axios.get(`/behavior/popular/uv?id=${id}`)
 	if (uvtable.data) {
@@ -150,8 +144,6 @@ async function Bget(id: number) {
 			}
 			uvtableData.value.push(table)
 		}
-	} else {
-		uvtableData.value = []
 	}
 }
 async function BPet(page: number, day: number) {
@@ -209,6 +201,12 @@ onMounted(() => {
 		() => projectsStore.choose,
 		(newVal, oldVal) => {
 			if (newVal !== -1) {
+				dataExceptionType.value.series[0].data = [{ value: 0, name: 'JS错误' }, { value: 0, name: '自定义异常' }, { value: 0, name: '静态资源异常' }, { value: 0, name: '接口异常' }]
+				tableData.value = []
+				pvOption.value.series[0].data = [0, 0, 0, 0, 0, 0, 0]
+				uvOption.value.series[0].data = [0, 0, 0, 0, 0, 0, 0]
+				pvtableData.value = []
+				uvtableData.value = []
 				id = projectsStore.projects[projectsStore.choose].id
 				Eget(id, limit)
 				Bget(id)
