@@ -231,7 +231,7 @@ async function Pget() {
 				const seg = '100,300,500,1000'
 				const FPSeries = await axios.get('/perf/seg', { params: { id, type, day, seg } })
 				for (let i = 0; i < FPSeries.data.length; i++) {
-					FPOption.value.series[0].data[i].value = FPSeries.data[i]
+					FPOption.value.series[0].data[i].value = FPSeries.data ? FPSeries.data[i] : 0
 				}
 			} else
 			if (type === 2) {
@@ -246,7 +246,7 @@ async function Pget() {
 				const seg = '100,300,500,1000'
 				const FCPSeries = await axios.get('/perf/seg', { params: { id, type, day, seg } })
 				for (let i = 0; i < FCPSeries.data.length; i++) {
-					FCPOption.value.series[0].data[i].value = FCPSeries.data[i]
+					FCPOption.value.series[0].data[i].value = FCPSeries.data ? FCPSeries.data[i] : 0
 				}
 			} else
 			if (type === 3) {
@@ -282,7 +282,7 @@ async function Pget() {
 				const seg = '500,1000,2000,5000'
 				const InteractiveSeries = await axios.get('/perf/seg', { params: { id, type, day, seg } })
 				for (let i = 0; i < InteractiveSeries.data.length; i++) {
-					InteractiveOption.value.series[0].data[i].value = InteractiveSeries.data[i]
+					InteractiveOption.value.series[0].data[i].value = InteractiveSeries.data ? InteractiveSeries.data[i] : 0
 				}
 			} else
 			if (type === 7) {
@@ -297,7 +297,7 @@ async function Pget() {
 				const seg = '200,500,1000'
 				const LCPSeries = await axios.get('/perf/seg', { params: { id, type, day, seg } })
 				for (let i = 0; i < LCPSeries.data.length; i++) {
-					LCPOption.value.series[0].data[i].value = LCPSeries.data[i]
+					LCPOption.value.series[0].data[i].value = LCPSeries.data ? LCPSeries.data[i] : 0
 				}
 			}
 		} else {
@@ -318,18 +318,6 @@ async function Pget() {
 			} else
 			if (type === 7) {
 				Page.LCP = 0
-			}
-			for (let i = 0; i < FPOption.value.series[0].data.length; i++) {
-				FPOption.value.series[0].data[i].value = 0
-			}
-			for (let i = 0; i < FCPOption.value.series[0].data.length; i++) {
-				FCPOption.value.series[0].data[i].value = 0
-			}
-			for (let i = 0; i < InteractiveOption.value.series[0].data.length; i++) {
-				InteractiveOption.value.series[0].data[i].value = 0
-			}
-			for (let i = 0; i < LCPOption.value.series[0].data.length; i++) {
-				LCPOption.value.series[0].data[i].value = 0
 			}
 		}
 	}
