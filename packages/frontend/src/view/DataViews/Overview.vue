@@ -110,15 +110,22 @@ async function Eget(id: number, limit: number) {
 			}
 		} else {
 			tableData.value = []
-			dataExceptionType.value.series[0].data[index].value = 0
+			for (let index = 0; index < dataExceptionType.value.series[0].data.length; index++) {
+				dataExceptionType.value.series[0].data[index].value = 0
+			}
 		}
 	}
 }
 async function Bget(id: number) {
 	const pvreq = await axios.get(`/behavior/visit/pv?id=${id}`)
-
-	for (let index = 0; index < pvreq.data.length; index++) {
-		pvOption.value.series[0].data[index] = pvreq.data[index]
+	if (pvreq.data) {
+		for (let index = 0; index < pvreq.data.length; index++) {
+			pvOption.value.series[0].data[index] = pvreq.data[index]
+		}
+	} else {
+		for (let index = 0; index < pvOption.value.series[0].data.length; index++) {
+			pvOption.value.series[0].data[index] = 0
+		}
 	}
 
 	const uvreq = await axios.get(`/behavior/visit/uv?id=${id}`)
@@ -156,7 +163,6 @@ async function BPet(page: number, day: number) {
 	for (let index = 0; index < 7; index++) {
 		const type = index + 1
 		const result: ResponseResult = await axios.get('/perf', { params: { id, type, page, limit } })
-		console.log(result)
 		if (result.data) {
 			if (type === 1) {
 				Page.FP = result.data.avg
@@ -185,10 +191,10 @@ async function BPet(page: number, day: number) {
 		} else {
 			Page.FP = 0
 			Page.FCP = 0
+			Page.DOM_Ready = 0
+			Page.DOM_Complete = 0
 			Page.DOM_Interactive = 0
 			Page.LCP = 0
-			Page.DOM_Complete = 0
-			Page.DOM_Ready = 0
 		}
 	}
 }
@@ -198,14 +204,17 @@ onMounted(() => {
 	Eget(id, limit)
 	Bget(id)
 	BPet(page, day)
-	watch(() => projectsStore.choose, (newVal, oldVal) => {
-		if (newVal !== -1) {
-			id = projectsStore.projects[projectsStore.choose].id
-			Eget(id, limit)
-			Bget(id)
-			BPet(page, day)
-		}
-	})
+	watch(
+		() => projectsStore.choose,
+		(newVal, oldVal) => {
+			if (newVal !== -1) {
+				id = projectsStore.projects[projectsStore.choose].id
+				Eget(id, limit)
+				Bget(id)
+				BPet(page, day)
+			}
+		},
+	)
 })
 const add = function () {
 	router.push('setting')

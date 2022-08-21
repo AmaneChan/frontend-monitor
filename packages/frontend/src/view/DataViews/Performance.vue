@@ -214,8 +214,7 @@ const tableData = ref([
 const add = function () {
 	router.push('setting')
 }
-
-let id = 7
+let id = 3
 const limit = 10
 const page = 0
 const day = 7
@@ -223,13 +222,11 @@ async function Pget() {
 	for (let index = 0; index < 7; index++) {
 		const type = index + 1
 		const result: ResponseResult = await axios.get('/perf', { params: { id, type, page, limit } })
-		console.log(result)
 		if (result.data) {
 			if (type === 1) {
 				Page.FP = result.data.avg
 				const seg = '100,300,500,1000'
 				const FPSeries = await axios.get('/perf/seg', { params: { id, type, day, seg } })
-				console.log(FPSeries)
 				for (let i = 0; i < FPSeries.data.length; i++) {
 					FPOption.value.series[0].data[i].value = FPSeries.data[i]
 				}
@@ -268,8 +265,8 @@ async function Pget() {
 				}
 			}
 		} else {
-			Page.FCP = 0
 			Page.FP = 0
+			Page.FCP = 0
 			Page.DOM_Ready = 0
 			Page.DOM_Complete = 0
 			Page.DOM_Interactive = 0
@@ -292,12 +289,15 @@ async function Pget() {
 
 onMounted(() => {
 	Pget()
-	watch(() => projectsStore.choose, (newVal, oldVal) => {
-		if (newVal !== -1) {
-			id = projectsStore.projects[projectsStore.choose].id
-			Pget()
-		}
-	})
+	watch(
+		() => projectsStore.choose,
+		(newVal, oldVal) => {
+			if (newVal !== -1) {
+				id = projectsStore.projects[projectsStore.choose].id
+				Pget()
+			}
+		},
+	)
 })
 </script>
 

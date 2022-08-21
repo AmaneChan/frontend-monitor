@@ -27,7 +27,7 @@ const uvOption = ref({
 	},
 	series: [
 		{
-			data: [15, 23, 22, 21, 13, 14, 26],
+			data: [0, 0, 0, 0, 0, 0, 0],
 			type: 'line',
 		},
 	],
@@ -63,21 +63,22 @@ const topData = reactive({ PV: 0, UV: 0, time: 0, pvUp: 0, uvUp: 0 })
 async function Bget(id: number) {
 	const pvreq = await axios.get(`/behavior/visit/pv?id=${id}`)
 
-	topData.PV = pvreq.data[new Date().getDay()]
+	topData.PV = pvreq.data[6]
 	topData.pvUp = pvreq.data[pvreq.data.length - 2] / pvreq.data[pvreq.data.length - 1]
 	topData.pvUp = Number((topData.pvUp * 100).toFixed(1))
 	for (let index = 0; index < pvreq.data.length; index++) {
 		pvOption.value.series[0].data[index] = pvreq.data[index]
 	}
 	const uvreq = await axios.get(`/behavior/visit/uv?id=${id}`)
+
 	for (let index = 0; index < uvreq.data.length; index++) {
 		uvOption.value.series[0].data[index] = uvreq.data[index]
 	}
-	topData.UV = uvreq.data[new Date().getDay()]
+	topData.UV = uvreq.data[6]
 	topData.uvUp = uvreq.data[uvreq.data.length - 2] / uvreq.data[uvreq.data.length - 1]
 	topData.uvUp = Number((topData.uvUp * 100).toFixed(1))
-	const staytime = await axios.get('/behavior/stay/3')
-	console.log(staytime.data)
+	const staytime = await axios.get(`/behavior/stay/${id}`)
+
 	if (staytime.data) {
 		topData.time = staytime.data.toFixed(0)
 	} else {
@@ -124,12 +125,15 @@ async function Bget(id: number) {
 
 onMounted(() => {
 	Bget(id)
-	watch(() => projectsStore.choose, (newVal, oldVal) => {
-		if (newVal !== -1) {
-			id = projectsStore.projects[projectsStore.choose].id
-			Bget(id)
-		}
-	})
+	watch(
+		() => projectsStore.choose,
+		(newVal, oldVal) => {
+			if (newVal !== -1) {
+				id = projectsStore.projects[projectsStore.choose].id
+				Bget(id)
+			}
+		},
+	)
 })
 </script>
 

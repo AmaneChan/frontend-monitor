@@ -126,7 +126,7 @@ const CustomOption = ref({
 	],
 })
 const tableData = ref([] as any[])
-let id = 3
+let id = 0
 // const id = projectsStore.projects[projectsStore.choose].id
 
 const limit = 10
@@ -134,7 +134,9 @@ const limit = 10
 async function Eget(id: number, limit: number) {
 	for (let index = 0; index < 4; index++) {
 		const type = index + 1
-		const result: ResponseResult = await axios.get('/exception', { params: { id, type, limit } })
+		const result: ResponseResult = await axios.get('/exception', {
+			params: { id, type, limit },
+		})
 		if (result.data) {
 			dataExceptionType.value.series[0].data[index].value = result.data.length
 			if (type === 1) {
@@ -142,20 +144,17 @@ async function Eget(id: number, limit: number) {
 					const inDay: number = new Date(result.data[j].time).getDay()
 					JSoption.value.series[0].data[inDay] = JSoption.value.series[0].data[inDay] + 1
 				}
-			} else
-			if (type === 2) {
+			} else if (type === 2) {
 				for (let j = 0; j < result.data.length; j++) {
 					const inDay: number = new Date(result.data[j].time).getDay()
 					InterfaceOption.value.series[0].data[inDay] = InterfaceOption.value.series[0].data[inDay] + 1
 				}
-			} else
-			if (type === 3) {
+			} else if (type === 3) {
 				for (let j = 0; j < result.data.length; j++) {
 					const inDay: number = new Date(result.data[j].time).getDay()
 					StaticOption.value.series[0].data[inDay] = StaticOption.value.series[0].data[inDay] + 1
 				}
-			} else
-			if (type === 4) {
+			} else if (type === 4) {
 				for (let j = 0; j < result.data.length; j++) {
 					const inDay: number = new Date(result.data[j].time).getDay()
 					CustomOption.value.series[0].data[inDay] = CustomOption.value.series[0].data[inDay] + 1
@@ -171,40 +170,50 @@ async function Eget(id: number, limit: number) {
 			}
 		} else {
 			dataExceptionType.value.series[0].data[index].value = 0
-			for (let index = 0; index < JSoption.value.series[0].data.length; index++) {
+			for (
+				let index = 0;
+				index < JSoption.value.series[0].data.length;
+				index++
+			) {
 				JSoption.value.series[0].data[index] = 0
 			}
-			for (let index = 0; index < JSoption.value.series[0].data.length; index++) {
+			for (
+				let index = 0;
+				index < JSoption.value.series[0].data.length;
+				index++
+			) {
 				InterfaceOption.value.series[0].data[index] = 0
 			}
-			for (let index = 0; index < JSoption.value.series[0].data.length; index++) {
+			for (
+				let index = 0;
+				index < JSoption.value.series[0].data.length;
+				index++
+			) {
 				StaticOption.value.series[0].data[index] = 0
 			}
-			for (let index = 0; index < JSoption.value.series[0].data.length; index++) {
+			for (
+				let index = 0;
+				index < JSoption.value.series[0].data.length;
+				index++
+			) {
 				CustomOption.value.series[0].data[index] = 0
 			}
 			tableData.value = []
 		}
-		// const Ereq: ResponseResult = await axios.get('/exception/recent', { params: { id, type } })
-		// for (let index = 0; index < Ereq.data.length; index++) {
-		// 	const table = {
-		// 		date: result.data[index].time,
-		// 		name: result.data[index].msg,
-		// 		address: result.data[index].position,
-		// 	}
-		// 	tableData.value.push(table)
-		// }
 	}
 }
 
 onMounted(() => {
 	Eget(id, limit)
-	watch(() => projectsStore.choose, (newVal, oldVal) => {
-		if (newVal !== -1) {
-			id = projectsStore.projects[projectsStore.choose].id
-			Eget(id, limit)
-		}
-	})
+	watch(
+		() => projectsStore.choose,
+		(newVal, oldVal) => {
+			if (newVal !== -1) {
+				id = projectsStore.projects[projectsStore.choose].id
+				Eget(id, limit)
+			}
+		},
+	)
 })
 const add = function () {
 	router.push('setting')
