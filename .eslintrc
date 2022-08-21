@@ -7,8 +7,9 @@
 		"no-tabs": "off",
 		"no-console": "off",
 		"curly": ["error", "all"],
-		"@typescript-eslint/brace-style": ["error", "1tbs"],
 		"operator-linebreak": ["error", "after"],
+		"brace-style": ["error", "1tbs"],
+		"@typescript-eslint/brace-style": ["error", "1tbs"],
 		"vue/html-indent": [
 			"error",
 			"tab",
