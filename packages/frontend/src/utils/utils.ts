@@ -23,3 +23,7 @@ export function processDuration(duration: number) {
 	}
 	return str
 }
+
+export function calcDelta(oldValue: number, newValue: number) {
+	return Number(((newValue - oldValue) / oldValue * 100).toFixed(1))
+}

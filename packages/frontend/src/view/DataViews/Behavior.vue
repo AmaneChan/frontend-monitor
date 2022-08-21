@@ -4,7 +4,7 @@ import VChart from 'vue-echarts'
 import router from '../../router'
 import { useProjectsStore } from '../../stores/projects'
 import { axios } from '../../request.js'
-import { processDuration } from '../../utils/utils'
+import { calcDelta, processDuration } from '../../utils/utils'
 const projectsStore = useProjectsStore()
 
 const pvtableData = ref([] as any[])
@@ -65,8 +65,7 @@ async function Bget(id: number) {
 	const pvreq = await axios.get(`/behavior/visit/pv?id=${id}`)
 
 	topData.PV = pvreq.data[6]
-	topData.pvUp = pvreq.data[pvreq.data.length - 2] / pvreq.data[pvreq.data.length - 1]
-	topData.pvUp = Number((topData.pvUp * 100).toFixed(1))
+	topData.pvUp = calcDelta(pvreq.data[pvreq.data.length - 2], pvreq.data[pvreq.data.length - 1])
 	for (let index = 0; index < pvreq.data.length; index++) {
 		pvOption.value.series[0].data[index] = pvreq.data[index]
 	}
@@ -76,8 +75,7 @@ async function Bget(id: number) {
 		uvOption.value.series[0].data[index] = uvreq.data[index]
 	}
 	topData.UV = uvreq.data[6]
-	topData.uvUp = uvreq.data[uvreq.data.length - 2] / uvreq.data[uvreq.data.length - 1]
-	topData.uvUp = Number((topData.uvUp * 100).toFixed(1))
+	topData.uvUp = calcDelta(uvreq.data[uvreq.data.length - 2], uvreq.data[uvreq.data.length - 1])
 	const staytime = await axios.get(`/behavior/stay/${id}`)
 
 	if (staytime.data) {
@@ -173,11 +171,11 @@ onActivated(() => {
 							<span
 								:class="{
 									down: topData.pvUp < 0,
-									up: topData.pvUp > 0,
+									up: topData.pvUp >= 0,
 								}"
 							>
 								{{ topData.pvUp === Infinity ? '∞' : topData.pvUp }}%
-								{{ topData.pvUp > 0 ? '↑' : '↓' }}
+								{{ topData.pvUp >= 0 ? '↑' : '↓' }}
 							</span>
 						</p>
 					</div>
@@ -191,11 +189,11 @@ onActivated(() => {
 							<span
 								:class="{
 									down: topData.uvUp < 0,
-									up: topData.uvUp > 0,
+									up: topData.uvUp >= 0,
 								}"
 							>
 								{{ topData.uvUp === Infinity ? '∞' : topData.uvUp }}%
-								{{ topData.uvUp > 0 ? '↑' : '↓' }}
+								{{ topData.uvUp >= 0 ? '↑' : '↓' }}
 							</span>
 						</p>
 					</div>
