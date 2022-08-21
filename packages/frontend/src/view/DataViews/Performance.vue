@@ -190,24 +190,8 @@ const PageOption = ref({
 
 const tableData = ref([
 	{
-		date: '2016-05-03',
-		name: 'Tom',
-		address: 'No. 189, Grove St, Los Angeles',
-	},
-	{
-		date: '2016-05-02',
-		name: 'Tom',
-		address: 'No. 189, Grove St, Los Angeles',
-	},
-	{
-		date: '2016-05-04',
-		name: 'Tom',
-		address: 'No. 189, Grove St, Los Angeles',
-	},
-	{
-		date: '2016-05-01',
-		name: 'Tom',
-		address: 'No. 189, Grove St, Los Angeles',
+		from: '',
+		avg: '',
 	},
 ])
 
@@ -229,43 +213,71 @@ async function Pget() {
 		console.log(result)
 		if (result.data) {
 			if (type === 1) {
+				tableData.value[0].from = 'FP'
+				tableData.value[0].avg = result.data.avg
 				Page.FP = result.data.avg
 				const seg = '100,300,500,1000'
 				const FPSeries = await axios.get('/perf/seg', { params: { id, type, day, seg } })
-				console.log(FPSeries)
+				// console.log(FPSeries)
 				for (let i = 0; i < FPSeries.data.length; i++) {
 					FPOption.value.series[0].data[i].value = FPSeries.data[i]
 				}
 			} else
 			if (type === 2) {
+				const pfm = {
+					from: 'FCP',
+					avg: result.data.avg,
+				}
+				tableData.value.push(pfm)
 				Page.FCP = result.data.avg
 				const seg = '100,300,500,1000'
 				const FCPSeries = await axios.get('/perf/seg', { params: { id, type, day, seg } })
-				console.log(FCPSeries)
+				// console.log(FCPSeries)
 				for (let i = 0; i < FCPSeries.data.length; i++) {
 					FCPOption.value.series[0].data[i].value = FCPSeries.data[i]
 				}
 			} else
 			if (type === 3) {
+				const pfm = {
+					from: 'DOM_Ready',
+					avg: result.data.avg,
+				}
+				tableData.value.push(pfm)
 				Page.DOM_Ready = result.data.avg
+				console.log(Page.DOM_Ready)
 			} else
 			if (type === 5) {
+				const pfm = {
+					from: 'DOM_Complete',
+					avg: result.data.avg,
+				}
+				tableData.value.push(pfm)
 				Page.DOM_Complete = result.data.avg
 			} else
 			if (type === 6) {
+				const pfm = {
+					from: 'DOM_Interactive',
+					avg: result.data.avg,
+				}
+				tableData.value.push(pfm)
 				Page.DOM_Interactive = result.data.avg
 				const seg = '500,1000,2000,5000'
 				const InteractiveSeries = await axios.get('/perf/seg', { params: { id, type, day, seg } })
-				console.log(InteractiveSeries)
+				// console.log(InteractiveSeries)
 				for (let i = 0; i < InteractiveSeries.data.length; i++) {
 					InteractiveOption.value.series[0].data[i].value = InteractiveSeries.data[i]
 				}
 			} else
 			if (type === 7) {
+				const pfm = {
+					from: 'LCP',
+					avg: result.data.avg,
+				}
+				tableData.value.push(pfm)
 				Page.LCP = result.data.avg
 				const seg = '200,500,1000'
 				const LCPSeries = await axios.get('/perf/seg', { params: { id, type, day, seg } })
-				console.log(LCPSeries)
+				// console.log(LCPSeries)
 				for (let i = 0; i < LCPSeries.data.length; i++) {
 					LCPOption.value.series[0].data[i].value = LCPSeries.data[i]
 				}
@@ -422,16 +434,7 @@ function update() {
 		<!-- e -->
 		<div class="ma">
 			<el-row>
-				<el-col :span="10">
-					<el-card class="mal">
-						<VChart
-							class="chart"
-							:option="PageOption"
-							:autoresize="true"
-						></VChart>
-					</el-card>
-				</el-col>
-				<el-col :span="14">
+				<el-col :span="24">
 					<el-card class="mal">
 						<el-table
 							:data="tableData"
@@ -439,23 +442,13 @@ function update() {
 							style="width: 100%"
 						>
 							<el-table-column
-								prop="date"
-								label="Date"
-								width="180"
+								prop="from"
+								label="From"
+								width="600"
 							/>
 							<el-table-column
-								prop="name"
-								label="Name"
-								width="180"
-							/>
-							<el-table-column
-								prop="address"
-								label="Address"
-							/>
-							<el-table-column
-								prop="name"
-								label="Name"
-								width="180"
+								prop="avg"
+								label="Avg"
 							/>
 						</el-table>
 					</el-card>
