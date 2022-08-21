@@ -162,17 +162,16 @@ async function Bget(id: number) {
 async function BPet(page: number, day: number) {
 	for (let index = 0; index < 7; index++) {
 		const type = index + 1
+		if (type === 4) {
+			continue
+		}
 		const result: ResponseResult = await axios.get('/perf', { params: { id, type, page, limit } })
 		if (result.data) {
 			if (type === 1) {
 				Page.FP = result.data.avg
-				const seg = '100,300,500,1000'
-				const FPSeries = await axios.get('/perf/seg', { params: { id, type, day, seg } })
 			} else
 			if (type === 2) {
 				Page.FCP = result.data.avg
-				const seg = '100,300,500,1000'
-				const FCPSeries = await axios.get('/perf/seg', { params: { id, type, day, seg } })
 			} else
 			if (type === 3) {
 				Page.DOM_Ready = result.data.avg

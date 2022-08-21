@@ -214,6 +214,9 @@ async function Pget() {
 	}
 	for (let index = 0; index < 7; index++) {
 		const type = index + 1
+		if (type === 4) {
+			continue
+		}
 		const result: ResponseResult = await axios.get('/perf', { params: { id, type, page, limit } })
 		if (result.data) {
 			if (type === 1) {
