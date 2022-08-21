@@ -153,18 +153,22 @@ const LCPOption = ref({
 	],
 })
 
-const tableDataFP = ref([
+const tableDataFP = ref<Perf[]>([
 ])
-const tableDataFCP = ref([
+const tableDataFCP = ref<Perf[]>([
 ])
-const tableDataReady = ref([
+const tableDataReady = ref<Perf[]>([
 ])
-const tableDataComplete = ref([
+const tableDataComplete = ref<Perf[]>([
 ])
-const tableDataInteractive = ref([
+const tableDataInteractive = ref<Perf[]>([
 ])
-const tableDataLCP = ref([
-])
+const tableDataLCP = ref<Perf[]>([])
+
+interface Perf {
+	perfItem: string
+	perfValue: any
+}
 
 const value = ref('')
 const options = [
@@ -214,8 +218,8 @@ async function Pget() {
 			if (type === 1) {
 				for (let i = 0; i < result.data.list.length; i++) {
 					const pfm = {
-						性能项: 'FP',
-						性能值: result.data.list[i].value,
+						perfItem: 'FP',
+						perfValue: result.data.list[i].value,
 					}
 					tableDataFP.value.push(pfm)
 				}
@@ -230,8 +234,8 @@ async function Pget() {
 			if (type === 2) {
 				for (let i = 0; i < result.data.list.length; i++) {
 					const pfm = {
-						性能项: 'FCP',
-						性能值: result.data.list[i].value,
+						perfItem: 'FCP',
+						perfValue: result.data.list[i].value,
 					}
 					tableDataFCP.value.push(pfm)
 				}
@@ -246,8 +250,8 @@ async function Pget() {
 			if (type === 3) {
 				for (let i = 0; i < result.data.list.length; i++) {
 					const pfm = {
-						性能项: 'DOM_Ready',
-						性能值: result.data.list[i].value,
+						perfItem: 'DOM_Ready',
+						perfValue: result.data.list[i].value,
 					}
 					tableDataReady.value.push(pfm)
 				}
@@ -257,8 +261,8 @@ async function Pget() {
 			if (type === 5) {
 				for (let i = 0; i < result.data.list.length; i++) {
 					const pfm = {
-						性能项: 'DOM_Complete',
-						性能值: result.data.list[i].value,
+						perfItem: 'DOM_Complete',
+						perfValue: result.data.list[i].value,
 					}
 					tableDataComplete.value.push(pfm)
 				}
@@ -267,8 +271,8 @@ async function Pget() {
 			if (type === 6) {
 				for (let i = 0; i < result.data.list.length; i++) {
 					const pfm = {
-						性能项: 'DOM_Interactive',
-						性能值: result.data.list[i].value,
+						perfItem: 'DOM_Interactive',
+						perfValue: result.data.list[i].value,
 					}
 					tableDataInteractive.value.push(pfm)
 				}
@@ -283,8 +287,8 @@ async function Pget() {
 			if (type === 7) {
 				for (let i = 0; i < result.data.list.length; i++) {
 					const pfm = {
-						性能项: 'LCP',
-						性能值: result.data.list[i].value,
+						perfItem: 'LCP',
+						perfValue: result.data.list[i].value,
 					}
 					tableDataLCP.value.push(pfm)
 				}
@@ -469,12 +473,12 @@ function update() {
 							style="width: 100%"
 						>
 							<el-table-column
-								prop="性能项"
-								label="性能项"
+								prop="perfItem"
+								label="perfItem"
 							/>
 							<el-table-column
-								prop="性能值"
-								label="性能值"
+								prop="perfValue"
+								label="perfValue"
 							/>
 						</el-table>
 					</el-card>
