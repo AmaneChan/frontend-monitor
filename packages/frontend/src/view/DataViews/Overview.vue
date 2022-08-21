@@ -186,12 +186,24 @@ async function BPet(page: number, day: number) {
 				Page.LCP = result.data.avg
 			}
 		} else {
-			Page.FP = 0
-			Page.FCP = 0
-			Page.DOM_Ready = 0
-			Page.DOM_Complete = 0
-			Page.DOM_Interactive = 0
-			Page.LCP = 0
+			if (type === 1) {
+				Page.FP = 0
+			} else
+			if (type === 2) {
+				Page.FCP = 0
+			} else
+			if (type === 3) {
+				Page.DOM_Ready = 0
+			} else
+			if (type === 5) {
+				Page.DOM_Complete = 0
+			} else
+			if (type === 6) {
+				Page.DOM_Interactive = 0
+			} else
+			if (type === 7) {
+				Page.LCP = 0
+			}
 		}
 	}
 }

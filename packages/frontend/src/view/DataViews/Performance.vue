@@ -301,12 +301,24 @@ async function Pget() {
 				}
 			}
 		} else {
-			Page.FP = 0
-			Page.FCP = 0
-			Page.DOM_Ready = 0
-			Page.DOM_Complete = 0
-			Page.DOM_Interactive = 0
-			Page.LCP = 0
+			if (type === 1) {
+				Page.FP = 0
+			} else
+			if (type === 2) {
+				Page.FCP = 0
+			} else
+			if (type === 3) {
+				Page.DOM_Ready = 0
+			} else
+			if (type === 5) {
+				Page.DOM_Complete = 0
+			} else
+			if (type === 6) {
+				Page.DOM_Interactive = 0
+			} else
+			if (type === 7) {
+				Page.LCP = 0
+			}
 			for (let i = 0; i < FPOption.value.series[0].data.length; i++) {
 				FPOption.value.series[0].data[i].value = 0
 			}
