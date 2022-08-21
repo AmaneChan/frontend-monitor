@@ -9,6 +9,8 @@
 	"scripts": {
 		"fe:dev": "pnpm run --dir ./packages/frontend dev",
 		"fe:build": "pnpm run --dir ./packages/frontend build",
+		"fesdk:build": "pnpm run --dir ./packages/frontend_sdk build",
+		"fesdk:build:min": "pnpm run --dir ./packages/frontend_sdk build:min",
 		"be:dev": "pnpm run --dir ./packages/backend dev",
 		"test": "pnpm fe:test && pnpm be:test",
 		"fe:test": "echo There are no test",
