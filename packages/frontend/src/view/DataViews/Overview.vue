@@ -108,11 +108,6 @@ async function Eget(id: number, limit: number) {
 				}
 				tableData.value.push(table)
 			}
-		} else {
-			tableData.value = []
-			for (let index = 0; index < dataExceptionType.value.series[0].data.length; index++) {
-				dataExceptionType.value.series[0].data[index].value = 0
-			}
 		}
 	}
 }

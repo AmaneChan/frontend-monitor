@@ -172,7 +172,6 @@ async function Eget(id: number, limit: number) {
 				tableData.value.push(table)
 			}
 		} else {
-			dataExceptionType.value.series[0].data[index].value = 0
 			if (type === 1) {
 				JSoption.value.series[0].data = []
 			} else if (type === 2) {
