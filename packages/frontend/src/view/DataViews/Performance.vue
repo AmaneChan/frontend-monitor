@@ -153,24 +153,27 @@ const LCPOption = ref({
 	],
 })
 
-const tableDataFP = ref<Perf[]>([
-])
-const tableDataFCP = ref<Perf[]>([
-])
-const tableDataReady = ref<Perf[]>([
-])
-const tableDataComplete = ref<Perf[]>([
-])
-const tableDataInteractive = ref<Perf[]>([
-])
+const value = ref('tableDataFP')
+
+const tableDataFP = ref<Perf[]>([])
+const tableDataFCP = ref<Perf[]>([])
+const tableDataReady = ref<Perf[]>([])
+const tableDataComplete = ref<Perf[]>([])
+const tableDataInteractive = ref<Perf[]>([])
 const tableDataLCP = ref<Perf[]>([])
 
-interface Perf {
-	perfItem: string
-	perfValue: any
+const curTableData = ref<Perf[]>([])
+const map: any = { tableDataFP, tableDataFCP, tableDataReady, tableDataComplete, tableDataInteractive, tableDataLCP }
+
+function switchPerfRank(name: string) {
+	curTableData.value = map[name].value
 }
 
-const value = ref('')
+interface Perf {
+	from: string
+	value: any
+}
+
 const options = [
 	{
 		value: 'tableDataFP',
@@ -218,15 +221,14 @@ async function Pget() {
 			if (type === 1) {
 				for (let i = 0; i < result.data.list.length; i++) {
 					const pfm = {
-						perfItem: 'FP',
-						perfValue: result.data.list[i].value,
+						from: result.data.list[i].from,
+						value: result.data.list[i].value,
 					}
 					tableDataFP.value.push(pfm)
 				}
 				Page.FP = result.data.avg
 				const seg = '100,300,500,1000'
 				const FPSeries = await axios.get('/perf/seg', { params: { id, type, day, seg } })
-				// console.log(FPSeries)
 				for (let i = 0; i < FPSeries.data.length; i++) {
 					FPOption.value.series[0].data[i].value = FPSeries.data[i]
 				}
@@ -234,15 +236,14 @@ async function Pget() {
 			if (type === 2) {
 				for (let i = 0; i < result.data.list.length; i++) {
 					const pfm = {
-						perfItem: 'FCP',
-						perfValue: result.data.list[i].value,
+						from: result.data.list[i].from,
+						value: result.data.list[i].value,
 					}
 					tableDataFCP.value.push(pfm)
 				}
 				Page.FCP = result.data.avg
 				const seg = '100,300,500,1000'
 				const FCPSeries = await axios.get('/perf/seg', { params: { id, type, day, seg } })
-				// console.log(FCPSeries)
 				for (let i = 0; i < FCPSeries.data.length; i++) {
 					FCPOption.value.series[0].data[i].value = FCPSeries.data[i]
 				}
@@ -250,8 +251,8 @@ async function Pget() {
 			if (type === 3) {
 				for (let i = 0; i < result.data.list.length; i++) {
 					const pfm = {
-						perfItem: 'DOM_Ready',
-						perfValue: result.data.list[i].value,
+						from: result.data.list[i].from,
+						value: result.data.list[i].value,
 					}
 					tableDataReady.value.push(pfm)
 				}
@@ -261,8 +262,8 @@ async function Pget() {
 			if (type === 5) {
 				for (let i = 0; i < result.data.list.length; i++) {
 					const pfm = {
-						perfItem: 'DOM_Complete',
-						perfValue: result.data.list[i].value,
+						from: result.data.list[i].from,
+						value: result.data.list[i].value,
 					}
 					tableDataComplete.value.push(pfm)
 				}
@@ -271,15 +272,14 @@ async function Pget() {
 			if (type === 6) {
 				for (let i = 0; i < result.data.list.length; i++) {
 					const pfm = {
-						perfItem: 'DOM_Interactive',
-						perfValue: result.data.list[i].value,
+						from: result.data.list[i].from,
+						value: result.data.list[i].value,
 					}
 					tableDataInteractive.value.push(pfm)
 				}
 				Page.DOM_Interactive = result.data.avg
 				const seg = '500,1000,2000,5000'
 				const InteractiveSeries = await axios.get('/perf/seg', { params: { id, type, day, seg } })
-				// console.log(InteractiveSeries)
 				for (let i = 0; i < InteractiveSeries.data.length; i++) {
 					InteractiveOption.value.series[0].data[i].value = InteractiveSeries.data[i]
 				}
@@ -287,15 +287,14 @@ async function Pget() {
 			if (type === 7) {
 				for (let i = 0; i < result.data.list.length; i++) {
 					const pfm = {
-						perfItem: 'LCP',
-						perfValue: result.data.list[i].value,
+						from: result.data.list[i].from,
+						value: result.data.list[i].value,
 					}
 					tableDataLCP.value.push(pfm)
 				}
 				Page.LCP = result.data.avg
 				const seg = '200,500,1000'
 				const LCPSeries = await axios.get('/perf/seg', { params: { id, type, day, seg } })
-				// console.log(LCPSeries)
 				for (let i = 0; i < LCPSeries.data.length; i++) {
 					LCPOption.value.series[0].data[i].value = LCPSeries.data[i]
 				}
@@ -328,6 +327,7 @@ onMounted(() => {
 	watch(() => projectsStore.choose, (newVal, oldVal) => {
 		update()
 	})
+	switchPerfRank('tableDataFP')
 })
 
 function update() {
@@ -452,13 +452,12 @@ function update() {
 		<!-- e -->
 		<div class="ma">
 			<el-row>
-				<el-col :span="8">
+				<el-col :span="24">
 					<el-card class="mal">
 						<el-select
 							v-model="value"
-							class="m-2"
 							placeholder="Select"
-							size="large"
+							@change="switchPerfRank"
 						>
 							<el-option
 								v-for="item in options"
@@ -468,17 +467,18 @@ function update() {
 							/>
 						</el-select>
 						<el-table
-							:data="tableDataFP"
+							:data="curTableData"
 							height="300"
 							style="width: 100%"
 						>
 							<el-table-column
-								prop="perfItem"
-								label="perfItem"
+								prop="from"
+								label="页面 URL"
 							/>
 							<el-table-column
-								prop="perfValue"
-								label="perfValue"
+								prop="value"
+								label="值"
+								width="180"
 							/>
 						</el-table>
 					</el-card>
