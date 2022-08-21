@@ -153,47 +153,46 @@ const LCPOption = ref({
 	],
 })
 
-const PageOption = ref({
-	title: {
-		text: '页面加载耗时分段数量占比',
-		left: 'center',
-	},
-	tooltip: {
-		trigger: 'item',
-	},
-	legend: {
-		orient: 'vertical',
-		left: 'left',
-	},
-	series: [
-		{
-			name: 'Access From',
-			type: 'pie',
-			radius: '50%',
-			data: [
-				{ value: 0, name: '<1秒' },
-				{ value: 0, name: '1-5秒' },
-				{ value: 0, name: '5-10秒' },
-				{ value: 0, name: '10-30秒' },
-				{ value: 0, name: '>30秒' },
-			],
-			emphasis: {
-				itemStyle: {
-					shadowBlur: 10,
-					shadowOffsetX: 0,
-					shadowColor: 'rgba(0, 0, 0, 0.5)',
-				},
-			},
-		},
-	],
-})
-
-const tableData = ref([
-	{
-		from: '',
-		avg: '',
-	},
+const tableDataFP = ref([
 ])
+const tableDataFCP = ref([
+])
+const tableDataReady = ref([
+])
+const tableDataComplete = ref([
+])
+const tableDataInteractive = ref([
+])
+const tableDataLCP = ref([
+])
+
+const value = ref('')
+const options = [
+	{
+		value: 'tableDataFP',
+		label: 'FP性能排行',
+	},
+	{
+		value: 'tableDataFCP',
+		label: 'FCP性能排行',
+	},
+	{
+		value: 'tableDataReady',
+		label: 'DOM_Ready性能排行',
+	},
+	{
+		value: 'tableDataComplete',
+		label: 'DOM_Complete性能排行',
+	},
+	{
+		value: 'tableDataInteractive',
+		label: 'DOM_Interactive性能排行',
+	},
+	{
+		value: 'tableDataLCP',
+		label: 'LCP性能排行',
+	},
+]
 
 const add = function () {
 	router.push('setting')
@@ -210,8 +209,13 @@ async function Pget() {
 		console.log(result)
 		if (result.data) {
 			if (type === 1) {
-				tableData.value[0].from = 'FP'
-				tableData.value[0].avg = result.data.avg
+				for (let i = 0; i < result.data.list.length; i++) {
+					const pfm = {
+						性能项: 'FP',
+						性能值: result.data.list[i].value,
+					}
+					tableDataFP.value.push(pfm)
+				}
 				Page.FP = result.data.avg
 				const seg = '100,300,500,1000'
 				const FPSeries = await axios.get('/perf/seg', { params: { id, type, day, seg } })
@@ -221,11 +225,13 @@ async function Pget() {
 				}
 			} else
 			if (type === 2) {
-				const pfm = {
-					from: 'FCP',
-					avg: result.data.avg,
+				for (let i = 0; i < result.data.list.length; i++) {
+					const pfm = {
+						性能项: 'FCP',
+						性能值: result.data.list[i].value,
+					}
+					tableDataFCP.value.push(pfm)
 				}
-				tableData.value.push(pfm)
 				Page.FCP = result.data.avg
 				const seg = '100,300,500,1000'
 				const FCPSeries = await axios.get('/perf/seg', { params: { id, type, day, seg } })
@@ -235,28 +241,34 @@ async function Pget() {
 				}
 			} else
 			if (type === 3) {
-				const pfm = {
-					from: 'DOM_Ready',
-					avg: result.data.avg,
+				for (let i = 0; i < result.data.list.length; i++) {
+					const pfm = {
+						性能项: 'DOM_Ready',
+						性能值: result.data.list[i].value,
+					}
+					tableDataReady.value.push(pfm)
 				}
-				tableData.value.push(pfm)
 				Page.DOM_Ready = result.data.avg
 				console.log(Page.DOM_Ready)
 			} else
 			if (type === 5) {
-				const pfm = {
-					from: 'DOM_Complete',
-					avg: result.data.avg,
+				for (let i = 0; i < result.data.list.length; i++) {
+					const pfm = {
+						性能项: 'DOM_Complete',
+						性能值: result.data.list[i].value,
+					}
+					tableDataComplete.value.push(pfm)
 				}
-				tableData.value.push(pfm)
 				Page.DOM_Complete = result.data.avg
 			} else
 			if (type === 6) {
-				const pfm = {
-					from: 'DOM_Interactive',
-					avg: result.data.avg,
+				for (let i = 0; i < result.data.list.length; i++) {
+					const pfm = {
+						性能项: 'DOM_Interactive',
+						性能值: result.data.list[i].value,
+					}
+					tableDataInteractive.value.push(pfm)
 				}
-				tableData.value.push(pfm)
 				Page.DOM_Interactive = result.data.avg
 				const seg = '500,1000,2000,5000'
 				const InteractiveSeries = await axios.get('/perf/seg', { params: { id, type, day, seg } })
@@ -266,11 +278,13 @@ async function Pget() {
 				}
 			} else
 			if (type === 7) {
-				const pfm = {
-					from: 'LCP',
-					avg: result.data.avg,
+				for (let i = 0; i < result.data.list.length; i++) {
+					const pfm = {
+						性能项: 'LCP',
+						性能值: result.data.list[i].value,
+					}
+					tableDataLCP.value.push(pfm)
 				}
-				tableData.value.push(pfm)
 				Page.LCP = result.data.avg
 				const seg = '200,500,1000'
 				const LCPSeries = await axios.get('/perf/seg', { params: { id, type, day, seg } })
@@ -309,7 +323,8 @@ onMounted(() => {
 			id = projectsStore.projects[projectsStore.choose].id
 			Pget()
 		}
-	})
+	},
+	)
 })
 </script>
 
@@ -426,21 +441,33 @@ onMounted(() => {
 		<!-- e -->
 		<div class="ma">
 			<el-row>
-				<el-col :span="24">
+				<el-col :span="8">
 					<el-card class="mal">
+						<el-select
+							v-model="value"
+							class="m-2"
+							placeholder="Select"
+							size="large"
+						>
+							<el-option
+								v-for="item in options"
+								:key="item.value"
+								:label="item.label"
+								:value="item.value"
+							/>
+						</el-select>
 						<el-table
-							:data="tableData"
+							:data="tableDataFP"
 							height="300"
 							style="width: 100%"
 						>
 							<el-table-column
-								prop="from"
-								label="From"
-								width="600"
+								prop="性能项"
+								label="性能项"
 							/>
 							<el-table-column
-								prop="avg"
-								label="Avg"
+								prop="性能值"
+								label="性能值"
 							/>
 						</el-table>
 					</el-card>
