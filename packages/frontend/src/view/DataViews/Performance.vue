@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import VChart from 'vue-echarts'
-import { onMounted, reactive, ref, watch } from 'vue'
+import { onActivated, onMounted, reactive, ref, watch } from 'vue'
 import router from '../../router'
 import type { ResponseResult } from '../../request.js'
 import { axios } from '../../request.js'
@@ -204,7 +204,7 @@ const options = [
 const add = function () {
 	router.push('setting')
 }
-let id = 3
+let id = -1
 const limit = 10
 const page = 0
 const day = 7
@@ -321,7 +321,6 @@ async function Pget() {
 }
 
 onMounted(() => {
-	Pget()
 	watch(
 		() => projectsStore.choose,
 		(newVal, oldVal) => {
@@ -331,6 +330,13 @@ onMounted(() => {
 			}
 		},
 	)
+})
+onActivated(() => {
+	console.log('onActivated')
+	if (projectsStore.choose !== -1) {
+		id = projectsStore.projects[projectsStore.choose].id
+		Pget()
+	}
 })
 </script>
 

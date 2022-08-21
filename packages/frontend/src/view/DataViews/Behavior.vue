@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, reactive, ref, watch } from 'vue'
+import { onActivated, onMounted, reactive, ref, watch } from 'vue'
 import VChart from 'vue-echarts'
 import router from '../../router'
 import { useProjectsStore } from '../../stores/projects'
@@ -58,7 +58,7 @@ const pvOption = ref({
 const add = function () {
 	router.push('setting')
 }
-let id = 3
+let id = -1
 const list = 1
 const topData = reactive({ PV: 0, UV: 0, time: 0, pvUp: 0, uvUp: 0 })
 async function Bget(id: number) {
@@ -125,7 +125,6 @@ async function Bget(id: number) {
 }
 
 onMounted(() => {
-	Bget(id)
 	watch(
 		() => projectsStore.choose,
 		(newVal, oldVal) => {
@@ -135,6 +134,13 @@ onMounted(() => {
 			}
 		},
 	)
+})
+onActivated(() => {
+	console.log('onActivated')
+	if (projectsStore.choose !== -1) {
+		id = projectsStore.projects[projectsStore.choose].id
+		Bget(id)
+	}
 })
 </script>
 

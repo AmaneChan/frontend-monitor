@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, reactive, ref, watch } from 'vue'
+import { onActivated, onMounted, reactive, ref, watch } from 'vue'
 import VChart from 'vue-echarts'
 import router from '../../router'
 import { useProjectsStore } from '../../stores/projects'
@@ -91,7 +91,7 @@ const Page = reactive({
 	DOM_Interactive: 0,
 	LCP: 0,
 })
-let id = 3
+let id = -1
 const limit = 10
 const list = 1
 async function Eget(id: number, limit: number) {
@@ -168,13 +168,11 @@ async function BPet(page: number, day: number) {
 				Page.FP = result.data.avg
 				const seg = '100,300,500,1000'
 				const FPSeries = await axios.get('/perf/seg', { params: { id, type, day, seg } })
-				console.log(FPSeries)
 			} else
 			if (type === 2) {
 				Page.FCP = result.data.avg
 				const seg = '100,300,500,1000'
 				const FCPSeries = await axios.get('/perf/seg', { params: { id, type, day, seg } })
-				console.log(FCPSeries)
 			} else
 			if (type === 3) {
 				Page.DOM_Ready = result.data.avg
@@ -201,9 +199,6 @@ async function BPet(page: number, day: number) {
 const page = 0
 const day = 7
 onMounted(() => {
-	Eget(id, limit)
-	Bget(id)
-	BPet(page, day)
 	watch(
 		() => projectsStore.choose,
 		(newVal, oldVal) => {
@@ -215,6 +210,16 @@ onMounted(() => {
 			}
 		},
 	)
+})
+onActivated(() => {
+	console.log('onActivated')
+	console.log(projectsStore.choose)
+	if (projectsStore.choose !== -1) {
+		id = projectsStore.projects[projectsStore.choose].id
+		Eget(id, limit)
+		Bget(id)
+		BPet(page, day)
+	}
 })
 const add = function () {
 	router.push('setting')

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue'
+import { onActivated, onMounted, ref, watch } from 'vue'
 import VChart from 'vue-echarts'
 import router from '../../router'
 import type { ResponseResult } from '../../request.js'
@@ -126,7 +126,7 @@ const CustomOption = ref({
 	],
 })
 const tableData = ref([] as any[])
-let id = 0
+let id = -1
 // const id = projectsStore.projects[projectsStore.choose].id
 
 const limit = 10
@@ -204,7 +204,6 @@ async function Eget(id: number, limit: number) {
 }
 
 onMounted(() => {
-	Eget(id, limit)
 	watch(
 		() => projectsStore.choose,
 		(newVal, oldVal) => {
@@ -214,6 +213,14 @@ onMounted(() => {
 			}
 		},
 	)
+})
+onActivated(() => {
+	console.log('onActivated')
+	console.log(projectsStore.choose)
+	if (projectsStore.choose !== -1) {
+		id = projectsStore.projects[projectsStore.choose].id
+		Eget(id, limit)
+	}
 })
 const add = function () {
 	router.push('setting')
