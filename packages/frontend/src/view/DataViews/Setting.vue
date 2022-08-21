@@ -28,7 +28,6 @@ async function addProject() {
 function logout() {
 	userStore.logout()
 	ElMessage.success('已退出登录')
-	router.push('/entry')
 }
 
 const currentKey = computed(() => {

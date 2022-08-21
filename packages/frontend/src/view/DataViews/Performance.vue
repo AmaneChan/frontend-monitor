@@ -153,63 +153,53 @@ const LCPOption = ref({
 	],
 })
 
-const PageOption = ref({
-	title: {
-		text: '页面加载耗时分段数量占比',
-		left: 'center',
-	},
-	tooltip: {
-		trigger: 'item',
-	},
-	legend: {
-		orient: 'vertical',
-		left: 'left',
-	},
-	series: [
-		{
-			name: 'Access From',
-			type: 'pie',
-			radius: '50%',
-			data: [
-				{ value: 0, name: '<1秒' },
-				{ value: 0, name: '1-5秒' },
-				{ value: 0, name: '5-10秒' },
-				{ value: 0, name: '10-30秒' },
-				{ value: 0, name: '>30秒' },
-			],
-			emphasis: {
-				itemStyle: {
-					shadowBlur: 10,
-					shadowOffsetX: 0,
-					shadowColor: 'rgba(0, 0, 0, 0.5)',
-				},
-			},
-		},
-	],
-})
+const value = ref('tableDataFP')
 
-const tableData = ref([
+const tableDataFP = ref<Perf[]>([])
+const tableDataFCP = ref<Perf[]>([])
+const tableDataReady = ref<Perf[]>([])
+const tableDataComplete = ref<Perf[]>([])
+const tableDataInteractive = ref<Perf[]>([])
+const tableDataLCP = ref<Perf[]>([])
+
+const curTableData = ref<Perf[]>([])
+const map: any = { tableDataFP, tableDataFCP, tableDataReady, tableDataComplete, tableDataInteractive, tableDataLCP }
+
+function switchPerfRank(name: string) {
+	curTableData.value = map[name].value
+}
+
+interface Perf {
+	from: string
+	value: any
+}
+
+const options = [
 	{
-		date: '2016-05-03',
-		name: 'Tom',
-		address: 'No. 189, Grove St, Los Angeles',
+		value: 'tableDataFP',
+		label: 'FP性能排行',
 	},
 	{
-		date: '2016-05-02',
-		name: 'Tom',
-		address: 'No. 189, Grove St, Los Angeles',
+		value: 'tableDataFCP',
+		label: 'FCP性能排行',
 	},
 	{
-		date: '2016-05-04',
-		name: 'Tom',
-		address: 'No. 189, Grove St, Los Angeles',
+		value: 'tableDataReady',
+		label: 'DOM_Ready性能排行',
 	},
 	{
-		date: '2016-05-01',
-		name: 'Tom',
-		address: 'No. 189, Grove St, Los Angeles',
+		value: 'tableDataComplete',
+		label: 'DOM_Complete性能排行',
 	},
-])
+	{
+		value: 'tableDataInteractive',
+		label: 'DOM_Interactive性能排行',
+	},
+	{
+		value: 'tableDataLCP',
+		label: 'LCP性能排行',
+	},
+]
 
 const add = function () {
 	router.push('setting')
@@ -219,11 +209,21 @@ const limit = 10
 const page = 0
 const day = 7
 async function Pget() {
+	if (id === 0) {
+		return
+	}
 	for (let index = 0; index < 7; index++) {
 		const type = index + 1
 		const result: ResponseResult = await axios.get('/perf', { params: { id, type, page, limit } })
 		if (result.data) {
 			if (type === 1) {
+				for (let i = 0; i < result.data.list.length; i++) {
+					const pfm = {
+						from: result.data.list[i].from,
+						value: result.data.list[i].value,
+					}
+					tableDataFP.value.push(pfm)
+				}
 				Page.FP = result.data.avg
 				const seg = '100,300,500,1000'
 				const FPSeries = await axios.get('/perf/seg', { params: { id, type, day, seg } })
@@ -232,34 +232,67 @@ async function Pget() {
 				}
 			} else
 			if (type === 2) {
+				for (let i = 0; i < result.data.list.length; i++) {
+					const pfm = {
+						from: result.data.list[i].from,
+						value: result.data.list[i].value,
+					}
+					tableDataFCP.value.push(pfm)
+				}
 				Page.FCP = result.data.avg
 				const seg = '100,300,500,1000'
 				const FCPSeries = await axios.get('/perf/seg', { params: { id, type, day, seg } })
-				console.log(FCPSeries)
 				for (let i = 0; i < FCPSeries.data.length; i++) {
 					FCPOption.value.series[0].data[i].value = FCPSeries.data[i]
 				}
 			} else
 			if (type === 3) {
+				for (let i = 0; i < result.data.list.length; i++) {
+					const pfm = {
+						from: result.data.list[i].from,
+						value: result.data.list[i].value,
+					}
+					tableDataReady.value.push(pfm)
+				}
 				Page.DOM_Ready = result.data.avg
+				console.log(Page.DOM_Ready)
 			} else
 			if (type === 5) {
+				for (let i = 0; i < result.data.list.length; i++) {
+					const pfm = {
+						from: result.data.list[i].from,
+						value: result.data.list[i].value,
+					}
+					tableDataComplete.value.push(pfm)
+				}
 				Page.DOM_Complete = result.data.avg
 			} else
 			if (type === 6) {
+				for (let i = 0; i < result.data.list.length; i++) {
+					const pfm = {
+						from: result.data.list[i].from,
+						value: result.data.list[i].value,
+					}
+					tableDataInteractive.value.push(pfm)
+				}
 				Page.DOM_Interactive = result.data.avg
 				const seg = '500,1000,2000,5000'
 				const InteractiveSeries = await axios.get('/perf/seg', { params: { id, type, day, seg } })
-				console.log(InteractiveSeries)
 				for (let i = 0; i < InteractiveSeries.data.length; i++) {
 					InteractiveOption.value.series[0].data[i].value = InteractiveSeries.data[i]
 				}
 			} else
 			if (type === 7) {
+				for (let i = 0; i < result.data.list.length; i++) {
+					const pfm = {
+						from: result.data.list[i].from,
+						value: result.data.list[i].value,
+					}
+					tableDataLCP.value.push(pfm)
+				}
 				Page.LCP = result.data.avg
 				const seg = '200,500,1000'
 				const LCPSeries = await axios.get('/perf/seg', { params: { id, type, day, seg } })
-				console.log(LCPSeries)
 				for (let i = 0; i < LCPSeries.data.length; i++) {
 					LCPOption.value.series[0].data[i].value = LCPSeries.data[i]
 				}
@@ -414,39 +447,32 @@ onMounted(() => {
 		<!-- e -->
 		<div class="ma">
 			<el-row>
-				<el-col :span="10">
+				<el-col :span="24">
 					<el-card class="mal">
-						<VChart
-							class="chart"
-							:option="PageOption"
-							:autoresize="true"
-						></VChart>
-					</el-card>
-				</el-col>
-				<el-col :span="14">
-					<el-card class="mal">
+						<el-select
+							v-model="value"
+							placeholder="Select"
+							@change="switchPerfRank"
+						>
+							<el-option
+								v-for="item in options"
+								:key="item.value"
+								:label="item.label"
+								:value="item.value"
+							/>
+						</el-select>
 						<el-table
-							:data="tableData"
+							:data="curTableData"
 							height="300"
 							style="width: 100%"
 						>
 							<el-table-column
-								prop="date"
-								label="Date"
-								width="180"
+								prop="from"
+								label="页面 URL"
 							/>
 							<el-table-column
-								prop="name"
-								label="Name"
-								width="180"
-							/>
-							<el-table-column
-								prop="address"
-								label="Address"
-							/>
-							<el-table-column
-								prop="name"
-								label="Name"
+								prop="value"
+								label="值"
 								width="180"
 							/>
 						</el-table>
