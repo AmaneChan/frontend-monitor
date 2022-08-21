@@ -25,5 +25,9 @@ export function processDuration(duration: number) {
 }
 
 export function calcDelta(oldValue: number, newValue: number) {
-	return Number(((newValue - oldValue) / oldValue * 100).toFixed(1))
+	const result = Number(((newValue - oldValue) / oldValue * 100).toFixed(1))
+	if (isNaN(result)) {
+		return 0
+	}
+	return result
 }

@@ -174,7 +174,7 @@ onActivated(() => {
 									up: topData.pvUp >= 0,
 								}"
 							>
-								{{ topData.pvUp === Infinity ? '∞' : topData.pvUp }}%
+								{{ topData.pvUp === Infinity ? '∞' : topData.pvUp.toFixed(1) }}%
 								{{ topData.pvUp >= 0 ? '↑' : '↓' }}
 							</span>
 						</p>
@@ -192,7 +192,7 @@ onActivated(() => {
 									up: topData.uvUp >= 0,
 								}"
 							>
-								{{ topData.uvUp === Infinity ? '∞' : topData.uvUp }}%
+								{{ topData.uvUp === Infinity ? '∞' : topData.uvUp.toFixed(1) }}%
 								{{ topData.uvUp >= 0 ? '↑' : '↓' }}
 							</span>
 						</p>
