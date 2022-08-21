@@ -203,6 +203,9 @@ const limit = 10
 const page = 0
 const day = 7
 async function Pget() {
+	if (id === 0) {
+		return
+	}
 	for (let index = 0; index < 7; index++) {
 		const type = index + 1
 		const result: ResponseResult = await axios.get('/perf', { params: { id, type, page, limit } })
@@ -317,15 +320,19 @@ async function Pget() {
 }
 
 onMounted(() => {
-	Pget()
+	update()
 	watch(() => projectsStore.choose, (newVal, oldVal) => {
-		if (newVal !== -1) {
-			id = projectsStore.projects[projectsStore.choose].id
-			Pget()
-		}
-	},
-	)
+		update()
+	})
 })
+
+function update() {
+	if (projectsStore.choose === -1) {
+		return
+	}
+	id = projectsStore.projects[projectsStore.choose].id
+	Pget()
+}
 </script>
 
 <template>

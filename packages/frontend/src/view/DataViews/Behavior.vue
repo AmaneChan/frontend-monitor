@@ -4,6 +4,7 @@ import VChart from 'vue-echarts'
 import router from '../../router'
 import { useProjectsStore } from '../../stores/projects'
 import { axios } from '../../request.js'
+import { processDuration } from '../../utils/utils'
 const projectsStore = useProjectsStore()
 
 const pvtableData = ref([] as any[])
@@ -113,7 +114,7 @@ async function Bget(id: number) {
 		for (let o = 0; o < staytable.data.length; o++) {
 			const table = {
 				from: staytable.data[o].from,
-				duration: `${staytable.data[o].duration}s`,
+				duration: `${processDuration(staytable.data[o].duration)}`,
 			}
 			usertime.value.push(table)
 		}
@@ -236,7 +237,7 @@ onMounted(() => {
 					<el-card style="margin: 1rem;">
 						<template #header>
 							<div class="card-header">
-								<span>用户停留时间排行</span>
+								<span>页面停留时间排行</span>
 							</div>
 						</template>
 						<el-table
@@ -246,11 +247,12 @@ onMounted(() => {
 						>
 							<el-table-column
 								prop="from"
-								label="From"
+								label="页面 URL"
 							/>
 							<el-table-column
 								prop="duration"
 								label="时间"
+								width="180"
 							/>
 						</el-table>
 					</el-card>
@@ -272,12 +274,13 @@ onMounted(() => {
 							height="240"
 						>
 							<el-table-column
-								prop="uv"
-								label="PV"
+								prop="from"
+								label="页面 URL"
 							/>
 							<el-table-column
-								prop="from"
-								label="位置"
+								prop="uv"
+								label="PV"
+								width="180"
 							/>
 						</el-table>
 					</el-card>
