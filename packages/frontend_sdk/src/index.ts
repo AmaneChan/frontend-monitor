@@ -243,7 +243,7 @@ window.addEventListener('unload', () => {
 	navigator.sendBeacon(`${reportUrl}/behavior/stay`, new URLSearchParams({
 		key,
 		from: location.href,
-		duration: time.total.toString(),
+		duration: (Math.floor(time.total) / 1000).toString(),
 	}))
 	resetTime()
 })
