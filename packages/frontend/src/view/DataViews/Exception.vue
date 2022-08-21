@@ -137,6 +137,9 @@ async function Eget(id: number, limit: number) {
 		const result: ResponseResult = await axios.get('/exception', {
 			params: { id, type, limit },
 		})
+		console.log(type)
+		console.log(index)
+		console.log(result.data)
 		if (result.data) {
 			dataExceptionType.value.series[0].data[index].value = result.data.length
 			if (type === 1) {
@@ -170,35 +173,15 @@ async function Eget(id: number, limit: number) {
 			}
 		} else {
 			dataExceptionType.value.series[0].data[index].value = 0
-			for (
-				let index = 0;
-				index < JSoption.value.series[0].data.length;
-				index++
-			) {
-				JSoption.value.series[0].data[index] = 0
+			if (type === 1) {
+				JSoption.value.series[0].data = []
+			} else if (type === 2) {
+				InterfaceOption.value.series[0].data = []
+			} else if (type === 3) {
+				StaticOption.value.series[0].data = []
+			} else if (type === 4) {
+				CustomOption.value.series[0].data = []
 			}
-			for (
-				let index = 0;
-				index < JSoption.value.series[0].data.length;
-				index++
-			) {
-				InterfaceOption.value.series[0].data[index] = 0
-			}
-			for (
-				let index = 0;
-				index < JSoption.value.series[0].data.length;
-				index++
-			) {
-				StaticOption.value.series[0].data[index] = 0
-			}
-			for (
-				let index = 0;
-				index < JSoption.value.series[0].data.length;
-				index++
-			) {
-				CustomOption.value.series[0].data[index] = 0
-			}
-			tableData.value = []
 		}
 	}
 }
