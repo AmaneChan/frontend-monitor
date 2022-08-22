@@ -84,6 +84,7 @@ async function modifyUserName() {
 	userName.value = ''
 	ElMessage.success(result.message)
 	console.log(result.message)
+	userStore.login()
 }
 
 const modify2 = ref(true)
@@ -99,10 +100,15 @@ async function modifyUserPwd() {
 		return ElMessage.error('新密码不能为空')
 	}
 	const result: ResponseResult = await axios.post('/user/pwd', { id: userStore.id, oldPwd: userPwd.value, newPwd: userNewPwd.value })
+	if (result.code === 200) {
+		userPwd.value = ''
+		userNewPwd.value = ''
+		ElMessage.success(result.message)
+	} else {
+		ElMessage.error(result.message)
+	}
 	userPwd.value = ''
 	userNewPwd.value = ''
-	ElMessage.success(result.message)
-	console.log(result.message)
 }
 
 async function Pname(id: number, name: string) {
@@ -127,7 +133,7 @@ async function Pname(id: number, name: string) {
 					</template>
 					<div
 						class="content"
-						style="text-align: center; height: 14rem"
+						style="text-align: center; height: 15rem"
 					>
 						<div v-if="modify">
 							<span class="valueContent">用户名:</span>
@@ -148,12 +154,29 @@ async function Pname(id: number, name: string) {
 								style="display: inline-block;"
 							/>
 							<el-button
+								v-if="modify"
 								type="primary"
 								size="small"
 								@click="modifyUserName"
 							>
-								确定
+								确定1
 							</el-button>
+							<div v-if="!modify">
+								<el-button
+									type="primary"
+									size="small"
+									@click="modify = !modify"
+								>
+									取消
+								</el-button>
+								<el-button
+									type="primary"
+									size="small"
+									@click="modifyUserName"
+								>
+									确定
+								</el-button>
+							</div>
 						</div>
 						<div v-if="modify2">
 							<span class="valueContent">密码:</span>
@@ -167,12 +190,22 @@ async function Pname(id: number, name: string) {
 							</el-button>
 						</div>
 						<div v-else>
-							<span class="valueContent">密码:</span>
+							<span
+								v-if="modify2"
+								class="valueContent"
+							>密码:</span>
 							<el-input
 								v-model="userPwd"
 								placeholder="旧密码"
 								style="display: inline-block;"
 							/>
+							<el-button
+								type="primary"
+								size="small"
+								@click="modify2 = !modify2"
+							>
+								取消
+							</el-button>
 							<el-input
 								v-model="userNewPwd"
 								placeholder="新密码"
@@ -218,7 +251,7 @@ async function Pname(id: number, name: string) {
 							<span>SDK Key 使用方法</span>
 						</div>
 					</template>
-					<div style="height: 15rem;">
+					<div style="height: 16rem;">
 						<p>
 							点击下方项目列表中的复制按钮
 							<span>
@@ -229,13 +262,16 @@ async function Pname(id: number, name: string) {
 							，将复制 SDK Key。将 SDK Key 添加到 script 标签中。
 						</p>
 						<p>
-							或者点击下方直接复制当前选择项目的 script 标签，标签上已经包含 SDK Key 信息。将 script 标签添加到你的页面中即可。
-							<el-input
-								v-model="scriptWithKey"
-								style="width: 100%;"
-								readonly
-							></el-input>
+							或者点击下方直接复制当前选择项目的 script 标签，标签上已经包含 SDK Key 信息。
 						</p>
+						<p>
+							将 script 标签添加到你的页面中即可。（建议将 SDK 作为第一个 script 标签）
+						</p>
+						<el-input
+							v-model="scriptWithKey"
+							style="width: 100%;"
+							readonly
+						></el-input>
 						<el-button
 							class="copyable"
 							type="primary"

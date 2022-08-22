@@ -26,8 +26,11 @@ export const useUserStore = defineStore('userStore', {
 			localStorage.removeItem('token')
 			router.push('/entry')
 		},
-		async login(token: string) {
-			localStorage.setItem('token', token)
+		async login(token?: string) {
+			if (token) {
+				localStorage.setItem('token', token)
+				this.token = token
+			}
 			const result: ResponseResult = await axios.get('/user/info')
 			if (result.code !== 200) {
 				if (result.message.includes('认证')) {
@@ -35,9 +38,9 @@ export const useUserStore = defineStore('userStore', {
 					return ElMessage.error('登录已过期，请重新登录')
 				}
 			}
-			this.token = token
 			this.id = result.data.id
 			this.username = result.data.username
+			console.log(this.username)
 		},
 	},
 })
