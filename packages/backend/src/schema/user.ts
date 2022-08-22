@@ -38,7 +38,7 @@ const req_alterinfo_schema = {
 const req_alterpwd_schema = {
 	body: {
 		oldPwd: pwd,
-		newPwd: joi.not(joi.ref('oldPwd')).concat(pwd),
+		newPwd: pwd,
 	},
 }
 
