@@ -26,10 +26,10 @@ const dataExceptionType = ref({
 			type: 'pie',
 			radius: '50%',
 			data: [
-				{ value: 0, name: 'JS错误' },
-				{ value: 0, name: '自定义异常' },
-				{ value: 0, name: '静态资源异常' },
-				{ value: 0, name: '接口异常' },
+				{ value: 0, name: 'JavaScript 异常' },
+				{ value: 0, name: 'Promise 异常' },
+				{ value: 0, name: 'Fetch 异常' },
+				{ value: 0, name: '资源异常' },
 			],
 			emphasis: {
 				itemStyle: {
@@ -43,13 +43,13 @@ const dataExceptionType = ref({
 })
 const pvOption = ref({
 	title: {
-		text: 'PV变化趋势',
-		subtext: 'Fake Data',
+		text: 'PV 变化趋势',
+		subtext: 'PV',
 		left: 'center',
 	},
 	xAxis: {
 		type: 'category',
-		data: ['Seven', 'Six', 'Five', 'Four', 'Three', 'Yesterday', 'Today'],
+		data: ['6d ago', '5d ago', '4d ago', '3d ago', '2d ago', 'Yesterday', 'Today'],
 	},
 	yAxis: {
 		type: 'value',
@@ -64,13 +64,13 @@ const pvOption = ref({
 const pvtableData = ref([] as any[])
 const uvOption = ref({
 	title: {
-		text: 'UV变化趋势',
-		subtext: 'Fake Data',
+		text: 'UV 变化趋势',
+		subtext: 'UV',
 		left: 'center',
 	},
 	xAxis: {
 		type: 'category',
-		data: ['Seven', 'Six', 'Five', 'Four', 'Three', 'Yesterday', 'Today'],
+		data: ['6d ago', '5d ago', '4d ago', '3d ago', '2d ago', 'Yesterday', 'Today'],
 	},
 	yAxis: {
 		type: 'value',
@@ -102,7 +102,7 @@ async function Eget(id: number, limit: number) {
 			dataExceptionType.value.series[0].data[index].value = result.data.length
 			for (let i = 0; i < result.data.length; i++) {
 				const table = {
-					tiem: result.data[i].time,
+					time: new Date(result.data[i].time).toLocaleString(),
 					data: result.data[i].msg,
 					ip: result.data[i].position,
 				}
@@ -201,7 +201,7 @@ onMounted(() => {
 		() => projectsStore.choose,
 		(newVal, oldVal) => {
 			if (newVal !== -1) {
-				dataExceptionType.value.series[0].data = [{ value: 0, name: 'JS错误' }, { value: 0, name: '自定义异常' }, { value: 0, name: '静态资源异常' }, { value: 0, name: '接口异常' }]
+				dataExceptionType.value.series[0].data = [{ value: 0, name: 'JavaScript 异常' }, { value: 0, name: 'Promise 异常' }, { value: 0, name: 'Fetch 异常' }, { value: 0, name: '资源异常' }]
 				tableData.value = []
 				pvOption.value.series[0].data = [0, 0, 0, 0, 0, 0, 0]
 				uvOption.value.series[0].data = [0, 0, 0, 0, 0, 0, 0]
@@ -220,7 +220,7 @@ onActivated(() => {
 	console.log(projectsStore.choose)
 	if (projectsStore.choose !== -1) {
 		id = projectsStore.projects[projectsStore.choose].id
-		dataExceptionType.value.series[0].data = [{ value: 0, name: 'JS错误' }, { value: 0, name: '自定义异常' }, { value: 0, name: '静态资源异常' }, { value: 0, name: '接口异常' }]
+		dataExceptionType.value.series[0].data = [{ value: 0, name: 'JavaScript 异常' }, { value: 0, name: 'Promise 异常' }, { value: 0, name: 'Fetch 异常' }, { value: 0, name: '资源异常' }]
 		tableData.value = []
 		pvOption.value.series[0].data = [0, 0, 0, 0, 0, 0, 0]
 		uvOption.value.series[0].data = [0, 0, 0, 0, 0, 0, 0]
@@ -253,21 +253,21 @@ const add = function () {
 			<el-row>
 				<el-col :span="8">
 					<el-card class="mal">
-						<span>平均FP</span>
+						<span>平均 FP</span>
 						<br />
 						<b class="fs">{{ Page.FP.toFixed(2) }}ms</b>
 					</el-card>
 				</el-col>
 				<el-col :span="8">
 					<el-card class="mal">
-						<span>平均FCP</span>
+						<span>平均 FCP</span>
 						<br />
 						<b class="fs">{{ Page.FCP.toFixed(2) }}ms</b>
 					</el-card>
 				</el-col>
 				<el-col :span="8">
 					<el-card class="mal">
-						<span>平均DOM_Ready</span>
+						<span>平均 DOM Ready</span>
 						<br />
 						<b class="fs">{{ Page.DOM_Ready.toFixed(2) }}ms</b>
 					</el-card>
@@ -278,21 +278,21 @@ const add = function () {
 			<el-row>
 				<el-col :span="8">
 					<el-card class="mal">
-						<span>平均DOM_Complete</span>
+						<span>平均 DOM Complete</span>
 						<br />
 						<b class="fs">{{ Page.DOM_Complete.toFixed(2) }}ms</b>
 					</el-card>
 				</el-col>
 				<el-col :span="8">
 					<el-card class="mal">
-						<span>平均DOM_Interactive</span>
+						<span>平均 DOM Interactive</span>
 						<br />
 						<b class="fs">{{ Page.DOM_Interactive.toFixed(2) }}ms</b>
 					</el-card>
 				</el-col>
 				<el-col :span="8">
 					<el-card class="mal">
-						<span>平均LCP</span>
+						<span>平均 LCP</span>
 						<br />
 						<b class="fs">{{ Page.LCP.toFixed(2) }}ms</b>
 					</el-card>
@@ -322,17 +322,17 @@ const add = function () {
 						style="width: 100%"
 					>
 						<el-table-column
-							prop="tiem"
-							label="Time"
-							width="250"
+							prop="time"
+							label="触发时间"
+							width="160"
 						/>
 						<el-table-column
 							prop="data"
-							label="Data"
+							label="异常信息"
 						/>
 						<el-table-column
 							prop="ip"
-							label="IP"
+							label="来源 URL"
 							width="300"
 						/>
 					</el-table>

@@ -61,11 +61,12 @@ onMounted(() => {
 
 const dialogFormVisible = ref(false)
 let Pindex = -1
+const Pform = ref({ name: '' })
 const dialog = function (index: number) {
+	Pform.value.name = ''
 	dialogFormVisible.value = true
 	Pindex = index
 }
-const Pform = ref({ name: '' })
 const dialogB = function () {
 	dialogFormVisible.value = false
 	Pname(projectsStore.projects[Pindex].id, Pform.value.name)
@@ -105,6 +106,9 @@ async function modifyUserPwd() {
 }
 
 async function Pname(id: number, name: string) {
+	if (name === '') {
+		return ElMessage.error('项目名称不能为空')
+	}
 	const req: ResponseResult = await axios.put('/project', { id, name })
 	ElMessage.success(req.message)
 	projectsStore.updateProjects()
@@ -318,6 +322,7 @@ async function Pname(id: number, name: string) {
 			<el-input
 				v-model="Pform.name"
 				autocomplete="off"
+				style="width: 100%"
 			/>
 			<template #footer>
 				<span class="dialog-footer">

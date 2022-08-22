@@ -28,10 +28,10 @@ const dataExceptionType = ref({
 			type: 'pie',
 			radius: '50%',
 			data: [
-				{ value: 0, name: 'JS错误' },
-				{ value: 0, name: '自定义异常' },
-				{ value: 0, name: '静态资源异常' },
-				{ value: 0, name: '接口异常' },
+				{ value: 0, name: 'JavaScript 异常' },
+				{ value: 0, name: 'Promise 异常' },
+				{ value: 0, name: 'Fetch 异常' },
+				{ value: 0, name: '资源异常' }, // real resource exception
 			],
 			emphasis: {
 				itemStyle: {
@@ -45,13 +45,13 @@ const dataExceptionType = ref({
 })
 const JSoption = ref({
 	title: {
-		text: 'JS错误',
+		text: 'JavaScript 异常',
 		subtext: 'JS Exception',
 		left: 'center',
 	},
 	xAxis: {
 		type: 'category',
-		data: ['Seven', 'Six', 'Five', 'Four', 'Three', 'Yesterday', 'Today'],
+		data: ['6d ago', '5d ago', '4d ago', '3d ago', '2d ago', 'Yesterday', 'Today'],
 	},
 	yAxis: {
 		type: 'value',
@@ -65,13 +65,13 @@ const JSoption = ref({
 })
 const InterfaceOption = ref({
 	title: {
-		text: '接口错误',
+		text: '资源异常',
 		subtext: 'Resource Exception',
 		left: 'center',
 	},
 	xAxis: {
 		type: 'category',
-		data: ['Seven', 'Six', 'Five', 'Four', 'Three', 'Yesterday', 'Today'],
+		data: ['6d ago', '5d ago', '4d ago', '3d ago', '2d ago', 'Yesterday', 'Today'],
 	},
 	yAxis: {
 		type: 'value',
@@ -86,13 +86,13 @@ const InterfaceOption = ref({
 
 const StaticOption = ref({
 	title: {
-		text: '静态资源错误',
+		text: 'Fetch 异常',
 		subtext: 'Fetch Exception',
 		left: 'center',
 	},
 	xAxis: {
 		type: 'category',
-		data: ['Seven', 'Six', 'Five', 'Four', 'Three', 'Yesterday', 'Today'],
+		data: ['6d ago', '5d ago', '4d ago', '3d ago', '2d ago', 'Yesterday', 'Today'],
 	},
 	yAxis: {
 		type: 'value',
@@ -107,13 +107,13 @@ const StaticOption = ref({
 
 const CustomOption = ref({
 	title: {
-		text: '自定义错误',
+		text: 'Promise 异常',
 		subtext: 'Promise Exception',
 		left: 'center',
 	},
 	xAxis: {
 		type: 'category',
-		data: ['Seven', 'Six', 'Five', 'Four', 'Three', 'Yesterday', 'Today'],
+		data: ['6d ago', '5d ago', '4d ago', '3d ago', '2d ago', 'Yesterday', 'Today'],
 	},
 	yAxis: {
 		type: 'value',
@@ -263,7 +263,7 @@ async function Eget(id: number, limit: number) {
 			// }
 			for (let i = 0; i < result.data.length; i++) {
 				const table = {
-					tiem: result.data[i].time,
+					time: new Date(result.data[i].time).toLocaleString(),
 					data: result.data[i].msg,
 					ip: result.data[i].position,
 				}
@@ -278,7 +278,7 @@ onMounted(() => {
 		() => projectsStore.choose,
 		(newVal, oldVal) => {
 			if (newVal !== -1) {
-				dataExceptionType.value.series[0].data = [{ value: 0, name: 'JS错误' }, { value: 0, name: '自定义异常' }, { value: 0, name: '静态资源异常' }, { value: 0, name: '接口异常' }]
+				dataExceptionType.value.series[0].data = [{ value: 0, name: 'JavaScript 异常' }, { value: 0, name: 'Promise 异常' }, { value: 0, name: 'Fetch 异常' }, { value: 0, name: '资源异常' }]
 				tableData.value = []
 				JSoption.value.series[0].data = [0, 0, 0, 0, 0, 0, 0]
 				InterfaceOption.value.series[0].data = [0, 0, 0, 0, 0, 0, 0]
@@ -295,7 +295,7 @@ onActivated(() => {
 	console.log(projectsStore.choose)
 	if (projectsStore.choose !== -1) {
 		id = projectsStore.projects[projectsStore.choose].id
-		dataExceptionType.value.series[0].data = [{ value: 0, name: 'JS错误' }, { value: 0, name: '自定义异常' }, { value: 0, name: '静态资源异常' }, { value: 0, name: '接口异常' }]
+		dataExceptionType.value.series[0].data = [{ value: 0, name: 'JavaScript 异常' }, { value: 0, name: 'Promise 异常' }, { value: 0, name: 'Fetch 异常' }, { value: 0, name: '资源异常' }]
 		tableData.value = []
 		JSoption.value.series[0].data = [0, 0, 0, 0, 0, 0, 0]
 		InterfaceOption.value.series[0].data = [0, 0, 0, 0, 0, 0, 0]
@@ -348,17 +348,17 @@ const add = function () {
 						style="width: 100%"
 					>
 						<el-table-column
-							prop="tiem"
-							label="Time"
-							width="250"
+							prop="time"
+							label="触发时间"
+							width="160"
 						/>
 						<el-table-column
 							prop="data"
-							label="Data"
+							label="异常信息"
 						/>
 						<el-table-column
 							prop="ip"
-							label="IP"
+							label="来源 URL"
 							width="300"
 						/>
 					</el-table>
