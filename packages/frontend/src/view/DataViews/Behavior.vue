@@ -80,8 +80,6 @@ async function Bget(id: number) {
 
 	if (staytime.data) {
 		topData.time = staytime.data.toFixed(0)
-	} else {
-		topData.time = 0
 	}
 
 	const pvtable = await axios.get(`/behavior/popular/pv?id=${id}`)
@@ -93,8 +91,6 @@ async function Bget(id: number) {
 			}
 			pvtableData.value.push(table)
 		}
-	} else {
-		pvtableData.value = []
 	}
 	const uvtable = await axios.get(`/behavior/popular/uv?id=${id}`)
 	if (uvtable.data) {
@@ -105,8 +101,6 @@ async function Bget(id: number) {
 			}
 			uvtableData.value.push(table)
 		}
-	} else {
-		uvtableData.value = []
 	}
 	const staytable = await axios.get(`/behavior/stay/${id}?list=${list}`)
 	if (staytable.data) {
@@ -117,8 +111,6 @@ async function Bget(id: number) {
 			}
 			usertime.value.push(table)
 		}
-	} else {
-		usertime.value = []
 	}
 }
 
@@ -127,6 +119,12 @@ onMounted(() => {
 		() => projectsStore.choose,
 		(newVal, oldVal) => {
 			if (newVal !== -1) {
+				topData.UV = 0
+				topData.time = 0
+				topData.PV = 0
+				pvtableData.value = []
+				uvtableData.value = []
+				usertime.value = []
 				id = projectsStore.projects[projectsStore.choose].id
 				Bget(id)
 			}
