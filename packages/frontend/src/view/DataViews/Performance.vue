@@ -19,7 +19,7 @@ const Page = reactive({
 
 const FPOption = ref({
 	title: {
-		text: 'FP分段数量占比',
+		text: 'FP 时间',
 		left: 'center',
 	},
 	tooltip: {
@@ -31,15 +31,15 @@ const FPOption = ref({
 	},
 	series: [
 		{
-			name: 'Access From',
+			name: 'FP 时间',
 			type: 'pie',
 			radius: '50%',
 			data: [
 				{ value: 0, name: '<100ms' },
 				{ value: 0, name: '100-300ms' },
 				{ value: 0, name: '300-500ms' },
-				{ value: 0, name: '500-1000ms' },
-				{ value: 0, name: '>1000ms' },
+				{ value: 0, name: '500-1s' },
+				{ value: 0, name: '>1s' },
 			],
 			emphasis: {
 				itemStyle: {
@@ -53,7 +53,7 @@ const FPOption = ref({
 })
 const FCPOption = ref({
 	title: {
-		text: 'FCP分段数量占比',
+		text: 'FCP 时间',
 		left: 'center',
 	},
 	tooltip: {
@@ -65,15 +65,15 @@ const FCPOption = ref({
 	},
 	series: [
 		{
-			name: 'Access From',
+			name: 'FCP 时间',
 			type: 'pie',
 			radius: '50%',
 			data: [
 				{ value: 0, name: '<100ms' },
 				{ value: 0, name: '100-300ms' },
 				{ value: 0, name: '300-500ms' },
-				{ value: 0, name: '500-1000ms' },
-				{ value: 0, name: '>1000ms' },
+				{ value: 0, name: '500-1s' },
+				{ value: 0, name: '>1s' },
 			],
 			emphasis: {
 				itemStyle: {
@@ -87,7 +87,7 @@ const FCPOption = ref({
 })
 const InteractiveOption = ref({
 	title: {
-		text: 'DOM_Interactive分段数量占比',
+		text: 'DOM Interactive 时间',
 		left: 'center',
 	},
 	tooltip: {
@@ -99,15 +99,15 @@ const InteractiveOption = ref({
 	},
 	series: [
 		{
-			name: 'Access From',
+			name: 'DOM Interactive 时间',
 			type: 'pie',
 			radius: '50%',
 			data: [
 				{ value: 0, name: '<500ms' },
-				{ value: 0, name: '500-1000ms' },
-				{ value: 0, name: '1000-2000ms' },
-				{ value: 0, name: '2000-5000ms' },
-				{ value: 0, name: '>5000ms' },
+				{ value: 0, name: '500-1s' },
+				{ value: 0, name: '1000-2s' },
+				{ value: 0, name: '2000-5s' },
+				{ value: 0, name: '>5s' },
 			],
 			emphasis: {
 				itemStyle: {
@@ -121,7 +121,7 @@ const InteractiveOption = ref({
 })
 const LCPOption = ref({
 	title: {
-		text: 'LCP分段数量占比',
+		text: 'LCP 时间',
 		left: 'center',
 	},
 	tooltip: {
@@ -133,14 +133,14 @@ const LCPOption = ref({
 	},
 	series: [
 		{
-			name: 'Access From',
+			name: 'LCP 时间',
 			type: 'pie',
 			radius: '50%',
 			data: [
 				{ value: 0, name: '<200ms' },
 				{ value: 0, name: '200-500ms' },
-				{ value: 0, name: '500-1000ms' },
-				{ value: 0, name: '>1000ms' },
+				{ value: 0, name: '500-1s' },
+				{ value: 0, name: '>1s' },
 			],
 			emphasis: {
 				itemStyle: {
@@ -177,27 +177,27 @@ interface Perf {
 const options = [
 	{
 		value: 'tableDataFP',
-		label: 'FP性能排行',
+		label: 'FP 性能',
 	},
 	{
 		value: 'tableDataFCP',
-		label: 'FCP性能排行',
+		label: 'FCP 性能',
 	},
 	{
 		value: 'tableDataReady',
-		label: 'DOM_Ready性能排行',
+		label: 'DOM Ready 性能',
 	},
 	{
 		value: 'tableDataComplete',
-		label: 'DOM_Complete性能排行',
+		label: 'DOM Complete 性能',
 	},
 	{
 		value: 'tableDataInteractive',
-		label: 'DOM_Interactive性能排行',
+		label: 'DOM Interactive 性能',
 	},
 	{
 		value: 'tableDataLCP',
-		label: 'LCP性能排行',
+		label: 'LCP 性能',
 	},
 ]
 
@@ -318,10 +318,10 @@ onMounted(() => {
 				tableDataComplete.value = []
 				tableDataInteractive.value = []
 				tableDataLCP.value = []
-				FPOption.value.series[0].data = [{ value: 0, name: '<100ms' }, { value: 0, name: '100-300ms' }, { value: 0, name: '300-500ms' }, { value: 0, name: '500-1000ms' }, { value: 0, name: '>1000ms' }]
-				FCPOption.value.series[0].data = [{ value: 0, name: '<100ms' }, { value: 0, name: '100-300ms' }, { value: 0, name: '300-500ms' }, { value: 0, name: '500-1000ms' }, { value: 0, name: '>1000ms' }]
-				InteractiveOption.value.series[0].data = [{ value: 0, name: '<500ms' }, { value: 0, name: '500-1000ms' }, { value: 0, name: '1000-2000ms' }, { value: 0, name: '2000-5000ms' }, { value: 0, name: '>5000ms' }]
-				LCPOption.value.series[0].data = [{ value: 0, name: '<200ms' }, { value: 0, name: '200-500ms' }, { value: 0, name: '500-1000ms' }, { value: 0, name: '>1000ms' }]
+				FPOption.value.series[0].data = [{ value: 0, name: '<100ms' }, { value: 0, name: '100-300ms' }, { value: 0, name: '300-500ms' }, { value: 0, name: '500-1s' }, { value: 0, name: '>1s' }]
+				FCPOption.value.series[0].data = [{ value: 0, name: '<100ms' }, { value: 0, name: '100-300ms' }, { value: 0, name: '300-500ms' }, { value: 0, name: '500-1s' }, { value: 0, name: '>1s' }]
+				InteractiveOption.value.series[0].data = [{ value: 0, name: '<500ms' }, { value: 0, name: '500-1s' }, { value: 0, name: '1000-2s' }, { value: 0, name: '2000-5s' }, { value: 0, name: '>5s' }]
+				LCPOption.value.series[0].data = [{ value: 0, name: '<200ms' }, { value: 0, name: '200-500ms' }, { value: 0, name: '500-1s' }, { value: 0, name: '>1s' }]
 				id = projectsStore.projects[projectsStore.choose].id
 				Pget()
 			}
@@ -342,10 +342,10 @@ onActivated(() => {
 		tableDataComplete.value = []
 		tableDataInteractive.value = []
 		tableDataLCP.value = []
-		FPOption.value.series[0].data = [{ value: 0, name: '<100ms' }, { value: 0, name: '100-300ms' }, { value: 0, name: '300-500ms' }, { value: 0, name: '500-1000ms' }, { value: 0, name: '>1000ms' }]
-		FCPOption.value.series[0].data = [{ value: 0, name: '<100ms' }, { value: 0, name: '100-300ms' }, { value: 0, name: '300-500ms' }, { value: 0, name: '500-1000ms' }, { value: 0, name: '>1000ms' }]
-		InteractiveOption.value.series[0].data = [{ value: 0, name: '<500ms' }, { value: 0, name: '500-1000ms' }, { value: 0, name: '1000-2000ms' }, { value: 0, name: '2000-5000ms' }, { value: 0, name: '>5000ms' }]
-		LCPOption.value.series[0].data = [{ value: 0, name: '<200ms' }, { value: 0, name: '200-500ms' }, { value: 0, name: '500-1000ms' }, { value: 0, name: '>1000ms' }]
+		FPOption.value.series[0].data = [{ value: 0, name: '<100ms' }, { value: 0, name: '100-300ms' }, { value: 0, name: '300-500ms' }, { value: 0, name: '500-1s' }, { value: 0, name: '>1s' }]
+		FCPOption.value.series[0].data = [{ value: 0, name: '<100ms' }, { value: 0, name: '100-300ms' }, { value: 0, name: '300-500ms' }, { value: 0, name: '500-1s' }, { value: 0, name: '>1s' }]
+		InteractiveOption.value.series[0].data = [{ value: 0, name: '<500ms' }, { value: 0, name: '500-1s' }, { value: 0, name: '1000-2s' }, { value: 0, name: '2000-5s' }, { value: 0, name: '>5s' }]
+		LCPOption.value.series[0].data = [{ value: 0, name: '<200ms' }, { value: 0, name: '200-500ms' }, { value: 0, name: '500-1s' }, { value: 0, name: '>1s' }]
 		Pget()
 	}
 })
@@ -371,21 +371,21 @@ onActivated(() => {
 			<el-row>
 				<el-col :span="8">
 					<el-card class="mal">
-						<span>平均FP</span>
+						<span>平均 FP</span>
 						<br />
 						<b class="fs">{{ Page.FP.toFixed(2) }}ms</b>
 					</el-card>
 				</el-col>
 				<el-col :span="8">
 					<el-card class="mal">
-						<span>平均FCP</span>
+						<span>平均 FCP</span>
 						<br />
 						<b class="fs">{{ Page.FCP.toFixed(2) }}ms</b>
 					</el-card>
 				</el-col>
 				<el-col :span="8">
 					<el-card class="mal">
-						<span>平均DOM_Ready</span>
+						<span>平均 DOM Ready</span>
 						<br />
 						<b class="fs">{{ Page.DOM_Ready.toFixed(2) }}ms</b>
 					</el-card>
@@ -396,21 +396,21 @@ onActivated(() => {
 			<el-row>
 				<el-col :span="8">
 					<el-card class="mal">
-						<span>平均DOM_Complete</span>
+						<span>平均 DOM Complete</span>
 						<br />
 						<b class="fs">{{ Page.DOM_Complete.toFixed(2) }}ms</b>
 					</el-card>
 				</el-col>
 				<el-col :span="8">
 					<el-card class="mal">
-						<span>平均DOM_Interactive</span>
+						<span>平均 DOM Interactive</span>
 						<br />
 						<b class="fs">{{ Page.DOM_Interactive.toFixed(2) }}ms</b>
 					</el-card>
 				</el-col>
 				<el-col :span="8">
 					<el-card class="mal">
-						<span>平均LCP</span>
+						<span>平均 LCP</span>
 						<br />
 						<b class="fs">{{ Page.LCP.toFixed(2) }}ms</b>
 					</el-card>
@@ -466,18 +466,21 @@ onActivated(() => {
 			<el-row>
 				<el-col :span="24">
 					<el-card class="mal">
-						<el-select
-							v-model="value"
-							placeholder="Select"
-							@change="switchPerfRank"
-						>
-							<el-option
-								v-for="item in options"
-								:key="item.value"
-								:label="item.label"
-								:value="item.value"
-							/>
-						</el-select>
+						<p>
+							性能较差的页面：
+							<el-select
+								v-model="value"
+								placeholder="Select"
+								@change="switchPerfRank"
+							>
+								<el-option
+									v-for="item in options"
+									:key="item.value"
+									:label="item.label"
+									:value="item.value"
+								/>
+							</el-select>
+						</p>
 						<el-table
 							:data="curTableData"
 							height="300"
@@ -485,11 +488,11 @@ onActivated(() => {
 						>
 							<el-table-column
 								prop="from"
-								label="页面 URL"
+								label="来源 URL"
 							/>
 							<el-table-column
 								prop="value"
-								label="值"
+								label="值 (ms)"
 								width="180"
 							/>
 						</el-table>

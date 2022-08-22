@@ -15,8 +15,8 @@ const usertime = ref([] as any[])
 
 const uvOption = ref({
 	title: {
-		text: 'UV变化趋势',
-		subtext: 'Fake Data',
+		text: 'UV 变化趋势',
+		subtext: 'UV',
 		left: 'center',
 	},
 	xAxis: {
@@ -36,8 +36,8 @@ const uvOption = ref({
 
 const pvOption = ref({
 	title: {
-		text: 'PV变化趋势',
-		subtext: 'Fake Data',
+		text: 'PV 变化趋势',
+		subtext: 'PV',
 		left: 'center',
 	},
 	xAxis: {
@@ -227,12 +227,13 @@ onActivated(() => {
 							height="240"
 						>
 							<el-table-column
-								prop="pv"
-								label="PV"
+								prop="from"
+								label="来源 URL"
 							/>
 							<el-table-column
-								prop="from"
-								label="位置"
+								prop="pv"
+								label="PV"
+								width="80"
 							/>
 						</el-table>
 					</el-card>
@@ -260,7 +261,7 @@ onActivated(() => {
 						>
 							<el-table-column
 								prop="from"
-								label="页面 URL"
+								label="来源 URL"
 							/>
 							<el-table-column
 								prop="duration"
@@ -288,12 +289,12 @@ onActivated(() => {
 						>
 							<el-table-column
 								prop="from"
-								label="页面 URL"
+								label="来源 URL"
 							/>
 							<el-table-column
 								prop="uv"
 								label="PV"
-								width="180"
+								width="80"
 							/>
 						</el-table>
 					</el-card>
