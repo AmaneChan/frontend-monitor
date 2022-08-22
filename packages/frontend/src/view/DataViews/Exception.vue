@@ -51,7 +51,7 @@ const JSoption = ref({
 	},
 	xAxis: {
 		type: 'category',
-		data: ['Seven', 'Six', 'Five', 'Four', 'Three', 'Yesterday', 'Today'],
+		data: ['6d ago', '5d ago', '4d ago', '3d ago', '2d ago', 'Yesterday', 'Today'],
 	},
 	yAxis: {
 		type: 'value',
@@ -71,7 +71,7 @@ const InterfaceOption = ref({
 	},
 	xAxis: {
 		type: 'category',
-		data: ['Seven', 'Six', 'Five', 'Four', 'Three', 'Yesterday', 'Today'],
+		data: ['6d ago', '5d ago', '4d ago', '3d ago', '2d ago', 'Yesterday', 'Today'],
 	},
 	yAxis: {
 		type: 'value',
@@ -92,7 +92,7 @@ const StaticOption = ref({
 	},
 	xAxis: {
 		type: 'category',
-		data: ['Seven', 'Six', 'Five', 'Four', 'Three', 'Yesterday', 'Today'],
+		data: ['6d ago', '5d ago', '4d ago', '3d ago', '2d ago', 'Yesterday', 'Today'],
 	},
 	yAxis: {
 		type: 'value',
@@ -113,7 +113,7 @@ const CustomOption = ref({
 	},
 	xAxis: {
 		type: 'category',
-		data: ['Seven', 'Six', 'Five', 'Four', 'Three', 'Yesterday', 'Today'],
+		data: ['6d ago', '5d ago', '4d ago', '3d ago', '2d ago', 'Yesterday', 'Today'],
 	},
 	yAxis: {
 		type: 'value',
