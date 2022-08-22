@@ -220,6 +220,12 @@ onActivated(() => {
 	console.log(projectsStore.choose)
 	if (projectsStore.choose !== -1) {
 		id = projectsStore.projects[projectsStore.choose].id
+		dataExceptionType.value.series[0].data = [{ value: 0, name: 'JS错误' }, { value: 0, name: '自定义异常' }, { value: 0, name: '静态资源异常' }, { value: 0, name: '接口异常' }]
+		tableData.value = []
+		pvOption.value.series[0].data = [0, 0, 0, 0, 0, 0, 0]
+		uvOption.value.series[0].data = [0, 0, 0, 0, 0, 0, 0]
+		pvtableData.value = []
+		uvtableData.value = []
 		Eget(id, limit)
 		Bget(id)
 		BPet(page, day)

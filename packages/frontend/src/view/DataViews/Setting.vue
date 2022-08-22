@@ -72,7 +72,7 @@ onMounted(() => {
 					</template>
 					<div
 						class="content"
-						style="text-align: center;"
+						style="text-align: center; height: 14rem"
 					>
 						<div>
 							<span class="valueContent">用户名:</span>
@@ -137,12 +137,7 @@ onMounted(() => {
 							，将复制 SDK Key。将 SDK Key 添加到 script 标签中。
 						</p>
 						<p>
-							或者点击下方直接复制当前选择项目的 script 标签，标签上已经包含 SDK Key 信息。
-						</p>
-						<p>
-							将 script 标签添加到你的页面中即可。
-						</p>
-						<p>
+							或者点击下方直接复制当前选择项目的 script 标签，标签上已经包含 SDK Key 信息。将 script 标签添加到你的页面中即可。
 							<el-input
 								v-model="scriptWithKey"
 								style="width: 100%;"

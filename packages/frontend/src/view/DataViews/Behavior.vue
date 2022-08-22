@@ -135,6 +135,12 @@ onActivated(() => {
 	console.log('onActivated')
 	if (projectsStore.choose !== -1) {
 		id = projectsStore.projects[projectsStore.choose].id
+		topData.UV = 0
+		topData.time = 0
+		topData.PV = 0
+		pvtableData.value = []
+		uvtableData.value = []
+		usertime.value = []
 		Bget(id)
 	}
 })

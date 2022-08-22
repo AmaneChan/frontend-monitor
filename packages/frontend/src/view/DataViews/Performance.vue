@@ -333,6 +333,19 @@ onActivated(() => {
 	console.log('onActivated')
 	if (projectsStore.choose !== -1) {
 		id = projectsStore.projects[projectsStore.choose].id
+		Page.FP = 0
+		Page.FCP = 0
+		Page.DOM_Ready = 0
+		Page.DOM_Complete = 0
+		Page.DOM_Interactive = 0
+		Page.LCP = 0
+		tableDataComplete.value = []
+		tableDataInteractive.value = []
+		tableDataLCP.value = []
+		FPOption.value.series[0].data = [{ value: 0, name: '<100ms' }, { value: 0, name: '100-300ms' }, { value: 0, name: '300-500ms' }, { value: 0, name: '500-1000ms' }, { value: 0, name: '>1000ms' }]
+		FCPOption.value.series[0].data = [{ value: 0, name: '<100ms' }, { value: 0, name: '100-300ms' }, { value: 0, name: '300-500ms' }, { value: 0, name: '500-1000ms' }, { value: 0, name: '>1000ms' }]
+		InteractiveOption.value.series[0].data = [{ value: 0, name: '<500ms' }, { value: 0, name: '500-1000ms' }, { value: 0, name: '1000-2000ms' }, { value: 0, name: '2000-5000ms' }, { value: 0, name: '>5000ms' }]
+		LCPOption.value.series[0].data = [{ value: 0, name: '<200ms' }, { value: 0, name: '200-500ms' }, { value: 0, name: '500-1000ms' }, { value: 0, name: '>1000ms' }]
 		Pget()
 	}
 })
