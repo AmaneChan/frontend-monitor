@@ -70,6 +70,40 @@ const dialogB = function () {
 	dialogFormVisible.value = false
 	Pname(projectsStore.projects[Pindex].id, Pform.value.name)
 }
+
+const modify = ref(true)
+const userName = ref('')
+
+async function modifyUserName() {
+	modify.value = !modify.value
+	if (userName.value === '') {
+		return ElMessage.error('用户名称不能为空')
+	}
+	const result: ResponseResult = await axios.post('/user/info', { id: userStore.id, username: userName.value })
+	userName.value = ''
+	ElMessage.success(result.message)
+	console.log(result.message)
+}
+
+const modify2 = ref(true)
+const userPwd = ref('')
+const userNewPwd = ref('')
+
+async function modifyUserPwd() {
+	modify2.value = !modify2.value
+	if (userPwd.value === '') {
+		return ElMessage.error('旧密码不能为空')
+	}
+	if (userNewPwd.value === '') {
+		return ElMessage.error('新密码不能为空')
+	}
+	const result: ResponseResult = await axios.post('/user/pwd', { id: userStore.id, oldPwd: userPwd.value, newPwd: userNewPwd.value })
+	userPwd.value = ''
+	userNewPwd.value = ''
+	ElMessage.success(result.message)
+	console.log(result.message)
+}
+
 async function Pname(id: number, name: string) {
 	const req: ResponseResult = await axios.put('/project', { id, name })
 	ElMessage.success(req.message)
@@ -91,24 +125,61 @@ async function Pname(id: number, name: string) {
 						class="content"
 						style="text-align: center; height: 14rem"
 					>
-						<div>
+						<div v-if="modify">
 							<span class="valueContent">用户名:</span>
 							<span class="valueContent">{{ userStore.username }}</span>
 							<el-button
 								type="primary"
 								size="small"
+								@click="modify = !modify"
 							>
 								修改
 							</el-button>
 						</div>
-						<div>
+						<div v-else>
+							<span class="valueContent">用户名:</span>
+							<el-input
+								v-model="userName"
+								placeholder="新用户名"
+								style="display: inline-block;"
+							/>
+							<el-button
+								type="primary"
+								size="small"
+								@click="modifyUserName"
+							>
+								确定
+							</el-button>
+						</div>
+						<div v-if="modify2">
 							<span class="valueContent">密码:</span>
 							<span class="valueContent">********</span>
 							<el-button
 								type="primary"
 								size="small"
+								@click="modify2 = !modify2"
 							>
 								修改
+							</el-button>
+						</div>
+						<div v-else>
+							<span class="valueContent">密码:</span>
+							<el-input
+								v-model="userPwd"
+								placeholder="旧密码"
+								style="display: inline-block;"
+							/>
+							<el-input
+								v-model="userNewPwd"
+								placeholder="新密码"
+								style="display: inline-block;"
+							/>
+							<el-button
+								type="primary"
+								size="small"
+								@click="modifyUserPwd"
+							>
+								确定
 							</el-button>
 						</div>
 						<div>
