@@ -1,8 +1,6 @@
 <script lang="ts" setup>
-import { log } from 'console'
-import { watch } from 'fs'
 import { ref } from 'vue'
-import { onBeforeRouteUpdate } from 'vue-router'
+import { InfoFilled, Location, Setting, TrendCharts, User } from '@element-plus/icons-vue'
 import router from '../../router'
 
 let index = ref('/overview')

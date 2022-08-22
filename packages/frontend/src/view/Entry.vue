@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ElMessage } from 'element-plus'
 import { reactive, ref } from 'vue'
+import { Lock, User } from '@element-plus/icons-vue'
 
 import { axios } from '../request.js'
 import type { ResponseResult } from '../request.js'
@@ -119,19 +120,6 @@ async function register() {
 							v-model="inputContent.register.username"
 							type="text"
 							placeholder="用户名"
-						/>
-					</div>
-					<div class="input-field">
-						<el-icon
-							:size="24"
-							class="input-icon"
-						>
-							<Message />
-						</el-icon>
-						<input
-							v-model="inputContent.register.email"
-							type="email"
-							placeholder="邮箱"
 						/>
 					</div>
 					<div class="input-field">

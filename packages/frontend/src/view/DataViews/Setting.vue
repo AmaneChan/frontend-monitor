@@ -7,7 +7,6 @@ import { useProjectsStore } from '../../stores/projects'
 import { useUserStore } from '../../stores/user'
 import { axios } from '../../request.js'
 import type { ResponseResult } from '../../request.js'
-import router from '../../router'
 
 const projectsStore = useProjectsStore()
 const userStore = useUserStore()
