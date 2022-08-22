@@ -21,7 +21,7 @@ const uvOption = ref({
 	},
 	xAxis: {
 		type: 'category',
-		data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+		data: ['Seven', 'Six', 'Five', 'Four', 'Three', 'Yesterday', 'Today'],
 	},
 	yAxis: {
 		type: 'value',
@@ -42,7 +42,7 @@ const pvOption = ref({
 	},
 	xAxis: {
 		type: 'category',
-		data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+		data: ['Seven', 'Six', 'Five', 'Four', 'Three', 'Yesterday', 'Today'],
 	},
 	yAxis: {
 		type: 'value',
@@ -66,6 +66,7 @@ async function Bget(id: number) {
 
 	topData.PV = pvreq.data[6]
 	topData.pvUp = calcDelta(pvreq.data[pvreq.data.length - 2], pvreq.data[pvreq.data.length - 1])
+	console.log(pvreq)
 	for (let index = 0; index < pvreq.data.length; index++) {
 		pvOption.value.series[0].data[index] = pvreq.data[index]
 	}
