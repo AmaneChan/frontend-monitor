@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import { CopyDocument, Hide, View } from '@element-plus/icons-vue'
 import ClipboardJS from 'clipboard'
 import { ElMessage } from 'element-plus'
@@ -58,6 +58,23 @@ onMounted(() => {
 		ElMessage.error('你的浏览器暂不支持，请手动复制')
 	})
 })
+
+const dialogFormVisible = ref(false)
+let Pindex = -1
+const dialog = function (index: number) {
+	dialogFormVisible.value = true
+	Pindex = index
+}
+const Pform = ref({ name: '' })
+const dialogB = function () {
+	dialogFormVisible.value = false
+	Pname(projectsStore.projects[Pindex].id, Pform.value.name)
+}
+async function Pname(id: number, name: string) {
+	const req: ResponseResult = await axios.put('/project', { id, name })
+	ElMessage.success(req.message)
+	projectsStore.updateProjects()
+}
 </script>
 
 <template>
@@ -218,21 +235,34 @@ onMounted(() => {
 								link
 								type="primary"
 								size="small"
+								@click="dialog(scope.$index)"
 							>
 								修改名称
-							</el-button>
-							<el-button
-								link
-								type="primary"
-								size="small"
-							>
-								删除项目
 							</el-button>
 						</template>
 					</el-table-column>
 				</el-table>
 			</div>
 		</el-card>
+
+		<el-dialog
+			v-model="dialogFormVisible"
+			title="修改项目名称"
+		>
+			<el-input
+				v-model="Pform.name"
+				autocomplete="off"
+			/>
+			<template #footer>
+				<span class="dialog-footer">
+					<el-button @click="dialogFormVisible = false">关闭</el-button>
+					<el-button
+						type="primary"
+						@click="dialogB"
+					>确定</el-button>
+				</span>
+			</template>
+		</el-dialog>
 	</div>
 </template>
 
