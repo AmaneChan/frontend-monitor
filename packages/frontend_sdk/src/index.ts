@@ -128,6 +128,21 @@ window.fetch = function (...args) {
 			msg: e.stack,
 			position: location.href,
 		})
+	}).then((res: Response | void) => {
+		if (res) {
+			if (res.status !== 200) {
+				report('/exception', {
+					key,
+					type: Exception.Fetch.toString(),
+					msg: JSON.stringify({
+						msg: res.statusText,
+						target: res.url,
+					}),
+					position: location.href,
+				})
+			}
+		}
+		return res
 	})
 }
 
