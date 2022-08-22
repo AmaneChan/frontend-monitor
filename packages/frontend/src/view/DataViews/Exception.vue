@@ -295,6 +295,12 @@ onActivated(() => {
 	console.log(projectsStore.choose)
 	if (projectsStore.choose !== -1) {
 		id = projectsStore.projects[projectsStore.choose].id
+		dataExceptionType.value.series[0].data = [{ value: 0, name: 'JS错误' }, { value: 0, name: '自定义异常' }, { value: 0, name: '静态资源异常' }, { value: 0, name: '接口异常' }]
+		tableData.value = []
+		JSoption.value.series[0].data = [0, 0, 0, 0, 0, 0, 0]
+		InterfaceOption.value.series[0].data = [0, 0, 0, 0, 0, 0, 0]
+		StaticOption.value.series[0].data = [0, 0, 0, 0, 0, 0, 0]
+		CustomOption.value.series[0].data = [0, 0, 0, 0, 0, 0, 0]
 		Eget(id, limit)
 	}
 })
