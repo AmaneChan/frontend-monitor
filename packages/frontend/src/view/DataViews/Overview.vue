@@ -49,7 +49,7 @@ const pvOption = ref({
 	},
 	xAxis: {
 		type: 'category',
-		data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+		data: ['Seven', 'Six', 'Five', 'Four', 'Three', 'Yesterday', 'Today'],
 	},
 	yAxis: {
 		type: 'value',
@@ -70,7 +70,7 @@ const uvOption = ref({
 	},
 	xAxis: {
 		type: 'category',
-		data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+		data: ['Seven', 'Six', 'Five', 'Four', 'Three', 'Yesterday', 'Today'],
 	},
 	yAxis: {
 		type: 'value',

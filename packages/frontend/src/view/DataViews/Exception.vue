@@ -51,7 +51,7 @@ const JSoption = ref({
 	},
 	xAxis: {
 		type: 'category',
-		data: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+		data: ['Seven', 'Six', 'Five', 'Four', 'Three', 'Yesterday', 'Today'],
 	},
 	yAxis: {
 		type: 'value',
@@ -71,7 +71,7 @@ const InterfaceOption = ref({
 	},
 	xAxis: {
 		type: 'category',
-		data: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+		data: ['Seven', 'Six', 'Five', 'Four', 'Three', 'Yesterday', 'Today'],
 	},
 	yAxis: {
 		type: 'value',
@@ -92,7 +92,7 @@ const StaticOption = ref({
 	},
 	xAxis: {
 		type: 'category',
-		data: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+		data: ['Seven', 'Six', 'Five', 'Four', 'Three', 'Yesterday', 'Today'],
 	},
 	yAxis: {
 		type: 'value',
@@ -113,7 +113,7 @@ const CustomOption = ref({
 	},
 	xAxis: {
 		type: 'category',
-		data: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+		data: ['Seven', 'Six', 'Five', 'Four', 'Three', 'Yesterday', 'Today'],
 	},
 	yAxis: {
 		type: 'value',
@@ -130,36 +130,137 @@ let id = -1
 // const id = projectsStore.projects[projectsStore.choose].id
 
 const limit = 10
-
 async function Eget(id: number, limit: number) {
 	for (let index = 0; index < 4; index++) {
 		const type = index + 1
+		const opresult = await axios.get(`/exception/recent?id=${id}&type=${type}`)
+		if (type === 1) {
+			for (let index = 0; index < opresult.data.length; index++) {
+				if (new Date(opresult.data[index].time).getFullYear() === new Date().getFullYear() && new Date(opresult.data[index].time).getMonth() === new Date().getMonth() && new Date(opresult.data[index].time).getDate() === new Date().getDate()) {
+					JSoption.value.series[0].data[6] = JSoption.value.series[0].data[6] + 1
+				} else
+				if (new Date(opresult.data[index].time).getFullYear() === new Date().getFullYear() && new Date(opresult.data[index].time).getMonth() === new Date().getMonth() && new Date(opresult.data[index].time).getDate() === new Date().getDate() - 1) {
+					JSoption.value.series[0].data[5] = JSoption.value.series[0].data[5] + 1
+				} else
+				if (new Date(opresult.data[index].time).getFullYear() === new Date().getFullYear() && new Date(opresult.data[index].time).getMonth() === new Date().getMonth() && new Date(opresult.data[index].time).getDate() === new Date().getDate() - 2) {
+					JSoption.value.series[0].data[4] = JSoption.value.series[0].data[4] + 1
+				} else
+				if (new Date(opresult.data[index].time).getFullYear() === new Date().getFullYear() && new Date(opresult.data[index].time).getMonth() === new Date().getMonth() && new Date(opresult.data[index].time).getDate() === new Date().getDate() - 3) {
+					JSoption.value.series[0].data[3] = JSoption.value.series[0].data[3] + 1
+				} else
+				if (new Date(opresult.data[index].time).getFullYear() === new Date().getFullYear() && new Date(opresult.data[index].time).getMonth() === new Date().getMonth() && new Date(opresult.data[index].time).getDate() === new Date().getDate() - 4) {
+					JSoption.value.series[0].data[2] = JSoption.value.series[0].data[2] + 1
+				} else
+				if (new Date(opresult.data[index].time).getFullYear() === new Date().getFullYear() && new Date(opresult.data[index].time).getMonth() === new Date().getMonth() && new Date(opresult.data[index].time).getDate() === new Date().getDate() - 5) {
+					JSoption.value.series[0].data[1] = JSoption.value.series[0].data[1] + 1
+				} else
+				if (new Date(opresult.data[index].time).getFullYear() === new Date().getFullYear() && new Date(opresult.data[index].time).getMonth() === new Date().getMonth() && new Date(opresult.data[index].time).getDate() === new Date().getDate() - 6) {
+					JSoption.value.series[0].data[0] = JSoption.value.series[0].data[0] + 1
+				}
+			}
+		} else
+		if (type === 2) {
+			for (let index = 0; index < opresult.data.length; index++) {
+				if (new Date(opresult.data[index].time).getFullYear() === new Date().getFullYear() && new Date(opresult.data[index].time).getMonth() === new Date().getMonth() && new Date(opresult.data[index].time).getDate() === new Date().getDate()) {
+					InterfaceOption.value.series[0].data[6] = InterfaceOption.value.series[0].data[6] + 1
+				} else
+				if (new Date(opresult.data[index].time).getFullYear() === new Date().getFullYear() && new Date(opresult.data[index].time).getMonth() === new Date().getMonth() && new Date(opresult.data[index].time).getDate() === new Date().getDate() - 1) {
+					InterfaceOption.value.series[0].data[5] = InterfaceOption.value.series[0].data[5] + 1
+				} else
+				if (new Date(opresult.data[index].time).getFullYear() === new Date().getFullYear() && new Date(opresult.data[index].time).getMonth() === new Date().getMonth() && new Date(opresult.data[index].time).getDate() === new Date().getDate() - 2) {
+					InterfaceOption.value.series[0].data[4] = InterfaceOption.value.series[0].data[4] + 1
+				} else
+				if (new Date(opresult.data[index].time).getFullYear() === new Date().getFullYear() && new Date(opresult.data[index].time).getMonth() === new Date().getMonth() && new Date(opresult.data[index].time).getDate() === new Date().getDate() - 3) {
+					InterfaceOption.value.series[0].data[3] = InterfaceOption.value.series[0].data[3] + 1
+				} else
+				if (new Date(opresult.data[index].time).getFullYear() === new Date().getFullYear() && new Date(opresult.data[index].time).getMonth() === new Date().getMonth() && new Date(opresult.data[index].time).getDate() === new Date().getDate() - 4) {
+					InterfaceOption.value.series[0].data[2] = InterfaceOption.value.series[0].data[2] + 1
+				} else
+				if (new Date(opresult.data[index].time).getFullYear() === new Date().getFullYear() && new Date(opresult.data[index].time).getMonth() === new Date().getMonth() && new Date(opresult.data[index].time).getDate() === new Date().getDate() - 5) {
+					InterfaceOption.value.series[0].data[1] = InterfaceOption.value.series[0].data[1] + 1
+				} else
+				if (new Date(opresult.data[index].time).getFullYear() === new Date().getFullYear() && new Date(opresult.data[index].time).getMonth() === new Date().getMonth() && new Date(opresult.data[index].time).getDate() === new Date().getDate() - 6) {
+					InterfaceOption.value.series[0].data[0] = InterfaceOption.value.series[0].data[0] + 1
+				}
+			}
+		} else
+		if (type === 3) {
+			for (let index = 0; index < opresult.data.length; index++) {
+				if (new Date(opresult.data[index].time).getFullYear() === new Date().getFullYear() && new Date(opresult.data[index].time).getMonth() === new Date().getMonth() && new Date(opresult.data[index].time).getDate() === new Date().getDate()) {
+					StaticOption.value.series[0].data[6] = StaticOption.value.series[0].data[6] + 1
+				} else
+				if (new Date(opresult.data[index].time).getFullYear() === new Date().getFullYear() && new Date(opresult.data[index].time).getMonth() === new Date().getMonth() && new Date(opresult.data[index].time).getDate() === new Date().getDate() - 1) {
+					StaticOption.value.series[0].data[5] = StaticOption.value.series[0].data[5] + 1
+				} else
+				if (new Date(opresult.data[index].time).getFullYear() === new Date().getFullYear() && new Date(opresult.data[index].time).getMonth() === new Date().getMonth() && new Date(opresult.data[index].time).getDate() === new Date().getDate() - 2) {
+					StaticOption.value.series[0].data[4] = StaticOption.value.series[0].data[4] + 1
+				} else
+				if (new Date(opresult.data[index].time).getFullYear() === new Date().getFullYear() && new Date(opresult.data[index].time).getMonth() === new Date().getMonth() && new Date(opresult.data[index].time).getDate() === new Date().getDate() - 3) {
+					StaticOption.value.series[0].data[3] = StaticOption.value.series[0].data[3] + 1
+				} else
+				if (new Date(opresult.data[index].time).getFullYear() === new Date().getFullYear() && new Date(opresult.data[index].time).getMonth() === new Date().getMonth() && new Date(opresult.data[index].time).getDate() === new Date().getDate() - 4) {
+					StaticOption.value.series[0].data[2] = StaticOption.value.series[0].data[2] + 1
+				} else
+				if (new Date(opresult.data[index].time).getFullYear() === new Date().getFullYear() && new Date(opresult.data[index].time).getMonth() === new Date().getMonth() && new Date(opresult.data[index].time).getDate() === new Date().getDate() - 5) {
+					StaticOption.value.series[0].data[1] = StaticOption.value.series[0].data[1] + 1
+				} else
+				if (new Date(opresult.data[index].time).getFullYear() === new Date().getFullYear() && new Date(opresult.data[index].time).getMonth() === new Date().getMonth() && new Date(opresult.data[index].time).getDate() === new Date().getDate() - 6) {
+					StaticOption.value.series[0].data[0] = StaticOption.value.series[0].data[0] + 1
+				}
+			}
+		} else
+		if (type === 4) {
+			for (let index = 0; index < opresult.data.length; index++) {
+				if (new Date(opresult.data[index].time).getFullYear() === new Date().getFullYear() && new Date(opresult.data[index].time).getMonth() === new Date().getMonth() && new Date(opresult.data[index].time).getDate() === new Date().getDate()) {
+					CustomOption.value.series[0].data[6] = CustomOption.value.series[0].data[6] + 1
+				} else
+				if (new Date(opresult.data[index].time).getFullYear() === new Date().getFullYear() && new Date(opresult.data[index].time).getMonth() === new Date().getMonth() && new Date(opresult.data[index].time).getDate() === new Date().getDate() - 1) {
+					CustomOption.value.series[0].data[5] = CustomOption.value.series[0].data[5] + 1
+				} else
+				if (new Date(opresult.data[index].time).getFullYear() === new Date().getFullYear() && new Date(opresult.data[index].time).getMonth() === new Date().getMonth() && new Date(opresult.data[index].time).getDate() === new Date().getDate() - 2) {
+					CustomOption.value.series[0].data[4] = CustomOption.value.series[0].data[4] + 1
+				} else
+				if (new Date(opresult.data[index].time).getFullYear() === new Date().getFullYear() && new Date(opresult.data[index].time).getMonth() === new Date().getMonth() && new Date(opresult.data[index].time).getDate() === new Date().getDate() - 3) {
+					CustomOption.value.series[0].data[3] = CustomOption.value.series[0].data[3] + 1
+				} else
+				if (new Date(opresult.data[index].time).getFullYear() === new Date().getFullYear() && new Date(opresult.data[index].time).getMonth() === new Date().getMonth() && new Date(opresult.data[index].time).getDate() === new Date().getDate() - 4) {
+					CustomOption.value.series[0].data[2] = CustomOption.value.series[0].data[2] + 1
+				} else
+				if (new Date(opresult.data[index].time).getFullYear() === new Date().getFullYear() && new Date(opresult.data[index].time).getMonth() === new Date().getMonth() && new Date(opresult.data[index].time).getDate() === new Date().getDate() - 5) {
+					CustomOption.value.series[0].data[1] = CustomOption.value.series[0].data[1] + 1
+				} else
+				if (new Date(opresult.data[index].time).getFullYear() === new Date().getFullYear() && new Date(opresult.data[index].time).getMonth() === new Date().getMonth() && new Date(opresult.data[index].time).getDate() === new Date().getDate() - 6) {
+					CustomOption.value.series[0].data[0] = CustomOption.value.series[0].data[0] + 1
+				}
+			}
+		}
 		const result: ResponseResult = await axios.get('/exception', {
 			params: { id, type, limit },
 		})
+		console.log(result.data)
 		if (result.data) {
 			dataExceptionType.value.series[0].data[index].value = result.data.length
-			if (type === 1) {
-				for (let j = 0; j < result.data.length; j++) {
-					const inDay: number = new Date(result.data[j].time).getDay()
-					JSoption.value.series[0].data[inDay] = JSoption.value.series[0].data[inDay] + 1
-				}
-			} else if (type === 2) {
-				for (let j = 0; j < result.data.length; j++) {
-					const inDay: number = new Date(result.data[j].time).getDay()
-					InterfaceOption.value.series[0].data[inDay] = InterfaceOption.value.series[0].data[inDay] + 1
-				}
-			} else if (type === 3) {
-				for (let j = 0; j < result.data.length; j++) {
-					const inDay: number = new Date(result.data[j].time).getDay()
-					StaticOption.value.series[0].data[inDay] = StaticOption.value.series[0].data[inDay] + 1
-				}
-			} else if (type === 4) {
-				for (let j = 0; j < result.data.length; j++) {
-					const inDay: number = new Date(result.data[j].time).getDay()
-					CustomOption.value.series[0].data[inDay] = CustomOption.value.series[0].data[inDay] + 1
-				}
-			}
+			// if (type === 1) {
+			// 	for (let j = 0; j < result.data.length; j++) {
+			// 		const inDay: number = new Date(result.data[j].time).getDay()
+			// 		JSoption.value.series[0].data[inDay] = JSoption.value.series[0].data[inDay] + 1
+			// 	}
+			// } else if (type === 2) {
+			// 	for (let j = 0; j < result.data.length; j++) {
+			// 		const inDay: number = new Date(result.data[j].time).getDay()
+			// 		InterfaceOption.value.series[0].data[inDay] = InterfaceOption.value.series[0].data[inDay] + 1
+			// 	}
+			// } else if (type === 3) {
+			// 	for (let j = 0; j < result.data.length; j++) {
+			// 		const inDay: number = new Date(result.data[j].time).getDay()
+			// 		StaticOption.value.series[0].data[inDay] = StaticOption.value.series[0].data[inDay] + 1
+			// 	}
+			// } else if (type === 4) {
+			// 	for (let j = 0; j < result.data.length; j++) {
+			// 		const inDay: number = new Date(result.data[j].time).getDay()
+			// 		CustomOption.value.series[0].data[inDay] = CustomOption.value.series[0].data[inDay] + 1
+			// 	}
+			// }
 			for (let i = 0; i < result.data.length; i++) {
 				const table = {
 					tiem: result.data[i].time,
