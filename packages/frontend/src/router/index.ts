@@ -48,6 +48,18 @@ const router = createRouter({
 	],
 })
 
-
+router.beforeEach((to, _from) => {
+	console.log('from', _from, 'to', to)
+	if (to.name === 'Entry') {
+		return true
+	}
+	console.log(localStorage.getItem('token') == null || localStorage.getItem('token') === '')
+	if (
+		localStorage.getItem('token') == null ||
+		localStorage.getItem('token') === ''
+	) {
+		return 'Entry'
+	}
+})
 
 export default router

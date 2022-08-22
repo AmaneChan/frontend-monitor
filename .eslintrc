@@ -8,6 +8,7 @@
 		"no-console": "off",
 		"curly": ["error", "all"],
 		"brace-style": ["error", "1tbs"],
+		"operator-linebreak": ["error", "after"],
 		"@typescript-eslint/brace-style": ["error", "1tbs"],
 		"vue/html-indent": [
 			"error",
