@@ -127,7 +127,7 @@ async function Pname(id: number, name: string) {
 					</template>
 					<div
 						class="content"
-						style="text-align: center; height: 14rem"
+						style="text-align: center; height: 16rem"
 					>
 						<div v-if="modify">
 							<span class="valueContent">用户名:</span>
@@ -154,6 +154,13 @@ async function Pname(id: number, name: string) {
 							>
 								确定
 							</el-button>
+							<el-button
+								type="primary"
+								size="small"
+								@click="modify = !modify"
+							>
+								取消
+							</el-button>
 						</div>
 						<div v-if="modify2">
 							<span class="valueContent">密码:</span>
@@ -167,24 +174,38 @@ async function Pname(id: number, name: string) {
 							</el-button>
 						</div>
 						<div v-else>
-							<span class="valueContent">密码:</span>
-							<el-input
-								v-model="userPwd"
-								placeholder="旧密码"
-								style="display: inline-block;"
-							/>
-							<el-input
-								v-model="userNewPwd"
-								placeholder="新密码"
-								style="display: inline-block;"
-							/>
-							<el-button
-								type="primary"
-								size="small"
-								@click="modifyUserPwd"
-							>
-								确定
-							</el-button>
+							<div>
+								<span class="valueContent">原密码:</span>
+								<el-input
+									v-model="userPwd"
+									placeholder="请输入原密码"
+									style="display: inline-block;"
+								/>
+							</div>
+							<div>
+								<span class="valueContent">新密码:</span>
+								<el-input
+									v-model="userNewPwd"
+									placeholder="请输入新密码"
+									style="display: inline-block;"
+								/>
+							</div>
+							<div>
+								<el-button
+									type="primary"
+									size="small"
+									@click="modifyUserPwd"
+								>
+									确定
+								</el-button>
+								<el-button
+									type="primary"
+									size="small"
+									@click="modify2 = !modify2"
+								>
+									取消
+								</el-button>
+							</div>
 						</div>
 						<div>
 							<el-button
@@ -218,7 +239,7 @@ async function Pname(id: number, name: string) {
 							<span>SDK Key 使用方法</span>
 						</div>
 					</template>
-					<div style="height: 15rem;">
+					<div style="height: 17rem;">
 						<p>
 							点击下方项目列表中的复制按钮
 							<span>
