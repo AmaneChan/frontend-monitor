@@ -1,190 +1,359 @@
 <script lang="ts" setup>
-import Chart from '../../components/Chart.vue'
-const tableData = [
-	{
-		userId: 'superd',
-		page: 'https://www.baidu.com',
-		userIp: '119.84.70.231',
-		address: '中国 重庆 重庆市',
-		time: '2021-02-22 10:20:19',
-	},
-	{
-		userId: 'superd',
-		page: 'https://www.baidu.com',
-		userIp: '119.84.70.231',
-		address: '中国 重庆 重庆市',
-		time: '2021-02-22 10:20:19',
-	},
-	{
-		userId: 'superd',
-		page: 'https://www.baidu.com',
-		userIp: '119.84.70.231',
-		address: '中国 重庆 重庆市',
-		time: '2021-02-22 10:20:19',
-	},
-]
-const uvOption = {
+import { onActivated, onMounted, reactive, ref, watch } from 'vue'
+import VChart from 'vue-echarts'
+import router from '../../router'
+import { useProjectsStore } from '../../stores/projects'
+import { axios } from '../../request.js'
+import { calcDelta, processDuration } from '../../utils/utils'
+const projectsStore = useProjectsStore()
+
+const pvtableData = ref([] as any[])
+
+const uvtableData = ref([] as any[])
+
+const usertime = ref([] as any[])
+
+const uvOption = ref({
 	title: {
-		text: '浏览量变化趋势',
-		subtext: 'Fake Data',
+		text: 'UV 变化趋势',
+		subtext: 'UV',
 		left: 'center',
 	},
 	xAxis: {
 		type: 'category',
-		data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+		data: ['6d ago', '5d ago', '4d ago', '3d ago', '2d ago', 'Yesterday', 'Today'],
 	},
 	yAxis: {
 		type: 'value',
 	},
 	series: [
 		{
-			data: [15, 23, 22, 21, 13, 14, 26],
+			data: [0, 0, 0, 0, 0, 0, 0],
 			type: 'line',
 		},
 	],
+})
+
+const pvOption = ref({
+	title: {
+		text: 'PV 变化趋势',
+		subtext: 'PV',
+		left: 'center',
+	},
+	xAxis: {
+		type: 'category',
+		data: ['6d ago', '5d ago', '4d ago', '3d ago', '2d ago', 'Yesterday', 'Today'],
+	},
+	yAxis: {
+		type: 'value',
+	},
+	series: [
+		{
+			data: [0, 0, 0, 0, 0, 0, 0],
+			type: 'line',
+		},
+	],
+})
+
+const add = function () {
+	router.push('setting')
 }
+let id = -1
+const list = 1
+const topData = reactive({ PV: 0, UV: 0, time: 0, pvUp: 0, uvUp: 0 })
+async function Bget(id: number) {
+	const pvreq = await axios.get(`/behavior/visit/pv?id=${id}`)
+
+	topData.PV = pvreq.data[6]
+	topData.pvUp = calcDelta(pvreq.data[pvreq.data.length - 2], pvreq.data[pvreq.data.length - 1])
+	console.log(pvreq)
+	for (let index = 0; index < pvreq.data.length; index++) {
+		pvOption.value.series[0].data[index] = pvreq.data[index]
+	}
+	const uvreq = await axios.get(`/behavior/visit/uv?id=${id}`)
+
+	for (let index = 0; index < uvreq.data.length; index++) {
+		uvOption.value.series[0].data[index] = uvreq.data[index]
+	}
+	topData.UV = uvreq.data[6]
+	topData.uvUp = calcDelta(uvreq.data[uvreq.data.length - 2], uvreq.data[uvreq.data.length - 1])
+	const staytime = await axios.get(`/behavior/stay/${id}`)
+
+	if (staytime.data) {
+		topData.time = staytime.data.toFixed(0)
+	}
+
+	const pvtable = await axios.get(`/behavior/popular/pv?id=${id}`)
+	if (pvtable.data) {
+		for (let o = 0; o < pvtable.data.length; o++) {
+			const table = {
+				pv: pvtable.data[o].pv,
+				from: pvtable.data[o].from,
+			}
+			pvtableData.value.push(table)
+		}
+	}
+	const uvtable = await axios.get(`/behavior/popular/uv?id=${id}`)
+	if (uvtable.data) {
+		for (let o = 0; o < uvtable.data.length; o++) {
+			const table = {
+				uv: uvtable.data[o].uv,
+				from: uvtable.data[o].from,
+			}
+			uvtableData.value.push(table)
+		}
+	}
+	const staytable = await axios.get(`/behavior/stay/${id}?list=${list}`)
+	if (staytable.data) {
+		for (let o = 0; o < staytable.data.length; o++) {
+			const table = {
+				from: staytable.data[o].from,
+				duration: `${processDuration(staytable.data[o].duration)}`,
+			}
+			usertime.value.push(table)
+		}
+	}
+}
+
+onMounted(() => {
+	watch(
+		() => projectsStore.choose,
+		(newVal, oldVal) => {
+			if (newVal !== -1) {
+				topData.UV = 0
+				topData.time = 0
+				topData.PV = 0
+				pvtableData.value = []
+				uvtableData.value = []
+				usertime.value = []
+				id = projectsStore.projects[projectsStore.choose].id
+				Bget(id)
+			}
+		},
+	)
+})
+onActivated(() => {
+	console.log('onActivated')
+	if (projectsStore.choose !== -1) {
+		id = projectsStore.projects[projectsStore.choose].id
+		topData.UV = 0
+		topData.time = 0
+		topData.PV = 0
+		pvtableData.value = []
+		uvtableData.value = []
+		usertime.value = []
+		Bget(id)
+	}
+})
 </script>
 
 <template>
-	<div class="cardList">
-		<el-card class="box-card">
-			<template #header>
-				<div class="card-header">
-					<span>浏览量(PV)</span>
-				</div>
-			</template>
-			<div class="card">
-				<p>200033</p>
-				<div class="compare">
-					较昨日 <span style=" color:red">16.83% ↑</span>
-				</div>
-			</div>
-		</el-card>
-		<el-card class="box-card">
-			<template #header>
-				<div class="card-header">
-					<span>访问量(UV)</span>
-				</div>
-			</template>
-			<div class="card">
-				<p>200033</p>
-				<div class="compare">
-					较昨日 <span style=" color:red">16.83% ↑</span>
-				</div>
-			</div>
-		</el-card>
-		<el-card class="box-card">
-			<template #header>
-				<div class="card-header">
-					<span>用户停留时间</span>
-				</div>
-			</template>
-			<div class="card">
-				<p>200033</p>
-				<div class="compare">
-					较昨日 <span style=" color:red">16.83% ↑</span>
-				</div>
-			</div>
-		</el-card>
-	</div>
-
-	<div class="userForm">
-		<el-card>
-			<el-table
-				:data="tableData"
-				style="width: 100%"
+	<div v-if="!projectsStore.hasProject">
+		<el-empty :image-size="200" />
+		<div style="width: 100%; text-align: center">
+			<el-button
+				type="primary"
+				@click="add"
 			>
-				<el-table-column
-					prop="userId"
-					label="用户ID"
-				/>
-				<el-table-column
-					prop="page"
-					label="页面"
-				/>
-				<el-table-column label="设备平台">
-					<svg
-						style="width: 15px;height: 15px;margin-right: 10px;"
-						t="1660189913325"
-						class="icon"
-						viewBox="0 0 1024 1024"
-						version="1.1"
-						xmlns="http://www.w3.org/2000/svg"
-						p-id="2439"
-						width="200"
-						height="200"
-					><path
-						d="M426.285714 574.857143v372l-389.714285-53.714286v-318.285714h389.714285z m0-424.571429v376.571429H36.571429V204z m561.142857 424.571429v449.142857l-518.285714-71.428571v-377.714286h518.285714z m0-501.714286v453.714286H469.142857V144.571429z"
-						p-id="2440"
-						fill="#1296db"
-					/></svg>
-					<svg
-						style="width: 15px;height: 15px;"
-						t="1660190173965"
-						class="icon"
-						viewBox="0 0 1024 1024"
-						version="1.1"
-						xmlns="http://www.w3.org/2000/svg"
-						p-id="4201"
-						width="200"
-						height="200"
-					><path
-						d="M123.648 178.346667C361.642667-98.602667 802.986667-43.946667 967.936 279.68h-396.501333c-71.424 0-117.546667-1.621333-167.509334 24.661333-58.709333 30.933333-102.997333 88.234667-118.485333 155.52L123.648 178.389333z"
-						fill="#EA4335"
-						p-id="4202"
-					/><path
-						d="M341.674667 512c0 93.866667 76.330667 170.24 170.154666 170.24 93.866667 0 170.154667-76.373333 170.154667-170.24s-76.330667-170.24-170.154667-170.24c-93.866667 0-170.154667 76.373333-170.154666 170.24z"
-						fill="#4285F4"
-						p-id="4203"
-					/><path
-						d="M577.877333 734.848c-95.530667 28.373333-207.274667-3.114667-268.501333-108.8-46.762667-80.64-170.24-295.765333-226.346667-393.557333-196.565333 301.226667-27.136 711.808 329.685334 781.866666l165.12-279.509333z"
-						fill="#34A853"
-						p-id="4204"
-					/><path
-						d="M669.866667 341.76a233.130667 233.130667 0 0 1 43.008 286.634667c-40.576 69.973333-170.154667 288.682667-232.96 394.581333 367.658667 22.656 635.733333-337.664 514.645333-681.258667H669.866667z"
-						fill="#FBBC05"
-						p-id="4205"
-					/></svg>
-				</el-table-column>
-				<el-table-column
-					prop="userIp"
-					label="用户IP地址"
-				/>
-				<el-table-column
-					prop="address"
-					label="位置"
-				/>
-				<el-table-column
-					prop="time"
-					label="发生时间"
-				/>
-			</el-table>
-		</el-card>
+				前去添加项目
+			</el-button>
+		</div>
 	</div>
-	<div class="userChart">
-		<el-card>
-			<Chart
-				value="uvid"
-				:option="uvOption"
-			></Chart>
-		</el-card>
+	<div v-else>
+		<div class="cardList">
+			<el-card>
+				<template #header>
+					<span>用户访问数据</span>
+				</template>
+				<div class="dataBox">
+					<div>
+						<div>浏览量(PV)</div>
+						<p class="data">
+							{{ topData.PV }}
+						</p>
+						<p class="compare">
+							较昨日
+							<span
+								:class="{
+									down: topData.pvUp < 0,
+									up: topData.pvUp >= 0,
+								}"
+							>
+								{{ topData.pvUp === Infinity ? '∞' : topData.pvUp.toFixed(1) }}%
+								{{ topData.pvUp >= 0 ? '↑' : '↓' }}
+							</span>
+						</p>
+					</div>
+					<div>
+						<div>访客数(UV)</div>
+						<p class="data">
+							{{ topData.UV }}
+						</p>
+						<p class="compare">
+							较昨日
+							<span
+								:class="{
+									down: topData.uvUp < 0,
+									up: topData.uvUp >= 0,
+								}"
+							>
+								{{ topData.uvUp === Infinity ? '∞' : topData.uvUp.toFixed(1) }}%
+								{{ topData.uvUp >= 0 ? '↑' : '↓' }}
+							</span>
+						</p>
+					</div>
+					<div>
+						<div>平均浏览时长</div>
+						<p class="data">
+							{{ topData.time }} s
+						</p>
+					</div>
+				</div>
+			</el-card>
+		</div>
+
+		<div class="userForm">
+			<el-row>
+				<el-col :span="12">
+					<el-card style="margin: 1rem;">
+						<template #header>
+							<div class="card-header">
+								<span>热门页面(PV)</span>
+							</div>
+						</template>
+						<el-table
+							:data="pvtableData"
+							style="width: 100%"
+							height="240"
+						>
+							<el-table-column
+								prop="from"
+								label="来源 URL"
+							/>
+							<el-table-column
+								prop="pv"
+								label="PV"
+								width="80"
+							/>
+						</el-table>
+					</el-card>
+				</el-col>
+				<el-col :span="12">
+					<el-card style="margin: 1rem;">
+						<VChart
+							class="chart"
+							:option="pvOption"
+							:autoresize="true"
+						></VChart>
+					</el-card>
+				</el-col>
+				<el-col :span="24">
+					<el-card style="margin: 1rem;">
+						<template #header>
+							<div class="card-header">
+								<span>页面停留时间排行</span>
+							</div>
+						</template>
+						<el-table
+							:data="usertime"
+							style="width: 100%"
+							height="240"
+						>
+							<el-table-column
+								prop="from"
+								label="来源 URL"
+							/>
+							<el-table-column
+								prop="duration"
+								label="时间"
+								width="180"
+							/>
+						</el-table>
+					</el-card>
+				</el-col>
+			</el-row>
+		</div>
+		<div class="userChart">
+			<el-row>
+				<el-col :span="12">
+					<el-card style="margin: 1rem;">
+						<template #header>
+							<div class="card-header">
+								<span>热门页面(UV)</span>
+							</div>
+						</template>
+						<el-table
+							:data="uvtableData"
+							style="width: 100%"
+							height="240"
+						>
+							<el-table-column
+								prop="from"
+								label="来源 URL"
+							/>
+							<el-table-column
+								prop="uv"
+								label="PV"
+								width="80"
+							/>
+						</el-table>
+					</el-card>
+				</el-col>
+				<el-col :span="12">
+					<el-card style="margin: 1rem;">
+						<VChart
+							class="chart"
+							:option="uvOption"
+							:autoresize="true"
+						></VChart>
+					</el-card>
+				</el-col>
+			</el-row>
+		</div>
 	</div>
 </template>
 
 <style scoped>
-.box-card {
-	width: 30%;
-	margin: 1rem;
+.dataBox {
+	display: flex;
+	justify-content: space-between;
+	flex-direction: row;
+	text-align: center;
 }
 
-.cardList {
+.dataBox>div {
+	width: 33%;
 	display: flex;
-	justify-content: space-around;
+	flex-direction: column;
+}
+
+.dataBox>div>.data {
+	font-size: 48px;
+	margin: .3rem 0 0 0;
 }
 
 .compare {
 	font-size: 15px;
 	color: gray;
+}
+
+.compare>span.up {
+	color: rgb(228, 23, 23);
+}
+
+.compare>span.down {
+	color: rgb(6, 122, 11);
+}
+
+.box-card {
+	width: 30%;
+	margin: .5rem 0;
+}
+
+.cardList {
+	width: calc(100% - 2rem);
+	padding: 1rem;
+	text-align: center;
 }
 
 .card {
@@ -193,9 +362,9 @@ const uvOption = {
 
 .card p {
 	font-size: 50px;
-	margin: 10px 0;
 }
-.userForm, .userChart{
-	margin: 1rem;
+
+.chart {
+	height: 300px;
 }
 </style>

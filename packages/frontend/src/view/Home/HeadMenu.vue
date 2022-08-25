@@ -4,13 +4,10 @@ import type { MenuItemRegistered } from 'element-plus'
 
 import { useProjectsStore } from '../../stores/projects'
 
-const allProjects = '所有项目'
-
 const projectsStore = useProjectsStore()
 
 const chooseList = computed(() => {
 	const list = projectsStore.projects.map(project => project.name)
-	list.unshift(allProjects)
 	return list
 })
 
@@ -18,12 +15,19 @@ const onMenuSelected = (menuItem: MenuItemRegistered) => {
 	console.log(menuItem.index)
 	projectsStore.choose = parseInt(menuItem.index)
 }
+
+const activeMenu = computed(() => {
+	if (projectsStore.choose === -1) {
+		return '0'
+	}
+	return projectsStore.choose.toString()
+})
 </script>
 
 <template>
 	<div>
 		<el-menu
-			default-active="-1"
+			:default-active="activeMenu"
 			class="el-menu-demo"
 			mode="horizontal"
 			:ellipsis="false"
@@ -36,12 +40,12 @@ const onMenuSelected = (menuItem: MenuItemRegistered) => {
 			<el-sub-menu index="1">
 				<template #title>
 					当前项目:
-					{{ projectsStore.choose === -1 ? allProjects : projectsStore.currentName }}
+					{{ projectsStore.currentName }}
 				</template>
 				<ElMenuItem
 					v-for="(item, index) of chooseList"
 					:key="item"
-					:index="(index === 0 ? -1 : index - 1).toString()"
+					:index="index.toString()"
 					@click="(onMenuSelected)"
 				>
 					{{ item }}

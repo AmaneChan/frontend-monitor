@@ -1,6 +1,20 @@
 <script lang="ts" setup>
+import { onMounted } from 'vue'
+import { useProjectsStore } from '../stores/projects'
+import { useUserStore } from '../stores/user'
 import HeadMenu from './Home/HeadMenu.vue'
 import SideMenu from './Home/SideMenu.vue'
+
+const projectStore = useProjectsStore()
+const userStore = useUserStore()
+
+onMounted(() => {
+	const token = localStorage.getItem('token')
+	if (token && !userStore.token) {
+		userStore.login(token)
+	}
+	projectStore.updateProjects()
+})
 </script>
 
 <template>

@@ -1,18 +1,25 @@
 <script lang="ts" setup>
-import Chart from '../../components/Chart.vue'
-const Page = {
-	TTFBTime: 158.91,
-	DomeTime: 1.52,
-	LoadTime: 1.2,
-}
-const Interface = {
-	Sum: 156,
-	Time: 124.22,
-	SuccessRate: 100,
-}
-const PageOption = {
+import VChart from 'vue-echarts'
+import { onActivated, onMounted, reactive, ref, watch } from 'vue'
+import router from '../../router'
+import type { ResponseResult } from '../../request.js'
+import { axios } from '../../request.js'
+import { useProjectsStore } from '../../stores/projects'
+
+const projectsStore = useProjectsStore()
+
+const Page = reactive({
+	FP: 0,
+	FCP: 0,
+	DOM_Ready: 0,
+	DOM_Complete: 0,
+	DOM_Interactive: 0,
+	LCP: 0,
+})
+
+const FPOption = ref({
 	title: {
-		text: '页面加载耗时分段数量占比',
+		text: 'FP 时间',
 		left: 'center',
 	},
 	tooltip: {
@@ -24,15 +31,15 @@ const PageOption = {
 	},
 	series: [
 		{
-			name: 'Access From',
+			name: 'FP 时间',
 			type: 'pie',
 			radius: '50%',
 			data: [
-				{ value: 1048, name: '<1秒' },
-				{ value: 735, name: '1-5秒' },
-				{ value: 580, name: '5-10秒' },
-				{ value: 484, name: '10-30秒' },
-				{ value: 300, name: '>30秒' },
+				{ value: 0, name: '<100ms' },
+				{ value: 0, name: '100-300ms' },
+				{ value: 0, name: '300-500ms' },
+				{ value: 0, name: '500-1s' },
+				{ value: 0, name: '>1s' },
 			],
 			emphasis: {
 				itemStyle: {
@@ -43,10 +50,10 @@ const PageOption = {
 			},
 		},
 	],
-}
-const InterfaceOption = {
+})
+const FCPOption = ref({
 	title: {
-		text: '接口请求耗时分段数量占比',
+		text: 'FCP 时间',
 		left: 'center',
 	},
 	tooltip: {
@@ -58,15 +65,15 @@ const InterfaceOption = {
 	},
 	series: [
 		{
-			name: 'Access From',
+			name: 'FCP 时间',
 			type: 'pie',
 			radius: '50%',
 			data: [
-				{ value: 523, name: '<1秒' },
-				{ value: 3, name: '1-5秒' },
-				{ value: 0, name: '5-10秒' },
-				{ value: 0, name: '10-30秒' },
-				{ value: 0, name: '>30秒' },
+				{ value: 0, name: '<100ms' },
+				{ value: 0, name: '100-300ms' },
+				{ value: 0, name: '300-500ms' },
+				{ value: 0, name: '500-1s' },
+				{ value: 0, name: '>1s' },
 			],
 			emphasis: {
 				itemStyle: {
@@ -77,35 +84,286 @@ const InterfaceOption = {
 			},
 		},
 	],
+})
+const InteractiveOption = ref({
+	title: {
+		text: 'DOM Interactive 时间',
+		left: 'center',
+	},
+	tooltip: {
+		trigger: 'item',
+	},
+	legend: {
+		orient: 'vertical',
+		left: 'left',
+	},
+	series: [
+		{
+			name: 'DOM Interactive 时间',
+			type: 'pie',
+			radius: '50%',
+			data: [
+				{ value: 0, name: '<500ms' },
+				{ value: 0, name: '500-1s' },
+				{ value: 0, name: '1000-2s' },
+				{ value: 0, name: '2000-5s' },
+				{ value: 0, name: '>5s' },
+			],
+			emphasis: {
+				itemStyle: {
+					shadowBlur: 10,
+					shadowOffsetX: 0,
+					shadowColor: 'rgba(0, 0, 0, 0.5)',
+				},
+			},
+		},
+	],
+})
+const LCPOption = ref({
+	title: {
+		text: 'LCP 时间',
+		left: 'center',
+	},
+	tooltip: {
+		trigger: 'item',
+	},
+	legend: {
+		orient: 'vertical',
+		left: 'left',
+	},
+	series: [
+		{
+			name: 'LCP 时间',
+			type: 'pie',
+			radius: '50%',
+			data: [
+				{ value: 0, name: '<200ms' },
+				{ value: 0, name: '200-500ms' },
+				{ value: 0, name: '500-1s' },
+				{ value: 0, name: '>1s' },
+			],
+			emphasis: {
+				itemStyle: {
+					shadowBlur: 10,
+					shadowOffsetX: 0,
+					shadowColor: 'rgba(0, 0, 0, 0.5)',
+				},
+			},
+		},
+	],
+})
+
+const value = ref('tableDataFP')
+
+const tableDataFP = ref<Perf[]>([])
+const tableDataFCP = ref<Perf[]>([])
+const tableDataReady = ref<Perf[]>([])
+const tableDataComplete = ref<Perf[]>([])
+const tableDataInteractive = ref<Perf[]>([])
+const tableDataLCP = ref<Perf[]>([])
+
+const curTableData = ref<Perf[]>([])
+const map: any = { tableDataFP, tableDataFCP, tableDataReady, tableDataComplete, tableDataInteractive, tableDataLCP }
+
+function switchPerfRank(name: string) {
+	curTableData.value = map[name].value
 }
-const tableData = [
+
+interface Perf {
+	from: string
+	value: any
+}
+
+const options = [
 	{
-		date: '2016-05-03',
-		name: 'Tom',
-		address: 'No. 189, Grove St, Los Angeles',
+		value: 'tableDataFP',
+		label: 'FP 性能',
 	},
 	{
-		date: '2016-05-02',
-		name: 'Tom',
-		address: 'No. 189, Grove St, Los Angeles',
+		value: 'tableDataFCP',
+		label: 'FCP 性能',
 	},
 	{
-		date: '2016-05-04',
-		name: 'Tom',
-		address: 'No. 189, Grove St, Los Angeles',
+		value: 'tableDataReady',
+		label: 'DOM Ready 性能',
 	},
 	{
-		date: '2016-05-01',
-		name: 'Tom',
-		address: 'No. 189, Grove St, Los Angeles',
+		value: 'tableDataComplete',
+		label: 'DOM Complete 性能',
+	},
+	{
+		value: 'tableDataInteractive',
+		label: 'DOM Interactive 性能',
+	},
+	{
+		value: 'tableDataLCP',
+		label: 'LCP 性能',
 	},
 ]
-const PageChart = 'PageChart'
-const InterfaceChart = 'InterfaceChart'
+
+const add = function () {
+	router.push('setting')
+}
+let id = -1
+const limit = 10
+const page = 0
+const day = 7
+async function Pget() {
+	if (id === 0) {
+		return
+	}
+	for (let index = 0; index < 7; index++) {
+		const type = index + 1
+		if (type === 4) {
+			continue
+		}
+		const result: ResponseResult = await axios.get('/perf', { params: { id, type, page, limit } })
+		if (result.data) {
+			if (type === 1) {
+				for (let i = 0; i < result.data.list.length; i++) {
+					const pfm = {
+						from: result.data.list[i].from,
+						value: result.data.list[i].value,
+					}
+					tableDataFP.value.push(pfm)
+				}
+				Page.FP = result.data.avg
+				const seg = '100,300,500,1000'
+				const FPSeries = await axios.get('/perf/seg', { params: { id, type, day, seg } })
+				for (let i = 0; i < FPSeries.data.length; i++) {
+					FPOption.value.series[0].data[i].value = FPSeries.data ? FPSeries.data[i] : 0
+				}
+			} else
+			if (type === 2) {
+				for (let i = 0; i < result.data.list.length; i++) {
+					const pfm = {
+						from: result.data.list[i].from,
+						value: result.data.list[i].value,
+					}
+					tableDataFCP.value.push(pfm)
+				}
+				Page.FCP = result.data.avg
+				const seg = '100,300,500,1000'
+				const FCPSeries = await axios.get('/perf/seg', { params: { id, type, day, seg } })
+				for (let i = 0; i < FCPSeries.data.length; i++) {
+					FCPOption.value.series[0].data[i].value = FCPSeries.data ? FCPSeries.data[i] : 0
+				}
+			} else
+			if (type === 3) {
+				for (let i = 0; i < result.data.list.length; i++) {
+					const pfm = {
+						from: result.data.list[i].from,
+						value: result.data.list[i].value,
+					}
+					tableDataReady.value.push(pfm)
+				}
+				Page.DOM_Ready = result.data.avg
+				console.log(Page.DOM_Ready)
+			} else
+			if (type === 5) {
+				for (let i = 0; i < result.data.list.length; i++) {
+					const pfm = {
+						from: result.data.list[i].from,
+						value: result.data.list[i].value,
+					}
+					tableDataComplete.value.push(pfm)
+				}
+				Page.DOM_Complete = result.data.avg
+			} else
+			if (type === 6) {
+				for (let i = 0; i < result.data.list.length; i++) {
+					const pfm = {
+						from: result.data.list[i].from,
+						value: result.data.list[i].value,
+					}
+					tableDataInteractive.value.push(pfm)
+				}
+				Page.DOM_Interactive = result.data.avg
+				const seg = '500,1000,2000,5000'
+				const InteractiveSeries = await axios.get('/perf/seg', { params: { id, type, day, seg } })
+				for (let i = 0; i < InteractiveSeries.data.length; i++) {
+					InteractiveOption.value.series[0].data[i].value = InteractiveSeries.data ? InteractiveSeries.data[i] : 0
+				}
+			} else
+			if (type === 7) {
+				for (let i = 0; i < result.data.list.length; i++) {
+					const pfm = {
+						from: result.data.list[i].from,
+						value: result.data.list[i].value,
+					}
+					tableDataLCP.value.push(pfm)
+				}
+				Page.LCP = result.data.avg
+				const seg = '200,500,1000'
+				const LCPSeries = await axios.get('/perf/seg', { params: { id, type, day, seg } })
+				for (let i = 0; i < LCPSeries.data.length; i++) {
+					LCPOption.value.series[0].data[i].value = LCPSeries.data ? LCPSeries.data[i] : 0
+				}
+			}
+		}
+	}
+}
+
+onMounted(() => {
+	watch(
+		() => projectsStore.choose,
+		(newVal, oldVal) => {
+			if (newVal !== -1) {
+				Page.FP = 0
+				Page.FCP = 0
+				Page.DOM_Ready = 0
+				Page.DOM_Complete = 0
+				Page.DOM_Interactive = 0
+				Page.LCP = 0
+				tableDataComplete.value = []
+				tableDataInteractive.value = []
+				tableDataLCP.value = []
+				FPOption.value.series[0].data = [{ value: 0, name: '<100ms' }, { value: 0, name: '100-300ms' }, { value: 0, name: '300-500ms' }, { value: 0, name: '500-1s' }, { value: 0, name: '>1s' }]
+				FCPOption.value.series[0].data = [{ value: 0, name: '<100ms' }, { value: 0, name: '100-300ms' }, { value: 0, name: '300-500ms' }, { value: 0, name: '500-1s' }, { value: 0, name: '>1s' }]
+				InteractiveOption.value.series[0].data = [{ value: 0, name: '<500ms' }, { value: 0, name: '500-1s' }, { value: 0, name: '1000-2s' }, { value: 0, name: '2000-5s' }, { value: 0, name: '>5s' }]
+				LCPOption.value.series[0].data = [{ value: 0, name: '<200ms' }, { value: 0, name: '200-500ms' }, { value: 0, name: '500-1s' }, { value: 0, name: '>1s' }]
+				id = projectsStore.projects[projectsStore.choose].id
+				Pget()
+			}
+		},
+	)
+	switchPerfRank('tableDataFP')
+})
+onActivated(() => {
+	console.log('onActivated')
+	if (projectsStore.choose !== -1) {
+		id = projectsStore.projects[projectsStore.choose].id
+		Page.FP = 0
+		Page.FCP = 0
+		Page.DOM_Ready = 0
+		Page.DOM_Complete = 0
+		Page.DOM_Interactive = 0
+		Page.LCP = 0
+		tableDataComplete.value = []
+		tableDataInteractive.value = []
+		tableDataLCP.value = []
+		FPOption.value.series[0].data = [{ value: 0, name: '<100ms' }, { value: 0, name: '100-300ms' }, { value: 0, name: '300-500ms' }, { value: 0, name: '500-1s' }, { value: 0, name: '>1s' }]
+		FCPOption.value.series[0].data = [{ value: 0, name: '<100ms' }, { value: 0, name: '100-300ms' }, { value: 0, name: '300-500ms' }, { value: 0, name: '500-1s' }, { value: 0, name: '>1s' }]
+		InteractiveOption.value.series[0].data = [{ value: 0, name: '<500ms' }, { value: 0, name: '500-1s' }, { value: 0, name: '1000-2s' }, { value: 0, name: '2000-5s' }, { value: 0, name: '>5s' }]
+		LCPOption.value.series[0].data = [{ value: 0, name: '<200ms' }, { value: 0, name: '200-500ms' }, { value: 0, name: '500-1s' }, { value: 0, name: '>1s' }]
+		Pget()
+	}
+})
 </script>
 
 <template>
-	<div>
+	<div v-if="!projectsStore.hasProject">
+		<el-empty :image-size="200" />
+		<div style="width: 100%; text-align: center">
+			<el-button
+				type="primary"
+				@click="add"
+			>
+				前去添加项目
+			</el-button>
+		</div>
+	</div>
+	<div v-else>
 		<div class="ma">
 			<div class="title">
 				页面性能
@@ -113,23 +371,23 @@ const InterfaceChart = 'InterfaceChart'
 			<el-row>
 				<el-col :span="8">
 					<el-card class="mal">
-						<span>TTFB平均时间</span>
+						<span>平均 FP</span>
 						<br />
-						<b class="fs">{{ Page.TTFBTime }}ms</b>
+						<b class="fs">{{ Page.FP.toFixed(2) }}ms</b>
 					</el-card>
 				</el-col>
 				<el-col :span="8">
 					<el-card class="mal">
-						<span>Dom解析时间</span>
+						<span>平均 FCP</span>
 						<br />
-						<b class="fs">{{ Page.DomeTime }}s</b>
+						<b class="fs">{{ Page.FCP.toFixed(2) }}ms</b>
 					</el-card>
 				</el-col>
 				<el-col :span="8">
 					<el-card class="mal">
-						<span>页面平均加载时间</span>
+						<span>平均 DOM Ready</span>
 						<br />
-						<b class="fs">{{ Page.LoadTime }}s</b>
+						<b class="fs">{{ Page.DOM_Ready.toFixed(2) }}ms</b>
 					</el-card>
 				</el-col>
 			</el-row>
@@ -138,106 +396,103 @@ const InterfaceChart = 'InterfaceChart'
 			<el-row>
 				<el-col :span="8">
 					<el-card class="mal">
-						<Chart
-							:value="PageChart"
-							:option="PageOption"
-						></Chart>
+						<span>平均 DOM Complete</span>
+						<br />
+						<b class="fs">{{ Page.DOM_Complete.toFixed(2) }}ms</b>
 					</el-card>
 				</el-col>
-				<el-col :span="16">
+				<el-col :span="8">
 					<el-card class="mal">
+						<span>平均 DOM Interactive</span>
+						<br />
+						<b class="fs">{{ Page.DOM_Interactive.toFixed(2) }}ms</b>
+					</el-card>
+				</el-col>
+				<el-col :span="8">
+					<el-card class="mal">
+						<span>平均 LCP</span>
+						<br />
+						<b class="fs">{{ Page.LCP.toFixed(2) }}ms</b>
+					</el-card>
+				</el-col>
+			</el-row>
+		</div>
+		<div class="ma">
+			<el-row>
+				<el-col :span="12">
+					<el-card class="mal">
+						<VChart
+							class="chart"
+							:option="FPOption"
+							:autoresize="true"
+						></VChart>
+					</el-card>
+				</el-col>
+				<el-col :span="12">
+					<el-card class="mal">
+						<VChart
+							class="chart"
+							:option="FCPOption"
+							:autoresize="true"
+						></VChart>
+					</el-card>
+				</el-col>
+			</el-row>
+		</div>
+		<div class="ma">
+			<el-row>
+				<el-col :span="12">
+					<el-card class="mal">
+						<VChart
+							class="chart"
+							:option="InteractiveOption"
+							:autoresize="true"
+						></VChart>
+					</el-card>
+				</el-col>
+				<el-col :span="12">
+					<el-card class="mal">
+						<VChart
+							class="chart"
+							:option="LCPOption"
+							:autoresize="true"
+						></VChart>
+					</el-card>
+				</el-col>
+			</el-row>
+		</div>
+		<!-- e -->
+		<div class="ma">
+			<el-row>
+				<el-col :span="24">
+					<el-card class="mal">
+						<p>
+							性能较差的页面：
+							<el-select
+								v-model="value"
+								placeholder="Select"
+								@change="switchPerfRank"
+							>
+								<el-option
+									v-for="item in options"
+									:key="item.value"
+									:label="item.label"
+									:value="item.value"
+								/>
+							</el-select>
+						</p>
 						<el-table
-							:data="tableData"
+							:data="curTableData"
 							height="300"
 							style="width: 100%"
 						>
 							<el-table-column
-								prop="date"
-								label="Date"
-								width="180"
+								prop="from"
+								label="来源 URL"
 							/>
 							<el-table-column
-								prop="name"
-								label="Name"
-								width="180"
-							/>
-							<el-table-column
-								prop="address"
-								label="Address"
-							/>
-							<el-table-column
-								prop="name"
-								label="Name"
-								width="180"
-							/>
-						</el-table>
-					</el-card>
-				</el-col>
-			</el-row>
-		</div>
-
-		<div class="ma">
-			<div class="title">
-				接口性能
-			</div>
-			<el-row>
-				<el-col :span="8">
-					<el-card class="mal">
-						<span>请求接口总数量</span>
-						<br />
-						<b class="fs">{{ Interface.Sum }}ms</b>
-					</el-card>
-				</el-col>
-				<el-col :span="8">
-					<el-card class="mal">
-						<span>接口请求平均耗时</span>
-						<br />
-						<b class="fs">{{ Interface.Time }}s</b>
-					</el-card>
-				</el-col>
-				<el-col :span="8">
-					<el-card class="mal">
-						<span>接口请求成功率</span>
-						<br />
-						<b class="fs">{{ Interface.SuccessRate }}s</b>
-					</el-card>
-				</el-col>
-			</el-row>
-		</div>
-		<div class="ma">
-			<el-row>
-				<el-col :span="8">
-					<el-card class="mal">
-						<Chart
-							:value="InterfaceChart"
-							:option="InterfaceOption"
-						></Chart>
-					</el-card>
-				</el-col>
-				<el-col :span="16">
-					<el-card class="mal">
-						<el-table
-							:data="tableData"
-							height="300"
-							style="width: 100%"
-						>
-							<el-table-column
-								prop="date"
-								label="Date"
-								width="180"
-							/>
-							<el-table-column
-								prop="name"
-								label="Name"
-								width="180"
-							/>
-							<el-table-column
-								prop="address"
-								label="Address"
-							/>
-							<el-table-column
-								prop="name"
-								label="Name"
+								prop="value"
+								label="值 (ms)"
 								width="180"
 							/>
 						</el-table>
@@ -258,10 +513,16 @@ const InterfaceChart = 'InterfaceChart'
 .ma {
 	margin: 1rem;
 }
+
 .mal {
 	margin-right: 0.5rem;
 }
+
 .fs {
 	font-size: 2rem;
+}
+
+.chart {
+	height: 300px;
 }
 </style>

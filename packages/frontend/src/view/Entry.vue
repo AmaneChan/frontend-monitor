@@ -1,5 +1,15 @@
 <script lang="ts" setup>
+import { ElMessage } from 'element-plus'
 import { reactive, ref } from 'vue'
+import { Lock, User } from '@element-plus/icons-vue'
+
+import { axios } from '../request.js'
+import type { ResponseResult } from '../request.js'
+import router from '../router/index.js'
+
+import { useUserStore } from '../stores/user.js'
+
+const userStore = useUserStore()
 
 const signUpMode = ref(false)
 
@@ -15,12 +25,32 @@ const inputContent = reactive({
 	},
 })
 
-function login() {
-
+async function login() {
+	const { username, pwd } = inputContent.login
+	const result: ResponseResult = await axios.post('/user/login', { username, pwd })
+	console.log(result)
+	if (result.code === 200 && result.token) {
+		ElMessage.success(result.message)
+		userStore.login(result.token)
+		router.push({
+			path: '/',
+			replace: true,
+		})
+	} else {
+		ElMessage.error(result.message)
+	}
 }
 
-function register() {
-
+async function register() {
+	const { username, pwd } = inputContent.register
+	const result: ResponseResult = await axios.post('/user/register', { username, pwd })
+	if (result.code === 200) {
+		ElMessage.success(result.message)
+		inputContent.login.username = username
+		signUpMode.value = false
+	} else {
+		ElMessage.error(result.message)
+	}
 }
 </script>
 
@@ -66,7 +96,7 @@ function register() {
 						/>
 					</div>
 					<input
-						type="submit"
+						type="button"
 						value="登 录"
 						class="btn solid"
 						@click="login"
@@ -97,19 +127,6 @@ function register() {
 							:size="24"
 							class="input-icon"
 						>
-							<Message />
-						</el-icon>
-						<input
-							v-model="inputContent.register.email"
-							type="email"
-							placeholder="邮箱"
-						/>
-					</div>
-					<div class="input-field">
-						<el-icon
-							:size="24"
-							class="input-icon"
-						>
 							<Lock />
 						</el-icon>
 						<input
@@ -119,7 +136,7 @@ function register() {
 						/>
 					</div>
 					<input
-						type="submit"
+						type="button"
 						class="btn"
 						value="注 册"
 						@click="register"
